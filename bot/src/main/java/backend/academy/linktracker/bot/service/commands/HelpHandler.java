@@ -1,5 +1,6 @@
 package backend.academy.linktracker.bot.service.commands;
 
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class HelpService extends CommandService {
-    private List<CommandService> services;
+public class HelpHandler extends CommandHandler {
+    private List<CommandHandler> services;
     private String availableCommands;
 
     @Autowired
-    public HelpService(List<CommandService> services) {
-        super("/help");
+    public HelpHandler(List<CommandHandler> services) {
+        super(new BotCommand("/help","Вывод списка всех доступных команд)"));
         this.services = services;
     }
 
@@ -28,8 +29,8 @@ public class HelpService extends CommandService {
     public void init() {
         StringBuilder builder = new StringBuilder();
 
-        for (CommandService command : services) {
-            builder.append(command.getCommandName());
+        for (CommandHandler command : services) {
+            builder.append(command.getName());
             builder.append("\n");
         }
         this.availableCommands = builder.toString();

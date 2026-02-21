@@ -5,14 +5,10 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StartService extends CommandService {
-    public StartService(){
-        super("/start");
-    }
+public class UnknownCommandHandler {
 
-    @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
-        return new SendMessage(id, "Привет,выбери команду ниже");
+        return new SendMessage(id,"Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
     }
 }

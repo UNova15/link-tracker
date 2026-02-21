@@ -5,9 +5,16 @@ spring:
   application:
     name: bot
 
+logging:
+  file:
+    name: bot/log/application.log
+  structured:
+    format:
+      file: ecs
+
 app:
   telegram:
     url: https://api.telegram.org/bot
-    token: ${TELEGRAM_BOT_TOKEN} # Use env variable. DO NOT KEEP TOKEN HERE
+    token: ${TELEGRAM_BOT_TOKEN}
     update-listener-sleep: 1s
     debug: false
