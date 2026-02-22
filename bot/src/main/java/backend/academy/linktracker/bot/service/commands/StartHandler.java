@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StartHandler extends CommandHandler {
-    public StartHandler(){
-        super(new BotCommand("/start","Запуск бота"));
+    public StartHandler() {
+        super(new BotCommand("/start", "Запуск бота"));
     }
 
     @Override
