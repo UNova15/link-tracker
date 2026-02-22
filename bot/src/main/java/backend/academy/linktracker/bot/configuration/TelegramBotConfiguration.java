@@ -16,8 +16,8 @@ public class TelegramBotConfiguration {
     @Bean
     public TelegramBot telegramBot(TelegramProperties properties) {
         var builder = new TelegramBot.Builder(properties.getToken())
-            .apiUrl(properties.getUrl())
-            .updateListenerSleep(properties.getUpdateListenerSleep().toMillis());
+                .apiUrl(properties.getUrl())
+                .updateListenerSleep(properties.getUpdateListenerSleep().toMillis());
 
         if (properties.isDebug()) {
             logger.info("Запуск в режиме debug");

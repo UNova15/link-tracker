@@ -1,15 +1,15 @@
-package backend.academy.linktracker.bot;
+package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.bot.service.commands.CommandHandler;
 import backend.academy.linktracker.bot.service.commands.Handler;
 import backend.academy.linktracker.bot.service.commands.UnknownCommandHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CommandRegistry {
@@ -22,15 +22,15 @@ public class CommandRegistry {
         this.handlers = handlers.stream().collect(Collectors.toMap(CommandHandler::getName, handler -> handler));
     }
 
-    public Optional<Handler> getCommandHandler(String name){
+    public Optional<Handler> getCommandHandler(String name) {
         return Optional.ofNullable(handlers.get(name));
     }
 
-    public Handler getUnknownCommandHandler(){
+    public Handler getUnknownCommandHandler() {
         return unknownCommandHandler;
     }
 
-    public Collection<CommandHandler> getCommandHandlers(){
+    public Collection<CommandHandler> getCommandHandlers() {
         return handlers.values();
     }
 }

@@ -4,10 +4,10 @@ import backend.academy.linktracker.bot.service.commands.CommandHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.request.SetMyCommands;
+import java.util.List;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.util.List;
 
 @Configuration
 public class TelegramCommandsConfiguration {
@@ -15,10 +15,9 @@ public class TelegramCommandsConfiguration {
     @Bean
     public InitializingBean registerBotCommands(TelegramBot telegramBot, List<CommandHandler> handlers) {
         return () -> {
-
             List<BotCommand> commands = handlers.stream()
-                .map(handler -> new BotCommand(handler.getName(), handler.getDescription()))
-                .toList();
+                    .map(handler -> new BotCommand(handler.getName(), handler.getDescription()))
+                    .toList();
 
             telegramBot.execute(new SetMyCommands(commands.toArray(new BotCommand[0])));
         };

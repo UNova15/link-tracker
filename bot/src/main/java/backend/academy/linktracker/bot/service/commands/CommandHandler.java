@@ -8,11 +8,12 @@ public abstract class CommandHandler implements Handler {
     public CommandHandler(BotCommand command) {
         this.command = command;
     }
-    public String getName(){
+
+    public String getName() {
         return command.command();
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return command.description();
     }
 }

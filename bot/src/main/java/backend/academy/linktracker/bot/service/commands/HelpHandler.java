@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.service.commands;
 
-import backend.academy.linktracker.bot.CommandRegistry;
+import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HelpHandler extends CommandHandler {
-    @Autowired
-    @Lazy
-    private CommandRegistry commands;
+    private final CommandRegistry commands;
 
-    public HelpHandler() {
+    @Autowired
+    public HelpHandler(@Lazy CommandRegistry commands) {
         super(new BotCommand("/help", "Вывод списка всех доступных команд"));
+        this.commands = commands;
     }
 
     @Override
