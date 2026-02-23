@@ -34,7 +34,6 @@ public class UnitTests {
     private UnknownCommandHandler unknownCommandHandler;
     private HelpHandler helpHandler;
 
-
     @Captor
     private ArgumentCaptor<SendMessage> sendMessageArgumentCaptor;
 
@@ -62,7 +61,7 @@ public class UnitTests {
         SendMessage message = sendMessageArgumentCaptor.getValue();
         assertThat(message.getParameters().get("chat_id")).isEqualTo(1L);
         assertThat(message.getParameters().get("text"))
-            .isEqualTo("Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.");
+                .isEqualTo("Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.");
     }
 
     @Test
@@ -89,6 +88,6 @@ public class UnitTests {
         SendMessage message = sendMessageArgumentCaptor.getValue();
         assertThat(message.getParameters().get("chat_id")).isEqualTo(1L);
         assertThat(message.getParameters().get("text"))
-            .isEqualTo("Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
+                .isEqualTo("Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
     }
 }
