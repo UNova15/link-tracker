@@ -44,6 +44,6 @@ public class BotUpdateListener implements UpdatesListener {
                 bot.execute(handler.handle(update));
             }
         }
-        return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        return CONFIRMED_UPDATES_ALL;
     }
 }

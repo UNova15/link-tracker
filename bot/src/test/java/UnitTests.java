@@ -10,6 +10,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,43 +30,51 @@ public class UnitTests {
 
     private BotUpdateListener listener;
 
+    private StartHandler startHandler;
+    private UnknownCommandHandler unknownCommandHandler;
+    private HelpHandler helpHandler;
+
+
     @Captor
     private ArgumentCaptor<SendMessage> sendMessageArgumentCaptor;
 
     @BeforeEach
     void setUp() {
 
-        StartHandler startHandler = new StartHandler();
-        HelpHandler helpHandler = new HelpHandler(registry);
-        UnknownCommandHandler unknownCommandHandler = new UnknownCommandHandler();
+        startHandler = new StartHandler();
+        unknownCommandHandler = new UnknownCommandHandler();
+        helpHandler = new HelpHandler(registry);
 
-        when(registry.getCommandHandlers()).thenReturn(List.of(startHandler, helpHandler));
-        when(registry.getUnknownCommandHandler()).thenReturn(unknownCommandHandler);
+        lenient().when(registry.getCommandHandlers()).thenReturn(List.of(startHandler, helpHandler));
+        lenient().when(registry.getUnknownCommandHandler()).thenReturn(unknownCommandHandler);
+        lenient().when(registry.getCommandHandler(anyString())).thenReturn(Optional.empty());
         listener = new BotUpdateListener(telegramBot, registry);
     }
 
     @Test
     public void give_StartCommand_shouldReturnWelcomeMessage() {
+        when(registry.getCommandHandler("/start")).thenReturn(Optional.of(startHandler));
         Update update = TestUtil.createUpdateWithMessage("/start", 1);
 
         listener.process(List.of(update));
 
         verify(telegramBot).execute(sendMessageArgumentCaptor.capture());
         SendMessage message = sendMessageArgumentCaptor.getValue();
-        assertThat(message.getParameters().get("chat_id")).isEqualTo(1);
+        assertThat(message.getParameters().get("chat_id")).isEqualTo(1L);
         assertThat(message.getParameters().get("text"))
-                .isEqualTo("Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.");
+            .isEqualTo("Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.");
     }
 
     @Test
     public void give_HelpCommand_shouldReturnListOfCommands() {
+        when(registry.getCommandHandler("/help")).thenReturn(Optional.of(helpHandler));
         Update update = TestUtil.createUpdateWithMessage("/help", 1);
 
         listener.process(List.of(update));
 
         verify(telegramBot).execute(sendMessageArgumentCaptor.capture());
         SendMessage message = sendMessageArgumentCaptor.getValue();
-        assertThat(message.getParameters().get("chat_id")).isEqualTo(1);
+        assertThat(message.getParameters().get("chat_id")).isEqualTo(1L);
         String text = (String) message.getParameters().get("text");
         assertThat(text).contains("/start", "/help");
     }
@@ -78,8 +87,8 @@ public class UnitTests {
 
         verify(telegramBot).execute(sendMessageArgumentCaptor.capture());
         SendMessage message = sendMessageArgumentCaptor.getValue();
-        assertThat(message.getParameters().get("chat_id")).isEqualTo(1);
+        assertThat(message.getParameters().get("chat_id")).isEqualTo(1L);
         assertThat(message.getParameters().get("text"))
-                .isEqualTo("Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
+            .isEqualTo("Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
     }
 }
