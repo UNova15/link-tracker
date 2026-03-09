@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.service;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.service.commands.Handler;
+import backend.academy.linktracker.bot.service.telegramclient.Handler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;

@@ -6,6 +6,8 @@ spring:
     name: scrapper
 
 app:
+  shedulerinterval:
+    6000
   stackoverflow:
     key: ${STACKOVERFLOW_KEY} # Use env variable. DO NOT KEEP TOKEN HERE
     access-token: ${STACKOVERFLOW_ACCESS_KEY} # Use env variable. DO NOT KEEP TOKEN HERE

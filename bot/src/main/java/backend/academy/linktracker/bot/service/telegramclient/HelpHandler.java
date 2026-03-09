@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.service.commands;
+package backend.academy.linktracker.bot.service.telegramclient;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import com.pengrad.telegrambot.model.BotCommand;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HelpHandler extends CommandHandler {
+public class HelpHandler extends AbstractHandler {
     private final CommandRegistry commands;
 
     @Autowired
@@ -21,17 +21,7 @@ public class HelpHandler extends CommandHandler {
     @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
-        String commands = commandsForming();
-        return new SendMessage(id, "Список доступных команд:\n" + commands);
-    }
-
-    private String commandsForming() {
-        StringBuilder builder = new StringBuilder();
-
-        for (CommandHandler command : commands.getCommandHandlers()) {
-            builder.append(command.getName());
-            builder.append("\n");
-        }
-        return builder.toString();
+        String commandsName = commands.toString();
+        return new SendMessage(id, "Список доступных команд:\n" + commandsName);
     }
 }

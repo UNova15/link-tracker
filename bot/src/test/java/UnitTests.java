@@ -3,9 +3,9 @@ import static org.mockito.Mockito.*;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import backend.academy.linktracker.bot.service.BotUpdateListener;
-import backend.academy.linktracker.bot.service.commands.HelpHandler;
-import backend.academy.linktracker.bot.service.commands.StartHandler;
-import backend.academy.linktracker.bot.service.commands.UnknownCommandHandler;
+import backend.academy.linktracker.bot.service.telegramclient.HelpHandler;
+import backend.academy.linktracker.bot.service.telegramclient.StartHandler;
+import backend.academy.linktracker.bot.service.telegramclient.UnknownCommandHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;

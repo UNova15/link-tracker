@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.service.commands;
+package backend.academy.linktracker.bot.service.telegramclient;
 
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
@@ -6,7 +6,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StartHandler extends CommandHandler {
+public class StartHandler extends AbstractHandler {
     public StartHandler() {
         super(new BotCommand("/start", "Запуск бота"));
     }

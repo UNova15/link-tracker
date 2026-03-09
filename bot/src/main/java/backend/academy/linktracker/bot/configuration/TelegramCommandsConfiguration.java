@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.configuration;
 
-import backend.academy.linktracker.bot.service.commands.CommandHandler;
+import backend.academy.linktracker.bot.service.telegramclient.AbstractHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.request.SetMyCommands;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class TelegramCommandsConfiguration {
 
     @Bean
-    public InitializingBean registerBotCommands(TelegramBot telegramBot, List<CommandHandler> handlers) {
+    public InitializingBean registerBotCommands(TelegramBot telegramBot, List<AbstractHandler> handlers) {
         return () -> {
             List<BotCommand> commands = handlers.stream()
                     .map(handler -> new BotCommand(handler.getName(), handler.getDescription()))

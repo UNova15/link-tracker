@@ -1,11 +1,11 @@
-package backend.academy.linktracker.bot.service.commands;
+package backend.academy.linktracker.bot.service.telegramclient;
 
 import com.pengrad.telegrambot.model.BotCommand;
 
-public abstract class CommandHandler implements Handler {
+public abstract class AbstractHandler implements Handler {
     private final BotCommand command;
 
-    public CommandHandler(BotCommand command) {
+    public AbstractHandler(BotCommand command) {
         this.command = command;
     }
 
