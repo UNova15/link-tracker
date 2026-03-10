@@ -17,8 +17,8 @@ public class GitHubClient {
     }
 
     //Проверка обновления issues в github
-    public boolean hasActivity(String owner, String repo,Instant lastCheck) {
-        var response = gitHubClient.get()
+    public GitHubResponse[] sendURequestForUpdates(String owner, String repo, Instant lastCheck) {
+        return gitHubClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/repos/{owner}/{repo}/issues")
                 .queryParam("since", lastCheck.toString())
@@ -28,7 +28,6 @@ public class GitHubClient {
                 .build(owner, repo))
             .retrieve()
             .body(GitHubResponse[].class);
-
-        return response != null && response.length > 0;
     }
+
 }

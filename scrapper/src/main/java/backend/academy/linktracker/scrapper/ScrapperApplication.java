@@ -15,4 +15,4 @@ public class ScrapperApplication {
     }
 }
 
-//TODO добавить работу с исключениями и логгирование
+//TODO добавить логгирование

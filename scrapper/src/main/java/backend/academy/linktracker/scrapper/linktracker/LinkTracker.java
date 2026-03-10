@@ -1,6 +1,5 @@
 package backend.academy.linktracker.scrapper.linktracker;
 
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.AbstractChecker;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
 import backend.academy.linktracker.scrapper.model.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
@@ -19,10 +18,10 @@ public class LinkTracker {
     private Map<LinkType, LinkChecker> checkers;
 
     @Autowired
-    public LinkTracker(List<AbstractChecker> checkers, LinkRepository repository) {
+    public LinkTracker(List<LinkChecker> checkers, LinkRepository repository) {
         this.repository = repository;
         this.checkers = checkers.stream()
-            .collect(Collectors.toMap(AbstractChecker::getLinkType, Function.identity()));
+            .collect(Collectors.toMap(LinkChecker::getLinkType, Function.identity()));
     }
 
     @Scheduled(fixedDelayString = "${app.shedulerinterval}")

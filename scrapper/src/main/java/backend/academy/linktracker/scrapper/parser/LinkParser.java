@@ -10,7 +10,7 @@ public class LinkParser {
     private final Pattern GIT_HUB_PATTERN = Pattern.compile("github\\.com/([^/]+)/([^/#&]+)");
     private final Pattern STACK_OVERFLOW_PATTERN = Pattern.compile("stackoverflow\\.com/questions/(\\d+)");
 
-    public GitHubRepositoryInfo parseCredentialWithGitHubUrl(String url) {
+    public GitHubRepositoryInfo parseGitHubUrl(String url) {
         Matcher matcher = GIT_HUB_PATTERN.matcher(url);
 
         if (matcher.find()) {
@@ -19,7 +19,7 @@ public class LinkParser {
         throw new IllegalArgumentException();
     }
 
-    public long parseQuestionIdWithStackOverflowUrl(String url) {
+    public long parseStackOverflowUrl(String url) {
         Matcher matcher = STACK_OVERFLOW_PATTERN.matcher(url);
 
         if(matcher.find()){

@@ -1,7 +1,16 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.model.Link;
+import backend.academy.linktracker.scrapper.model.LinkType;
+import lombok.Getter;
 
-public interface LinkChecker {
-    boolean checkLink(Link link);
+@Getter
+public abstract class LinkChecker {
+    private final LinkType linkType;
+
+    public LinkChecker(LinkType linkType){
+        this.linkType = linkType;
+    }
+
+    public abstract boolean checkLink(Link link);
 }

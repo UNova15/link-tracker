@@ -3,12 +3,15 @@ package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
 import backend.academy.linktracker.scrapper.model.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
+import backend.academy.linktracker.scrapper.model.StackOverflowQuestion;
+import backend.academy.linktracker.scrapper.model.StackOverflowResponse;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.time.Instant;
 
 @Component
-public class StackOverflowChecker extends AbstractChecker {
+public class StackOverflowChecker extends LinkChecker {
     private StackOverflowClient client;
     private LinkParser parser;
 
@@ -21,7 +24,15 @@ public class StackOverflowChecker extends AbstractChecker {
 
     @Override
     public boolean checkLink(Link link) {
-        long questionId = parser.parseQuestionIdWithStackOverflowUrl(link.url());
-        return client.hasActivity(questionId, link.lastCheck());
+        long questionId = parser.parseStackOverflowUrl(link.url());
+        StackOverflowResponse<StackOverflowQuestion> response = client.sendURequestForUpdates(questionId);
+        return isUpdatedAfterLastCheck(response, link.lastCheck());
+    }
+
+    private boolean isUpdatedAfterLastCheck(StackOverflowResponse<StackOverflowQuestion> response, Instant lastCheck) {
+        return response != null
+            && response.items() != null
+            && !response.items().isEmpty()
+            && Instant.ofEpochSecond(response.items().getFirst().lastActivityDate()).isAfter(lastCheck);
     }
 }
