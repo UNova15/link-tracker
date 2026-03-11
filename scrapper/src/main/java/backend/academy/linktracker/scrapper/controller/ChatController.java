@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tg-chat")
 public class ChatController {
-    private ChatService service;
+    private final ChatService service;
 
     @Autowired
     public ChatController(ChatService service) {

@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.service;
 
 import backend.academy.linktracker.scrapper.exception.ChatAlreadyExistException;
-import backend.academy.linktracker.scrapper.exception.ChatNotExistException;
+import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class ChatService {
 
     public void deleteChat(long chatId) {
         if (!repository.exists(chatId)) {
-            throw new ChatNotExistException(String.format("Chat with id %d does not exist", chatId));
+            throw new ChatNotFoundException(String.format("Chat with id %d does not exist", chatId));
         }
         repository.deleteChat(chatId);
     }

@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
-import backend.academy.linktracker.scrapper.model.Link;
+import backend.academy.linktracker.scrapper.model.linkdto.LinkDto;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ public class LinkTracker {
 
     @Scheduled(fixedDelayString = "${app.shedulerinterval}")
     public void updateNotification() {
-        List<Link> activeLinks = repository.getActiveLinks();
+        List<LinkDto> activeLinkDto = repository.findAllLinks();
 
-        for (Link link : activeLinks) {
-            LinkChecker checker = checkers.get(link.type());
-            boolean isUpdated = checker.checkLink(link);
+        for (LinkDto linkDto : activeLinkDto) {
+            LinkChecker checker = checkers.get(linkDto.type());
+            boolean isUpdated = checker.checkLink(linkDto);
 
             if (isUpdated) {
                 //отправка уведомления /update
