@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.service.telegramclient;
+package backend.academy.linktracker.bot.command;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import com.pengrad.telegrambot.model.BotCommand;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HelpHandler extends AbstractHandler {
+public class HelpHandler extends CommandHandler {
     private final CommandRegistry commands;
 
     @Autowired

@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 public class ClientConfiguration {
-    private GithubProperties githubProperties;
+    private final GithubProperties githubProperties;
 
     @Autowired
     public ClientConfiguration(GithubProperties githubProperties) {
@@ -16,20 +16,28 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public RestClient gitHubHttpClient() {
+    public RestClient gitHubHttpClient(GithubProperties properties) {
         return RestClient.builder()
             .requestFactory(new HttpComponentsClientHttpRequestFactory())
-            .baseUrl("https://api.github.com")
+            .baseUrl(properties.getBaseUrl())
             .defaultHeader("Accept", "application/vnd.github+json")
             .defaultHeader("Authorization", "Bearer " + githubProperties.getToken())
             .build();
     }
 
     @Bean
-    public RestClient stackOverflowHttpClient() {
+    public RestClient stackOverflowHttpClient(StackoverflowProperties properties) {
         return RestClient.builder()
             .requestFactory(new HttpComponentsClientHttpRequestFactory())
-            .baseUrl("https://api.stackexchange.com")
+            .baseUrl(properties.getBaseUrl())
+            .build();
+    }
+
+    @Bean
+    public RestClient telegramBotHttpClient(TelegramBotProperties properties) {
+        return RestClient.builder()
+            .requestFactory(new HttpComponentsClientHttpRequestFactory())
+            .baseUrl(properties.getBaseUrl())
             .build();
     }
 }

@@ -1,46 +1,70 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
-import backend.academy.linktracker.scrapper.model.linkdto.LinkDto;
+import backend.academy.linktracker.scrapper.model.LinkType;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import org.springframework.stereotype.Repository;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
+//In-memory имитация базы данных
 @Repository
 public class LinkRepository {
-    private final List<LinkDto> repository = new ArrayList<>();
+    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final Set<Link> repository = new HashSet<>();
 
-    public List<LinkDto> findAllLinks() {
+    public Set<Link> getAllLinks() {
         return repository;
     }
 
-    public void saveLink(LinkDto linkDto) {
-        repository.add(linkDto);
+    public Link saveLink(LinkType type, String url, String[] tags, Instant lastChackTime) {
+        long id = idGenerator.getAndIncrement();
+        Link link = new Link(id, type, url, tags, lastChackTime);
+
+        repository.add(link);
+        return link;
     }
 
-    public List<LinkDto> findLinksByChatId(long chatId) {
+    public List<Link> findLinksByLinksId(List<Long> linksId) {
+        List<Link> links = new ArrayList<>();
+
+        for (long linkId : linksId) {
+            for (Link link : repository) {
+                if (link.id() == linkId) {
+                    links.add(link);
+                    break;
+                }
+            }
+        }
+
+        return links;
+    }
+
+    public List<Link> findLinkByLinkId(long linkId) {
         return repository.stream()
-            .filter(link -> link.chatId() == chatId)
+            .filter(link -> link.id() == linkId)
             .toList();
     }
 
-    public LinkDto removeLink(long chatId, String url) {
-        LinkDto link = findLinkByUrl(chatId, url)
-            .orElseThrow(() -> new LinkNotFoundException(
-                String.format("Link^ %s not found", url)
-            ));
+    //TODO исключения в другой слой перенести
+    public Link removeLink(String url) {
+        Link link = findLinkByUrl(url).orElseThrow(() -> new LinkNotFoundException(url));
         repository.remove(link);
         return link;
     }
 
-    public Optional<LinkDto> findLinkByUrl(long chatId, String url) {
+    public Optional<Link> findLinkByUrl(String url) {
         return repository.stream()
-            .filter(l -> l.chatId() == chatId && l.url().equals(url))
+            .filter(link -> link.url().equals(url))
             .findAny();
     }
 
-    public boolean exists(long chatId, String url) {
-        return findLinkByUrl(chatId,url).isPresent();
+    public boolean exists(String url) {
+        return findLinkByUrl(url).isPresent();
     }
 }

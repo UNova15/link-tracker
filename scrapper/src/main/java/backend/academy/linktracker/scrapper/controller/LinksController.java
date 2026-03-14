@@ -6,6 +6,7 @@ import backend.academy.linktracker.scrapper.model.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.model.linkdto.ListLinksResponse;
 import backend.academy.linktracker.scrapper.model.linkdto.RemoveLinkRequest;
 import backend.academy.linktracker.scrapper.service.LinkService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,19 +28,19 @@ public class LinksController {
     }
 
     @GetMapping
-    public ResponseEntity<ListLinksResponse> findLink(@RequestHeader("Tg-Chat-Id") long chatId) {
-        ListLinksResponse response = service.findLinkByChatId(chatId);
+    public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {
+        ListLinksResponse response = service.findLinksByChatId(chatId);
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping
-    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody AddLinkRequest request) {
+    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid AddLinkRequest request) {
         LinkResponse response = service.saveLink(chatId, request);
         return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping
-    public ResponseEntity<LinkResponse> deleteLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody RemoveLinkRequest request) {
+    public ResponseEntity<LinkResponse> deleteLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid RemoveLinkRequest request) {
         LinkResponse response = service.removeLink(chatId, request);
         return ResponseEntity.ok().body(response);
     }

@@ -18,3 +18,8 @@ app:
     token: ${TELEGRAM_BOT_TOKEN}
     update-listener-sleep: 1s
     debug: false
+
+  scrapper:
+    base-url: http//:localhost:8081
+    chat-endpoint: /tg-chat/
+    links-endpoint: /links

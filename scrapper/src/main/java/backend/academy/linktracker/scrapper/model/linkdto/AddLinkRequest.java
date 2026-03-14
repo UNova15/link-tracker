@@ -1,4 +1,6 @@
 package backend.academy.linktracker.scrapper.model.linkdto;
 
-public record AddLinkRequest(String url,String[] tags) {
+import org.hibernate.validator.constraints.URL;
+
+public record AddLinkRequest(@URL(message = "Некорректный url") String url, String[] tags) {
 }

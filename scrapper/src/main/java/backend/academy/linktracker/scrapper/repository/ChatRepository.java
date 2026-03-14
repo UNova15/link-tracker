@@ -6,19 +6,20 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+//In-memory имитация базы данных
 @Repository
 public class ChatRepository {
-    private final Map<Long, Chat> storage = new HashMap<>();
+    private final Map<Long, Chat> repository = new HashMap<>();
 
     public void saveChat(long chatId) {
-        storage.put(chatId, new Chat(chatId, Instant.now()));
+        repository.put(chatId, new Chat(chatId, Instant.now()));
     }
 
     public void deleteChat(long chatId) {
-        storage.remove(chatId);
+        repository.remove(chatId);
     }
 
     public boolean exists(long chatId) {
-        return storage.containsKey(chatId);
+        return repository.containsKey(chatId);
     }
 }

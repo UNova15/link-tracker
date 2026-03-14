@@ -11,8 +11,8 @@ import org.springframework.web.client.RestClient;
 
 @Component
 public class StackOverflowClient {
-    private StackoverflowProperties properties;
-    private RestClient stackOverflowClient;
+    private final StackoverflowProperties properties;
+    private final RestClient stackOverflowClient;
 
     @Autowired
     public StackOverflowClient(@Qualifier("stackOverflowHttpClient") RestClient stackOverflowClient, StackoverflowProperties properties) {
@@ -24,7 +24,7 @@ public class StackOverflowClient {
     public StackOverflowResponse<StackOverflowQuestion> sendURequestForUpdates(long questionId) {
         return stackOverflowClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/questions/{id}")
+                .path(properties.getQuestionEndpoint())
                 .queryParam("site", "stackoverflow")
                 .queryParam("key", properties.getKey())
                 .build(questionId))

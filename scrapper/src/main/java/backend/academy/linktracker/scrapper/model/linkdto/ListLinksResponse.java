@@ -1,16 +1,16 @@
 package backend.academy.linktracker.scrapper.model.linkdto;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public record ListLinksResponse(LinkResponse[] links) {
-    public ListLinksResponse(List<LinkDto> links) {
-        LinkResponse[] response = new LinkResponse[links.size()];
+public record ListLinksResponse(List<LinkResponse> links, int size) {
+    public ListLinksResponse(long chatId, List<Link> links) {
+        List<LinkResponse> response = new ArrayList<>(links.size());
 
-        for (int i = 0; i < links.size(); i++) {
-            LinkDto linkDto = links.get(i);
-            response[i] = new LinkResponse(linkDto.chatId(), linkDto.url(), linkDto.tags());
+        for (Link link : links) {
+            response.add(new LinkResponse(chatId, link.url(), link.tags()));
         }
 
-        this(response);
+        this(response, response.size());
     }
 }

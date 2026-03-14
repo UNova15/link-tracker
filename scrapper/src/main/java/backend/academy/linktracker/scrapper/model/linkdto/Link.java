@@ -4,6 +4,6 @@ import backend.academy.linktracker.scrapper.model.LinkType;
 
 import java.time.Instant;
 
-public record LinkDto(long chatId, LinkType type, String url, String[] tags, Instant lastCheck) {
+public record Link(long id, LinkType type, String url, String[] tags, Instant lastCheck) {
 
 }

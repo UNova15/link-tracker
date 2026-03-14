@@ -1,6 +1,6 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
-import backend.academy.linktracker.scrapper.model.linkdto.LinkDto;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import lombok.Getter;
 
@@ -12,5 +12,5 @@ public abstract class LinkChecker {
         this.linkType = linkType;
     }
 
-    public abstract boolean checkLink(LinkDto linkDto);
+    public abstract boolean checkLink(Link link);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ChatService {
-    private ChatRepository repository;
+    private final ChatRepository repository;
 
     public ChatService(ChatRepository repository) {
         this.repository = repository;

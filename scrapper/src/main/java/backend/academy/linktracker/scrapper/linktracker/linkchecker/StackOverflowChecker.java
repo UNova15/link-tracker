@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
-import backend.academy.linktracker.scrapper.model.linkdto.LinkDto;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.model.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.model.StackOverflowResponse;
@@ -12,8 +12,8 @@ import java.time.Instant;
 
 @Component
 public class StackOverflowChecker extends LinkChecker {
-    private StackOverflowClient client;
-    private LinkParser parser;
+    private final StackOverflowClient client;
+    private final LinkParser parser;
 
     @Autowired
     public StackOverflowChecker(StackOverflowClient client, LinkParser parser) {
@@ -23,10 +23,10 @@ public class StackOverflowChecker extends LinkChecker {
     }
 
     @Override
-    public boolean checkLink(LinkDto linkDto) {
-        long questionId = parser.parseStackOverflowLink(linkDto.url());
+    public boolean checkLink(Link link) {
+        long questionId = parser.parseStackOverflowLink(link.url());
         StackOverflowResponse<StackOverflowQuestion> response = client.sendURequestForUpdates(questionId);
-        return isUpdatedAfterLastCheck(response, linkDto.lastCheck());
+        return isUpdatedAfterLastCheck(response, link.lastCheck());
     }
 
     private boolean isUpdatedAfterLastCheck(StackOverflowResponse<StackOverflowQuestion> response, Instant lastCheck) {

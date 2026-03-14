@@ -1,4 +1,6 @@
 package backend.academy.linktracker.scrapper.model.linkdto;
 
-public record RemoveLinkRequest(String link) {
+import jakarta.validation.constraints.NotNull;
+
+public record RemoveLinkRequest(@NotNull(message = "Пустая ссылка") String link) {
 }

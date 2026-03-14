@@ -12,3 +12,5 @@ public class BotApplication {
         SpringApplication.run(BotApplication.class, args);
     }
 }
+
+//TODO убрать NEW STATE и сделать обработку комманд (Command Hendler) в самих AwaitTegHandler и AwaitLinkHandler

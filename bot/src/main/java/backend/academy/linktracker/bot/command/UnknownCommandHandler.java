@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.service.telegramclient;
+package backend.academy.linktracker.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -10,7 +10,6 @@ public class UnknownCommandHandler implements Handler {
     @Override
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
-        return new SendMessage(
-                id, "Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
+        return new SendMessage(id, "Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
     }
 }

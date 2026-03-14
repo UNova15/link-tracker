@@ -18,4 +18,10 @@ public class GithubProperties {
 
     @NotEmpty
     private String token;
+
+    @NotEmpty
+    private String baseUrl;
+
+    @NotEmpty
+    private String issuesEndpoint;
 }
