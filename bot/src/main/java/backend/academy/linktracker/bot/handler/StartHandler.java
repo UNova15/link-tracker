@@ -1,7 +1,8 @@
-package backend.academy.linktracker.bot.command;
+package backend.academy.linktracker.bot.handler;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
 import backend.academy.linktracker.bot.client.telegram.SessionStorage;
+import backend.academy.linktracker.bot.model.BotState;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -24,7 +25,8 @@ public class StartHandler extends CommandHandler {
     public SendMessage handle(Update update) {
         long id = update.message().chat().id();
         scrapperChatClient.registrationChat(id);
-        storage.saveSession(id);
+        storage.saveSession(id, BotState.AWAIT_COMMAND);
+
         return new SendMessage(id, "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.");
     }
 }

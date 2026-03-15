@@ -1,8 +1,8 @@
-package backend.academy.linktracker.bot.client.clientstatehandlers;
+package backend.academy.linktracker.bot.handler.clientstatehandlers;
 
 import backend.academy.linktracker.bot.client.telegram.SessionData;
 import backend.academy.linktracker.bot.client.telegram.SessionStorage;
-import backend.academy.linktracker.bot.command.Handler;
+import backend.academy.linktracker.bot.handler.Handler;
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import backend.academy.linktracker.bot.model.BotState;
 import com.pengrad.telegrambot.model.Update;
@@ -11,18 +11,16 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class AwaitLinkStateHandler extends StateHandler {
+public class AwaitLinkState extends State {
     private final SessionStorage storage;
     private final CommandRegistry commandRegistry;
 
-    public AwaitLinkStateHandler(SessionStorage storage,CommandRegistry commandRegistry) {
+    public AwaitLinkState(SessionStorage storage, CommandRegistry commandRegistry) {
         super(BotState.AWAIT_LINK);
         this.storage = storage;
         this.commandRegistry = commandRegistry;
     }
 
-    //TODO возможно нужно вынести логику обработки запроса в отдельный handler
-    //TODO добавить валидацию
     @Override
     public SendMessage process(Update update) {
         long chatId = update.message().chat().id();

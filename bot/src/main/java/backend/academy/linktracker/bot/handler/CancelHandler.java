@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.command;
+package backend.academy.linktracker.bot.handler;
 
 import backend.academy.linktracker.bot.client.telegram.SessionData;
 import backend.academy.linktracker.bot.client.telegram.SessionStorage;
@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CancelCommandHandler extends CommandHandler {
+public class CancelHandler extends CommandHandler {
     private final SessionStorage storage;
 
     @Autowired
-    public CancelCommandHandler(SessionStorage storage) {
+    public CancelHandler(SessionStorage storage) {
         super(new BotCommand("/cancel", "Прекращение выполнения команды"));
         this.storage = storage;
     }

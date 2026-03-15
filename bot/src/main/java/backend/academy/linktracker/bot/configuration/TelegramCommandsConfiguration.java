@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.configuration;
 
-import backend.academy.linktracker.bot.command.CommandHandler;
+import backend.academy.linktracker.bot.handler.CommandHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.request.SetMyCommands;

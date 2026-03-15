@@ -17,4 +17,8 @@ public class SessionData {
     public SessionData(){
         this.state = BotState.NEW;
     }
+
+    public SessionData(BotState state){
+        this.state = state;
+    }
 }

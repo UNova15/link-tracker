@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.command;
+package backend.academy.linktracker.bot.handler;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
 import backend.academy.linktracker.bot.client.telegram.SessionData;
