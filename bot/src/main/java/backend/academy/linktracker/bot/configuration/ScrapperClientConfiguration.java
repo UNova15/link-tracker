@@ -17,7 +17,7 @@ public class ScrapperClientConfiguration {
     }
 
     @Bean
-    public RestClient scrapperChatClient() {
+    public RestClient scrapperClient() {
         return RestClient.builder()
             .requestFactory(new HttpComponentsClientHttpRequestFactory())
             .baseUrl(properties.getBaseUrl())

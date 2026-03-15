@@ -1,42 +1,36 @@
 package backend.academy.linktracker.bot.handler.clientstatehandlers;
 
-import backend.academy.linktracker.bot.client.telegram.SessionData;
-import backend.academy.linktracker.bot.client.telegram.SessionStorage;
-import backend.academy.linktracker.bot.handler.Handler;
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.model.BotState;
+import backend.academy.linktracker.bot.handler.Handler;
+import backend.academy.linktracker.bot.handler.command.AwaitLinkHandler;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class AwaitLinkState extends State {
-    private final SessionStorage storage;
+public class AwaitLinkState implements State {
     private final CommandRegistry commandRegistry;
+    private final AwaitLinkHandler awaitLinkHandler;
 
-    public AwaitLinkState(SessionStorage storage, CommandRegistry commandRegistry) {
-        super(BotState.AWAIT_LINK);
-        this.storage = storage;
+    public AwaitLinkState(CommandRegistry commandRegistry, AwaitLinkHandler awaitLinkHandler) {
+        this.awaitLinkHandler= awaitLinkHandler;
         this.commandRegistry = commandRegistry;
     }
 
     @Override
     public SendMessage process(Update update) {
-        long chatId = update.message().chat().id();
         String message = update.message().text();
 
         Optional<Handler> handler = commandRegistry.getCommandHandler(message);
 
+        //Не команда
         if(handler.isEmpty()){
-
-            SessionData session = storage.findSession(chatId);
-            session.setLink(message);
-            session.setState(BotState.AWAIT_TAGS);
-
-            return new SendMessage(chatId,"Введите через запятую теги для ссылки");
+            return awaitLinkHandler.handle(update);
         }
 
+        //TODO по умолчанию изменение состояния будет определятся в классе CommandHandler в методе changeState
+        // в котором будет определятся для конкретного обработчика изменяет он состояние или сбрасывает
         return handler.get().handle(update);
     }
 }

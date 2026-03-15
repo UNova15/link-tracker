@@ -13,16 +13,16 @@ import org.springframework.web.client.RestClient;
 @Component
 public class ScrapperLinkClient {
     private final String linkEndpoint;
-    private final RestClient linkClient;
+    private final RestClient scrapperClient;
 
     @Autowired
-    public ScrapperLinkClient(RestClient linkClient, ScrapperClientProperties properties) {
+    public ScrapperLinkClient(RestClient scrapperClient, ScrapperClientProperties properties) {
         this.linkEndpoint = properties.getLinksEndpoint();
-        this.linkClient = linkClient;
+        this.scrapperClient = scrapperClient;
     }
 
     public ListLinkResponse getLinks(long chatId) {
-        return linkClient.get()
+        return scrapperClient.get()
             .uri(linkEndpoint)
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .retrieve()
@@ -30,7 +30,7 @@ public class ScrapperLinkClient {
     }
 
     public LinkResponse addLink(long chatId, AddLinkRequest request) {
-        return linkClient.post()
+        return scrapperClient.post()
             .uri(linkEndpoint)
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .body(request)
@@ -39,7 +39,7 @@ public class ScrapperLinkClient {
     }
 
     public LinkResponse removeLink(long chatId, RemoveLinkRequest request){
-        return linkClient.method(HttpMethod.DELETE)
+        return scrapperClient.method(HttpMethod.DELETE)
             .uri(linkEndpoint)
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .body(request)

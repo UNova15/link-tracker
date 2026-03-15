@@ -2,17 +2,15 @@ package backend.academy.linktracker.bot.handler.clientstatehandlers;
 
 import backend.academy.linktracker.bot.handler.Handler;
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.model.BotState;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AwaitCommandState extends State {
+public class AwaitCommandState implements State {
     private final CommandRegistry registry;
 
     public AwaitCommandState(CommandRegistry registry) {
-        super(BotState.AWAIT_COMMAND);
         this.registry = registry;
     }
 

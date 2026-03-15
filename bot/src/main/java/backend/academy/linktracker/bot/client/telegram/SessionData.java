@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.client.telegram;
 
-import backend.academy.linktracker.bot.model.BotState;
+import backend.academy.linktracker.bot.handler.clientstatehandlers.State;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +10,12 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 public class SessionData {
-    private BotState state;
+    private State state;
     private String link;
     private List<String> tags;
 
-    public SessionData(){
-        this.state = BotState.NEW;
-    }
 
-    public SessionData(BotState state){
+    public SessionData(State state) {
         this.state = state;
     }
 }
