@@ -27,18 +27,20 @@ public class BotUpdateListener implements UpdatesListener {
     public int process(List<Update> updates) {
         for (Update update : updates) {
             if (update.message() != null && update.message().text() != null) {
+                long id = update.message().chat().id();
+                String message = update.message().text();
 
-                SendMessage message = processor.process(update);
+                String response = processor.process(id,message);
 
                 //логирование (вынести в обработчик неизвестной команды через AOP)
                 /*if (handler == commandRegistry.getUnknownCommandHandler()) {
                     try (MDC.MDCCloseable ignored = MDC.putCloseable(
-                        "userId", String.valueOf(update.message().chat().id()))) {
-                        MDC.put("userMessage", update.message().text());
+                        "userId", String.valueOf(update.text().chat().id()))) {
+                        MDC.put("userMessage", update.text().text());
                         logger.info("Некорректное сообщение");
                     }
                 }*/
-                bot.execute(message);
+                bot.execute(new SendMessage(id,response));
             }
         }
         return CONFIRMED_UPDATES_ALL;

@@ -1,10 +1,10 @@
-package backend.academy.linktracker.bot.handler.clientstatehandlers;
+package backend.academy.linktracker.bot.state;
 
+import backend.academy.linktracker.bot.client.telegram.SessionData;
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import backend.academy.linktracker.bot.handler.Handler;
-import backend.academy.linktracker.bot.handler.command.AwaitLinkHandler;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
+import backend.academy.linktracker.bot.handler.statehandler.AwaitLinkHandler;
+import backend.academy.linktracker.bot.model.UserMessage;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
@@ -14,23 +14,22 @@ public class AwaitLinkState implements State {
     private final AwaitLinkHandler awaitLinkHandler;
 
     public AwaitLinkState(CommandRegistry commandRegistry, AwaitLinkHandler awaitLinkHandler) {
-        this.awaitLinkHandler= awaitLinkHandler;
+        this.awaitLinkHandler = awaitLinkHandler;
         this.commandRegistry = commandRegistry;
     }
 
     @Override
-    public SendMessage process(Update update) {
-        String message = update.message().text();
+    public String process(UserMessage message, SessionData session) {
 
-        Optional<Handler> handler = commandRegistry.getCommandHandler(message);
+        Optional<Handler> handler = commandRegistry.getCommandHandler(message.text());
 
         //Не команда
-        if(handler.isEmpty()){
-            return awaitLinkHandler.handle(update);
+        if (handler.isEmpty()) {
+            return awaitLinkHandler.handle(message,session);
         }
 
         //TODO по умолчанию изменение состояния будет определятся в классе CommandHandler в методе changeState
         // в котором будет определятся для конкретного обработчика изменяет он состояние или сбрасывает
-        return handler.get().handle(update);
+        return handler.get().handle(message,session);
     }
 }

@@ -1,9 +1,10 @@
-package backend.academy.linktracker.bot.handler;
+package backend.academy.linktracker.bot.handler.command;
 
+import backend.academy.linktracker.bot.client.telegram.SessionData;
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
+import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.state.AwaitCommandState;
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HelpHandler extends CommandHandler {
     private final CommandRegistry commands;
+    private final AwaitCommandState awaitCommandState;
 
     @Autowired
     public HelpHandler(@Lazy CommandRegistry commands) {
@@ -19,9 +21,9 @@ public class HelpHandler extends CommandHandler {
     }
 
     @Override
-    public SendMessage handle(Update update) {
-        long id = update.message().chat().id();
+    public String handle(UserMessage message, SessionData session) {
         String commandsName = commands.toString();
-        return new SendMessage(id, "Список доступных команд:\n" + commandsName);
+        session.setState();
+        return "Список доступных команд:\n" + commandsName;
     }
 }

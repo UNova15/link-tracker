@@ -1,8 +1,8 @@
 package backend.academy.linktracker.bot.handler;
 
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
+import backend.academy.linktracker.bot.client.telegram.SessionData;
+import backend.academy.linktracker.bot.model.UserMessage;
 
 public interface Handler {
-    SendMessage handle(Update update);
+    String handle(UserMessage message, SessionData session);
 }
