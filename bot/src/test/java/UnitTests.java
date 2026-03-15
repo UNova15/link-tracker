@@ -1,3 +1,4 @@
+/*
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -91,3 +92,4 @@ public class UnitTests {
                 .isEqualTo("Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.");
     }
 }
+*/

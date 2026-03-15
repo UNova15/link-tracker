@@ -17,7 +17,6 @@ public class ChatService {
         if (repository.exists(chatId)) {
             throw new ChatAlreadyExistException(String.format("Chat with id %d already exist", chatId));
         }
-
         repository.saveChat(chatId);
     }
 

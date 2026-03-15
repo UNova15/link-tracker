@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 public class AddLinkHandler extends StateChanger {
-    private final Logger logger = LoggerFactory.getLogger(AddLinkHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddLinkHandler.class);
     private final ScrapperLinkClient scrapperLinkClient;
     private final TagParser parser;
 
@@ -40,8 +40,8 @@ public class AddLinkHandler extends StateChanger {
             changeState(session);
             return "Ссылка успешно сохранена";
         } catch (ScrapperException exception) {
-            logger.warn("Ошибка отправки ссылки пользователя {}", message.id(), exception);
-            return "Ошибка сохранения ссылки: " + exception.getDescription();
+            logger.warn("Ошибка отправки ссылки пользователя {}, {}", message.id(), exception.getStack());
+            return "Ошибка сохранения ссылки: " + exception.getDescription() + exception.getStack();
         }
     }
 }

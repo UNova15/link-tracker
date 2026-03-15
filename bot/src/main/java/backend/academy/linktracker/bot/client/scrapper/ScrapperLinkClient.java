@@ -1,7 +1,6 @@
 package backend.academy.linktracker.bot.client.scrapper;
 
 import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
-import backend.academy.linktracker.bot.exception.ScrapperException;
 import backend.academy.linktracker.bot.model.AddLinkRequest;
 import backend.academy.linktracker.bot.model.LinkResponse;
 import backend.academy.linktracker.bot.model.ListLinkResponse;

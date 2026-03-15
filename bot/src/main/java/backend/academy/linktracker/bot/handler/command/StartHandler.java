@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StartHandler extends CommandHandler {
-    private final Logger logger = LoggerFactory.getLogger(StartHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(StartHandler.class);
+
     private final ScrapperChatClient scrapperChatClient;
 
     @Autowired

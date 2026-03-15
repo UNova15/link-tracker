@@ -8,7 +8,7 @@ public record ListLinksResponse(List<LinkResponse> links, int size) {
         List<LinkResponse> response = new ArrayList<>(links.size());
 
         for (Link link : links) {
-            response.add(new LinkResponse(chatId, link.url(), link.tags()));
+            response.add(new LinkResponse(chatId, link.getUrl(), link.getTags()));
         }
 
         this(response, response.size());

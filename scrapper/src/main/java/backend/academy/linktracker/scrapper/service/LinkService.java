@@ -10,13 +10,17 @@ import backend.academy.linktracker.scrapper.parser.LinkParser;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.List;
 
-@Component
+@Service
 public class LinkService {
+    private static final Logger logger = LoggerFactory.getLogger(LinkService.class);
+
     private final LinkParser parser;
     private final LinkRepository linkRepository;
     private final ChatRepository chatRepository;
@@ -55,9 +59,9 @@ public class LinkService {
         LinkType type = parser.parseLinkType(request.url());
 
         Link link = linkRepository.saveLink(type, request.url(), request.tags(), Instant.now());
-        subscriptionRepository.saveSubscription(chatId, link.id());
+        subscriptionRepository.saveSubscription(chatId, link.getId());
 
-        return new LinkResponse(link.id(), link.url(), link.tags());
+        return new LinkResponse(link.getId(), link.getUrl(), link.getTags());
     }
 
     public LinkResponse removeLink(long chatId, RemoveLinkRequest request) {
@@ -68,11 +72,11 @@ public class LinkService {
         List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
         Link link = linkRepository.findLinkByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
 
-        if (!linksId.contains(link.id())) {
+        if (!linksId.contains(link.getId())) {
             throw new LinkNotFoundException(request.link(), chatId);
         }
 
-        subscriptionRepository.removeSubscription(chatId, link.id());
-        return new LinkResponse(chatId, link.url(), link.tags());
+        subscriptionRepository.removeSubscription(chatId, link.getId());
+        return new LinkResponse(chatId, link.getUrl(), link.getTags());
     }
 }

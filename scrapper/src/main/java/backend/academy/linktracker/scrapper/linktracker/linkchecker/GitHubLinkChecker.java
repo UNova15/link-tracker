@@ -7,9 +7,9 @@ import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class GitHubLinkChecker extends LinkChecker {
     private final GitHubClient client;
     private final LinkParser parser;
@@ -23,8 +23,8 @@ public class GitHubLinkChecker extends LinkChecker {
 
     @Override
     public boolean checkLink(Link link) {
-        GitHubDto credentials = parser.parseGitHubLink(link.url());
-        GitHubResponse[] response = client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.lastCheck());
+        GitHubDto credentials = parser.parseGitHubLink(link.getUrl());
+        GitHubResponse[] response = client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastCheck());
         return isUpdatedAfterLastCheck(response);
     }
 

@@ -12,4 +12,8 @@ public class ScrapperException extends RuntimeException {
     public String getDescription(){
         return errorResponse.description();
     }
+
+    public String getStack(){
+        return String.join(" ",errorResponse.stackTrace());
+    }
 }

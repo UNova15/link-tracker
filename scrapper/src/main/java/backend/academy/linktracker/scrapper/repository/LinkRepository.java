@@ -35,7 +35,7 @@ public class LinkRepository {
 
         for (long linkId : linksId) {
             for (Link link : repository) {
-                if (link.id() == linkId) {
+                if (link.getId() == linkId) {
                     links.add(link);
                     break;
                 }
@@ -47,7 +47,7 @@ public class LinkRepository {
 
     public List<Link> findLinkByLinkId(long linkId) {
         return repository.stream()
-            .filter(link -> link.id() == linkId)
+            .filter(link -> link.getId() == linkId)
             .toList();
     }
 
@@ -60,7 +60,7 @@ public class LinkRepository {
 
     public Optional<Link> findLinkByUrl(String url) {
         return repository.stream()
-            .filter(link -> link.url().equals(url))
+            .filter(link -> link.getUrl().equals(url))
             .findAny();
     }
 

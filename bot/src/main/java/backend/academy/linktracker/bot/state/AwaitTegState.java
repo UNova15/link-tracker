@@ -26,9 +26,6 @@ public class AwaitTegState implements State {
         if (handler.isEmpty()) {
             return addLinkHandler.handle(message,session);
         }
-
-        //TODO по умолчанию изменение состояния будет определятся в классе CommandHandler в методе changeState
-        // в котором будет определятся для конкретного обработчика изменяет он состояние или сбрасывает
         return handler.get().handle(message,session);
     }
 }
