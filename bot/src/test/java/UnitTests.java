@@ -5,7 +5,7 @@ import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import backend.academy.linktracker.bot.client.telegram.BotUpdateListener;
 import backend.academy.linktracker.bot.handler.command.HelpHandler;
 import backend.academy.linktracker.bot.handler.command.StartHandler;
-import backend.academy.linktracker.bot.handler.command.UnknownCommandHandler;
+import backend.academy.linktracker.bot.handler.UnknownCommandHandler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;

@@ -1,25 +1,23 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.telegram.SessionData;
+import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.model.UserMessage;
-import com.pengrad.telegrambot.model.BotCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CancelHandler extends CommandHandler {
-    private final AwaitCommandState awaitCommandState;
 
     @Autowired
-    public CancelHandler(AwaitCommandState awaitCommandState) {
-        super(new BotCommand("/cancel", "Прекращение выполнения команды"));
-        this.awaitCommandState = awaitCommandState;
+    public CancelHandler(@Lazy AwaitCommandState awaitCommandState) {
+        super(new Command("/cancel", "Прекращение выполнения команды"),awaitCommandState);
     }
 
     public String handle(UserMessage message,SessionData session) {
-
-        session.setState(awaitCommandState);
+        changeState(session);
         return "Операция отменена";
     }
 }

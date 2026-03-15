@@ -1,5 +1,6 @@
 package backend.academy.linktracker.bot.exception;
 
+import backend.academy.linktracker.bot.model.ApiErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

@@ -1,7 +1,6 @@
-package backend.academy.linktracker.bot.handler.command;
+package backend.academy.linktracker.bot.handler;
 
 import backend.academy.linktracker.bot.client.telegram.SessionData;
-import backend.academy.linktracker.bot.handler.Handler;
 import backend.academy.linktracker.bot.model.UserMessage;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.exception;
+package backend.academy.linktracker.bot.model;
 
 import java.util.Arrays;
 

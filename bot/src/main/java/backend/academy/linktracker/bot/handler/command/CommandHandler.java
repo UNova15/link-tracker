@@ -1,20 +1,20 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.handler.Handler;
+import backend.academy.linktracker.bot.handler.StateChanger;
+import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.state.State;
-import com.pengrad.telegrambot.model.BotCommand;
 
 
-//TODO убрать BotCommand
-public abstract class CommandHandler implements Handler {
-    private final BotCommand command;
+public abstract class CommandHandler extends StateChanger {
+    private final Command command;
 
-    public CommandHandler(BotCommand command) {
+    public CommandHandler(Command command, State newState) {
+        super(newState);
         this.command = command;
     }
 
     public String getName() {
-        return command.command();
+        return command.name();
     }
 
     public String getDescription() {
