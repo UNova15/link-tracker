@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.client.telegram;
+package backend.academy.linktracker.bot.model;
 
 import backend.academy.linktracker.bot.state.State;
 import lombok.EqualsAndHashCode;

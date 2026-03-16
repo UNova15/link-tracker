@@ -5,6 +5,13 @@ spring:
   application:
     name: scrapper
 
+logging:
+  file:
+    name: scrapper/log/application.log
+  structured:
+    format:
+      file: ecs
+
 app:
   shedulerinterval:
     6000

@@ -3,6 +3,7 @@ package backend.academy.linktracker.scrapper.service;
 import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
 import backend.academy.linktracker.scrapper.exception.LinkAlreadyExistException;
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
+import backend.academy.linktracker.scrapper.model.Subscription;
 import backend.academy.linktracker.scrapper.model.linkdto.*;
 import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
@@ -10,8 +11,6 @@ import backend.academy.linktracker.scrapper.parser.LinkParser;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
@@ -19,7 +18,6 @@ import java.util.List;
 
 @Service
 public class LinkService {
-    private static final Logger logger = LoggerFactory.getLogger(LinkService.class);
 
     private final LinkParser parser;
     private final LinkRepository linkRepository;
@@ -37,7 +35,7 @@ public class LinkService {
 
     public ListLinksResponse findLinksByChatId(long chatId) {
         if (!chatRepository.exists(chatId)) {
-            throw new ChatNotFoundException(String.format("Chat with url: %s not exist", chatId));
+            throw new ChatNotFoundException(chatId);
         }
         List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
 
@@ -48,13 +46,11 @@ public class LinkService {
 
     public LinkResponse saveLink(long chatId, AddLinkRequest request) {
         if (!chatRepository.exists(chatId)) {
-            throw new ChatNotFoundException(String.format("Chat with url: %s not exist", chatId));
+            throw new ChatNotFoundException(chatId);
         }
 
         if (linkRepository.exists(request.url())) {
-            throw new LinkAlreadyExistException(String.format(
-                "Link url: %s with user: %d already exist", request.url(), chatId)
-            );
+            throw new LinkAlreadyExistException(request.url(), chatId);
         }
         LinkType type = parser.parseLinkType(request.url());
 
@@ -66,7 +62,7 @@ public class LinkService {
 
     public LinkResponse removeLink(long chatId, RemoveLinkRequest request) {
         if (!chatRepository.exists(chatId)) {
-            throw new ChatNotFoundException(String.format("Chat with url: %s not exist", chatId));
+            throw new ChatNotFoundException(chatId);
         }
 
         List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
@@ -77,6 +73,19 @@ public class LinkService {
         }
 
         subscriptionRepository.removeSubscription(chatId, link.getId());
+
+        //проверка существования пользователей отслеживающих ссылку
+        boolean isActive = false;
+        for (Subscription subscription : subscriptionRepository.getSubscriptions()) {
+            if (subscription.linkId() == link.getId()) {
+                isActive = true;
+                break;
+            }
+        }
+
+        if (!isActive) {
+            linkRepository.removeLink(link.getUrl());
+        }
         return new LinkResponse(chatId, link.getUrl(), link.getTags());
     }
 }

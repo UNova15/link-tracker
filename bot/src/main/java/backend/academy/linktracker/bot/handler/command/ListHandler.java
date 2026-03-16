@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.client.telegram.SessionData;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.model.LinkResponse;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+//Возможно нарушает srp но не знаю как исправить
 @Component
 public class ListHandler extends CommandHandler {
     private static final Logger logger = LoggerFactory.getLogger(ListHandler.class);
@@ -42,7 +43,7 @@ public class ListHandler extends CommandHandler {
             changeState(session);
             return formateResponse(links);
         } catch (ScrapperClientException exception) {
-            logger.warn("Ошибка при поиске ссылок пользователя {}",message.id());
+            logger.error("Ошибка при поиске ссылок пользователя {}. {}", message.id(), exception.getErrorResponse().stackTrace());
             return "Ошибка при поиске ссылок. Повторите попытке позже";
         }
     }

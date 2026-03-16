@@ -1,12 +1,13 @@
 package backend.academy.linktracker.bot.client.telegram;
 
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.state.State;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
+@Component
 public class SessionStorage {
     private final Map<Long, SessionData> storage = new ConcurrentHashMap<>();
 

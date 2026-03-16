@@ -45,13 +45,6 @@ public class LinkRepository {
         return links;
     }
 
-    public List<Link> findLinkByLinkId(long linkId) {
-        return repository.stream()
-            .filter(link -> link.getId() == linkId)
-            .toList();
-    }
-
-    //TODO исключения в другой слой перенести
     public Link removeLink(String url) {
         Link link = findLinkByUrl(url).orElseThrow(() -> new LinkNotFoundException(url));
         repository.remove(link);

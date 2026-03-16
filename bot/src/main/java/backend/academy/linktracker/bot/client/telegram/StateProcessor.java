@@ -1,10 +1,10 @@
 package backend.academy.linktracker.bot.client.telegram;
 
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
 import backend.academy.linktracker.bot.state.NewState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 public class StateProcessor {

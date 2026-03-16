@@ -1,11 +1,13 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.model.Subscription;
+import lombok.Getter;
 import org.springframework.stereotype.Repository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 @Repository
 public class SubscriptionRepository {
     private final Set<Subscription> subscriptions = new HashSet<>();

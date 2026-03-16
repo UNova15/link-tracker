@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.exception;
 
 public class ChatNotFoundException extends ResourceNotFoundException {
-    public ChatNotFoundException(String message) {
-        super(message);
+    public ChatNotFoundException(long chatId) {
+        super(String.format("Chat with id %d does not exist", chatId));
     }
 }

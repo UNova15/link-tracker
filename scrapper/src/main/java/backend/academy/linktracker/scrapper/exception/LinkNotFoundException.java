@@ -6,6 +6,6 @@ public class LinkNotFoundException extends ResourceNotFoundException {
     }
 
     public LinkNotFoundException(String url, long chatId) {
-        super(String.format("Link user: %d with url: %s not found", chatId, url));
+        super(String.format("Link with user: %d with url: %s not found", chatId, url));
     }
 }

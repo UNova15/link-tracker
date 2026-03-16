@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.linktracker;
 
+import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
 import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
@@ -7,6 +8,8 @@ import backend.academy.linktracker.scrapper.model.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.tgclient.TelegramBotClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class LinkTracker {
+    private static final Logger logger = LoggerFactory.getLogger(LinkTracker.class);
+
     private final TelegramBotClient tgClient;
     private final LinkRepository linkRepository;
     private final SubscriptionRepository subscriptionRepository;
@@ -42,14 +47,18 @@ public class LinkTracker {
         for (Link link : activeLink) {
             LinkChecker checker = checkers.get(link.getType());
             boolean isUpdated = checker.checkLink(link);
+            try {
+                if (isUpdated) {
+                    List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
+                    LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), "Обновление ссылки", chatsId);
 
-            if (isUpdated) {
-                List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
-                LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), "Обновление ссылки", chatsId);
-
-                tgClient.sendUpdateRequest(update);
+                    tgClient.sendUpdateRequest(update);
+                }
+                link.setLastCheck(Instant.now());
+            } catch (TelegramBotException exception) {
+                logger.error("Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}", link.getUrl(),
+                    exception.getApiErrorResponse().description());
             }
-            link.setLastCheck(Instant.now());
         }
     }
 }

@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.statehandler;
 
-import backend.academy.linktracker.bot.client.telegram.SessionData;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.handler.StateChanger;
 import backend.academy.linktracker.bot.state.AwaitTegState;
 import backend.academy.linktracker.bot.model.UserMessage;

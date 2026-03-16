@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler;
 
-import backend.academy.linktracker.bot.client.telegram.SessionData;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

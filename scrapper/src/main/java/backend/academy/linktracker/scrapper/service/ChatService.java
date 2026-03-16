@@ -15,14 +15,14 @@ public class ChatService {
 
     public void saveChat(long chatId) {
         if (repository.exists(chatId)) {
-            throw new ChatAlreadyExistException(String.format("Chat with id %d already exist", chatId));
+            throw new ChatAlreadyExistException(chatId);
         }
         repository.saveChat(chatId);
     }
 
     public void deleteChat(long chatId) {
         if (!repository.exists(chatId)) {
-            throw new ChatNotFoundException(String.format("Chat with id %d does not exist", chatId));
+            throw new ChatNotFoundException(chatId);
         }
         repository.deleteChat(chatId);
     }

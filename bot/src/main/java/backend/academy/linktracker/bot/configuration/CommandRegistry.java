@@ -16,12 +16,10 @@ import org.springframework.stereotype.Component;
 public class CommandRegistry {
     private final Map<String, CommandHandler> handlers;
     private final UnknownCommandHandler unknownCommandHandler;
-    private final UnknownUserHandler unknownUserHandler;
 
     @Autowired
-    public CommandRegistry(List<CommandHandler> handlers, UnknownCommandHandler unknownCommandHandler, UnknownUserHandler unknownUserHandler) {
+    public CommandRegistry(List<CommandHandler> handlers, UnknownCommandHandler unknownCommandHandler) {
         this.unknownCommandHandler = unknownCommandHandler;
-        this.unknownUserHandler = unknownUserHandler;
         this.handlers = handlers.stream()
             .collect(Collectors.toMap(CommandHandler::getName, Function.identity()));
     }
@@ -33,12 +31,6 @@ public class CommandRegistry {
     public Handler getUnknownCommandHandler() {
         return unknownCommandHandler;
     }
-
-    public Handler getUnknownUserHandler(){
-        return unknownUserHandler;
-    }
-
-
 
     @Override
     public String toString() {
