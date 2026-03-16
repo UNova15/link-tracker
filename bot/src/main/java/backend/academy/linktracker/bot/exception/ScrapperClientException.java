@@ -2,10 +2,10 @@ package backend.academy.linktracker.bot.exception;
 
 import backend.academy.linktracker.bot.model.ApiErrorResponse;
 
-public class ScrapperException extends RuntimeException {
+public class ScrapperClientException extends RuntimeException {
     private final ApiErrorResponse errorResponse;
 
-    public ScrapperException(ApiErrorResponse errorResponse) {
+    public ScrapperClientException(ApiErrorResponse errorResponse) {
         this.errorResponse = errorResponse;
     }
 

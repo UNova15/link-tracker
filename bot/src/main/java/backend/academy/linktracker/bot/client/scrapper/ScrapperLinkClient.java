@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-//TODO одинаковая ошибка при разных ответах
 @Component
 public class ScrapperLinkClient {
     private final String linkEndpoint;
@@ -31,8 +30,8 @@ public class ScrapperLinkClient {
             .uri(linkEndpoint)
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleError)
+            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
+            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperServerError)
             .body(ListLinkResponse.class);
     }
 
@@ -42,8 +41,8 @@ public class ScrapperLinkClient {
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .body(req)
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleError)
+            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
+            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperServerError)
             .body(LinkResponse.class);
     }
 
@@ -53,8 +52,8 @@ public class ScrapperLinkClient {
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .body(req)
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleError)
+            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
+            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperServerError)
             .body(LinkResponse.class);
     }
 }

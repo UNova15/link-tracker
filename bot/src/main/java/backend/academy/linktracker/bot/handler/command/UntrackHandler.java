@@ -2,7 +2,7 @@ package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
 import backend.academy.linktracker.bot.client.telegram.SessionData;
-import backend.academy.linktracker.bot.exception.ScrapperException;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.model.RemoveLinkRequest;
 import backend.academy.linktracker.bot.model.UserMessage;
@@ -38,7 +38,7 @@ public class UntrackHandler extends CommandHandler {
             scrapperClient.removeLink(message.id(), request);
             changeState(session);
             return "Ссылка успешно удалена";
-        } catch (ScrapperException exception) {
+        } catch (ScrapperClientException exception) {
             logger.warn("Ошибка удаления ссылки {} пользователя {}", message.text(), message.id());
             return "Ошибка удаления ссылки";
         }

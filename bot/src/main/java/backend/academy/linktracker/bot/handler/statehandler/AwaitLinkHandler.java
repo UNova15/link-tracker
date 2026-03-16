@@ -16,7 +16,6 @@ public class AwaitLinkHandler extends StateChanger {
         super(awaitTegState);
     }
 
-    //TODO сделать валидацию ссылок
     @Override
     public String handle(UserMessage message,SessionData session) {
         session.setLink(message.text());

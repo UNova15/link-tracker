@@ -24,8 +24,8 @@ public class ScrapperChatClient {
         scrapperClient.post()
             .uri(chatRegistrationEndpoint + chatId)
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleError)
+            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
+            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperClientError)
             .toBodilessEntity();
     }
 
@@ -33,8 +33,8 @@ public class ScrapperChatClient {
         scrapperClient.delete()
             .uri(chatRegistrationEndpoint + chatId)
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleError)
+            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
+            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperClientError)
             .toBodilessEntity();
     }
 }

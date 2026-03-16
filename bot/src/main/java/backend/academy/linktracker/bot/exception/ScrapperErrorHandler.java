@@ -15,8 +15,13 @@ public class ScrapperErrorHandler {
         this.mapper = new ObjectMapper();
     }
 
-    public void handleError(HttpRequest request, ClientHttpResponse response) throws IOException {
+    public void handleScrapperClientError(HttpRequest request, ClientHttpResponse response) throws IOException {
         ApiErrorResponse errorResponse = mapper.readValue(response.getBody().readAllBytes(), ApiErrorResponse.class);
-        throw new ScrapperException(errorResponse);
+        throw new ScrapperClientException(errorResponse);
+    }
+
+    public void handleScrapperServerError(HttpRequest request, ClientHttpResponse response) throws IOException {
+        ApiErrorResponse errorResponse = mapper.readValue(response.getBody().readAllBytes(), ApiErrorResponse.class);
+        throw new ScrapperServerException(errorResponse);
     }
 }

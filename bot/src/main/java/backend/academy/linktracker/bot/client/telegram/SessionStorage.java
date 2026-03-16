@@ -3,6 +3,7 @@ package backend.academy.linktracker.bot.client.telegram;
 import backend.academy.linktracker.bot.state.State;
 import org.springframework.stereotype.Repository;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -15,11 +16,7 @@ public class SessionStorage {
         return session;
     }
 
-    public SessionData findSession(long chatId) {
-        return storage.get(chatId);
-    }
-
-    public void updateSession(long chatId, State state) {
-        storage.get(chatId).setState(state);
+    public Optional<SessionData> findSession(long chatId) {
+        return Optional.ofNullable(storage.get(chatId));
     }
 }

@@ -2,7 +2,7 @@ package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
 import backend.academy.linktracker.bot.client.telegram.SessionData;
-import backend.academy.linktracker.bot.exception.ScrapperException;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.model.UserMessage;
@@ -30,7 +30,7 @@ public class StartHandler extends CommandHandler {
             scrapperChatClient.registrationChat(message.id());
             changeState(session);
             return "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
-        } catch (ScrapperException exception) {
+        } catch (ScrapperClientException exception) {
             logger.warn("Ошибка сохранения пользователя {}", message.id(), exception);
             return "Ошибка сохранения пользователя. Попробуйте позже";
         }

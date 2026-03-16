@@ -3,6 +3,7 @@ package backend.academy.linktracker.bot.util;
 import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class RequestArgsParser {
@@ -16,6 +17,10 @@ public class RequestArgsParser {
 
     public String parseRemoveLink(String message) {
         return parseCommandArgs(message).getFirst();
+    }
+
+    public Optional<String> parseListTag(String message) {
+        return Optional.ofNullable(parseCommandArgs(message).getFirst());
     }
 
     private List<String> parseCommandArgs(String message) {

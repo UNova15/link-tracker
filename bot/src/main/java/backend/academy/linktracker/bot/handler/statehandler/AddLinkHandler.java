@@ -2,7 +2,7 @@ package backend.academy.linktracker.bot.handler.statehandler;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
 import backend.academy.linktracker.bot.client.telegram.SessionData;
-import backend.academy.linktracker.bot.exception.ScrapperException;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.handler.StateChanger;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.model.AddLinkRequest;
@@ -39,9 +39,9 @@ public class AddLinkHandler extends StateChanger {
 
             changeState(session);
             return "Ссылка успешно сохранена";
-        } catch (ScrapperException exception) {
+        } catch (ScrapperClientException exception) {
             logger.warn("Ошибка отправки ссылки пользователя {}, {}", message.id(), exception.getStack());
-            return "Ошибка сохранения ссылки: " + exception.getDescription() + exception.getStack();
+            return "Ошибка сохранения ссылки: " + exception.getDescription();
         }
     }
 }
