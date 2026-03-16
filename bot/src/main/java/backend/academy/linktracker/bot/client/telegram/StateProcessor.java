@@ -18,7 +18,6 @@ public class StateProcessor {
 
     public String process(long id,String text) {
 
-
         //TODO переделать с использованием Optional
         SessionData session = storage.findSession(id);
         if(session == null){

@@ -7,7 +7,7 @@ import backend.academy.linktracker.bot.handler.StateChanger;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.model.AddLinkRequest;
 import backend.academy.linktracker.bot.model.UserMessage;
-import backend.academy.linktracker.bot.util.TagParser;
+import backend.academy.linktracker.bot.util.RequestArgsParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import java.util.List;
 public class AddLinkHandler extends StateChanger {
     private static final Logger logger = LoggerFactory.getLogger(AddLinkHandler.class);
     private final ScrapperLinkClient scrapperLinkClient;
-    private final TagParser parser;
+    private final RequestArgsParser parser;
 
     @Autowired
-    public AddLinkHandler(ScrapperLinkClient scrapperLinkClient, TagParser parser, @Lazy AwaitCommandState awaitCommandState) {
+    public AddLinkHandler(ScrapperLinkClient scrapperLinkClient, RequestArgsParser parser, @Lazy AwaitCommandState awaitCommandState) {
         super(awaitCommandState);
         this.scrapperLinkClient = scrapperLinkClient;
         this.parser = parser;

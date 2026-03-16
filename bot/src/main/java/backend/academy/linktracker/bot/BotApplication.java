@@ -12,5 +12,3 @@ public class BotApplication {
         SpringApplication.run(BotApplication.class, args);
     }
 }
-
-//TODO баг бесконечного обновления ресурса (скорей всего не обновляется время последнего обновления)

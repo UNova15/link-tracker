@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+//TODO одинаковая ошибка при разных ответах
 @Component
 public class ScrapperLinkClient {
     private final String linkEndpoint;
