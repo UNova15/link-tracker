@@ -1,19 +1,19 @@
 package backend.academy.linktracker.bot.handler.statehandler;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.handler.StateChanger;
-import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.model.AddLinkRequest;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 public class AddLinkHandler extends StateChanger {
@@ -22,7 +22,10 @@ public class AddLinkHandler extends StateChanger {
     private final RequestArgsParser parser;
 
     @Autowired
-    public AddLinkHandler(ScrapperLinkClient scrapperLinkClient, RequestArgsParser parser, @Lazy AwaitCommandState awaitCommandState) {
+    public AddLinkHandler(
+            ScrapperLinkClient scrapperLinkClient,
+            RequestArgsParser parser,
+            @Lazy AwaitCommandState awaitCommandState) {
         super(awaitCommandState);
         this.scrapperLinkClient = scrapperLinkClient;
         this.parser = parser;
@@ -40,8 +43,11 @@ public class AddLinkHandler extends StateChanger {
             changeState(session);
             return "Ссылка успешно сохранена";
         } catch (ScrapperClientException exception) {
-            logger.error("Ошибка отправки ссылки пользователя {}, {}. {}", message.id(), exception.getErrorResponse().description(),
-                exception.getErrorResponse().stackTrace());
+            logger.error(
+                    "Ошибка отправки ссылки пользователя {}, {}. {}",
+                    message.id(),
+                    exception.getErrorResponse().description(),
+                    exception.getErrorResponse().stackTrace());
             return "Ошибка сохранения ссылки: " + exception.getErrorResponse().exceptionMessage();
         }
     }

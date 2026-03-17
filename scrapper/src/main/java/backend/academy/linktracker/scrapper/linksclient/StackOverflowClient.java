@@ -15,21 +15,22 @@ public class StackOverflowClient {
     private final RestClient stackOverflowClient;
 
     @Autowired
-    public StackOverflowClient(@Qualifier("stackOverflowHttpClient") RestClient stackOverflowClient, StackoverflowProperties properties) {
+    public StackOverflowClient(
+            @Qualifier("stackOverflowHttpClient") RestClient stackOverflowClient, StackoverflowProperties properties) {
         this.stackOverflowClient = stackOverflowClient;
         this.properties = properties;
     }
 
-    //Проверка изменения состояния вопроса на stackoverflow
+    // Проверка изменения состояния вопроса на stackoverflow
     public StackOverflowResponse<StackOverflowQuestion> sendURequestForUpdates(long questionId) {
-        return stackOverflowClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path(properties.getQuestionEndpoint())
-                .queryParam("site", "stackoverflow")
-                .queryParam("key", properties.getKey())
-                .build(questionId))
-            .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
+        return stackOverflowClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(properties.getQuestionEndpoint())
+                        .queryParam("site", "stackoverflow")
+                        .queryParam("key", properties.getKey())
+                        .build(questionId))
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
     }
 }

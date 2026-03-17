@@ -1,19 +1,19 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.model.RemoveLinkRequest;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import java.util.Optional;
 
 @Component
 public class UntrackHandler extends CommandHandler {
@@ -33,20 +33,21 @@ public class UntrackHandler extends CommandHandler {
     public String handle(UserMessage message, SessionData session) {
         Optional<String> link = parser.parseRemoveLink(message.text());
 
-        if (link.isEmpty()) {
+        RemoveLinkRequest request = new RemoveLinkRequest(link.orElseGet(() -> {
             logger.warn("Отсутствует ссылка на удаляемый ресурс у пользователя {}", message.id());
             return "Отсутствует ссылка на удаляемый ресурс";
-        }
-
-        RemoveLinkRequest request = new RemoveLinkRequest(link.get());
+        }));
 
         try {
             scrapperClient.removeLink(message.id(), request);
             changeState(session);
             return "Ссылка успешно удалена";
         } catch (ScrapperClientException exception) {
-            logger.error("Ошибка удаления ссылки {} пользователя {}. {}", message.text(), message.id(),
-                exception.getErrorResponse().stackTrace());
+            logger.error(
+                    "Ошибка удаления ссылки {} пользователя {}. {}",
+                    message.text(),
+                    message.id(),
+                    exception.getErrorResponse().stackTrace());
             return "Ошибка удаления ссылки";
         }
     }

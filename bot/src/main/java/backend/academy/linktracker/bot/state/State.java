@@ -1,6 +1,5 @@
 package backend.academy.linktracker.bot.state;
 
-
 import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
 

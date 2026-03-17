@@ -2,10 +2,10 @@ package backend.academy.linktracker.bot.exception;
 
 import backend.academy.linktracker.bot.model.ApiErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import java.io.IOException;
 
 @Component
 public class ScrapperErrorHandler {

@@ -1,6 +1,5 @@
 package backend.academy.linktracker.scrapper.controller;
 
-
 import backend.academy.linktracker.scrapper.model.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.model.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.model.linkdto.ListLinksResponse;
@@ -34,15 +33,16 @@ public class LinksController {
     }
 
     @PostMapping
-    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid AddLinkRequest request) {
+    public ResponseEntity<LinkResponse> addLink(
+            @RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid AddLinkRequest request) {
         LinkResponse response = service.saveLink(chatId, request);
         return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping
-    public ResponseEntity<LinkResponse> deleteLink(@RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid RemoveLinkRequest request) {
+    public ResponseEntity<LinkResponse> deleteLink(
+            @RequestHeader("Tg-Chat-Id") long chatId, @RequestBody @Valid RemoveLinkRequest request) {
         LinkResponse response = service.removeLink(chatId, request);
         return ResponseEntity.ok().body(response);
     }
-
 }

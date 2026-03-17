@@ -1,11 +1,11 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
-import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
-import backend.academy.linktracker.bot.state.AwaitCommandState;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.state.AwaitCommandState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,10 @@ public class StartHandler extends CommandHandler {
             changeState(session);
             return "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
         } catch (ScrapperClientException exception) {
-            logger.error("Ошибка сохранения пользователя {}. {}", message.id(), exception.getErrorResponse().stackTrace());
+            logger.error(
+                    "Ошибка сохранения пользователя {}. {}",
+                    message.id(),
+                    exception.getErrorResponse().stackTrace());
             return "Ошибка сохранения пользователя. Попробуйте позже";
         }
     }

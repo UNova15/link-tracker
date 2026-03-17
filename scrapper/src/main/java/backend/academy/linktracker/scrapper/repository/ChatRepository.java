@@ -1,12 +1,12 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.model.Chat;
-import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
-//In-memory имитация базы данных
+// In-memory имитация базы данных
 @Repository
 public class ChatRepository {
     private final Map<Long, Chat> repository = new HashMap<>();

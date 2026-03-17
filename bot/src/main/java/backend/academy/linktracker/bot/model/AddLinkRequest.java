@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.model;
 
-import org.hibernate.validator.constraints.URL;
 import java.util.List;
+import org.hibernate.validator.constraints.URL;
 
-public record AddLinkRequest(@URL(message = "Некорректный url") String url, List<String> tags) {
-}
+public record AddLinkRequest(
+        @URL(message = "Некорректный url") String url, List<String> tags) {}

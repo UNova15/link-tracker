@@ -16,60 +16,53 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
-    public ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException exception,
-                                                            HttpHeaders headers, HttpStatusCode status,
-                                                            WebRequest request) {
+    public ResponseEntity<Object> handleMissingPathVariable(
+            MissingPathVariableException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Некорректные параметры запроса",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Некорректные параметры запроса",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException exception,
-                                                                       HttpHeaders headers, HttpStatusCode status,
-                                                                       WebRequest request) {
+    public ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException exception,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Отсутствует обязательный параметр",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Отсутствует обязательный параметр",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception,
-                                                               HttpHeaders headers, HttpStatusCode status,
-                                                               WebRequest request) {
+    public ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Ошибка десериализации JSON",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Ошибка десериализации JSON",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
-                                                               HttpHeaders headers, HttpStatusCode status,
-                                                               WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Ошибка валидации",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Ошибка валидации",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
-
-
 }

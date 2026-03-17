@@ -1,6 +1,5 @@
 package backend.academy.linktracker.scrapper.controller;
 
-
 import backend.academy.linktracker.scrapper.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

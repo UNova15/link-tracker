@@ -13,13 +13,11 @@ public class UnknownUserHandler implements Handler {
 
     @Override
     public String handle(UserMessage message, SessionData session) {
-        try (MDC.MDCCloseable ignored = MDC.putCloseable(
-            "userId", String.valueOf(message.id()))) {
+        try (MDC.MDCCloseable ignored = MDC.putCloseable("userId", String.valueOf(message.id()))) {
             MDC.put("userMessage", message.text());
             logger.info("Неизвестный пользователь");
         }
 
         return "Неизвестная команда. Чтобы начать диалог выполните команду /start";
     }
-
 }

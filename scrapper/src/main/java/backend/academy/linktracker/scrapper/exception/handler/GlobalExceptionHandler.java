@@ -1,6 +1,5 @@
 package backend.academy.linktracker.scrapper.exception.handler;
 
-
 import backend.academy.linktracker.scrapper.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,30 +24,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleChatAlreadyExistException(ResourceAlreadyExist exception) {
         logger.warn("Создание уже существующего ресурса. {}", exception.getMessage());
 
-        return ResponseEntity
-            .status(HttpStatus.CONFLICT)
-            .body(new ApiErrorResponse(
-                "Ресурс уже существует",
-                "409",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace())
-            );
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiErrorResponse(
+                        "Ресурс уже существует",
+                        "409",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @ExceptionHandler({ChatNotFoundException.class, LinkNotFoundException.class})
     public ResponseEntity<ApiErrorResponse> handleChatNotExistException(ResourceNotFoundException exception) {
         logger.warn("Создание обращение к несуществующему ресурсу. {}", exception.getMessage());
 
-        return ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(new ApiErrorResponse(
-                "Ресурс не существует",
-                "404",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiErrorResponse(
+                        "Ресурс не существует",
+                        "404",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @ExceptionHandler(IncorrectLinkFormatException.class)
@@ -56,76 +51,70 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn("Некорректная ссылка на ресурс. {}", exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Некорректная ссылка на ресурс",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Некорректная ссылка на ресурс",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException exception,
-                                                            HttpHeaders headers, HttpStatusCode status,
-                                                            WebRequest request) {
+    public ResponseEntity<Object> handleMissingPathVariable(
+            MissingPathVariableException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         logger.error("Ошибка {}: Некорректные параметры запроса. {}", status, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Некорректные параметры запроса",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Некорректные параметры запроса",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException exception,
-                                                                       HttpHeaders headers, HttpStatusCode status,
-                                                                       WebRequest request) {
+    public ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException exception,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
         logger.error("Ошибка {}: Отсутствует обязательный параметр запроса. {}", status, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Отсутствует обязательный параметр запроса",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Отсутствует обязательный параметр запроса",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception,
-                                                               HttpHeaders headers, HttpStatusCode status,
-                                                               WebRequest request) {
+    public ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         logger.error("Ошибка {}: Ошибка десериализации JSON. {}", status, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Ошибка десериализации JSON",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Ошибка десериализации JSON",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 
     @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
-                                                               HttpHeaders headers, HttpStatusCode status,
-                                                               WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         logger.error("Ошибка {}: Ошибка валидации входных данных. {}", status, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ApiErrorResponse(
-                "Ошибка валидации",
-                "400",
-                exception.getClass().getName(),
-                exception.getMessage(),
-                exception.getStackTrace()
-            ));
+                .body(new ApiErrorResponse(
+                        "Ошибка валидации",
+                        "400",
+                        exception.getClass().getName(),
+                        exception.getMessage(),
+                        exception.getStackTrace()));
     }
 }

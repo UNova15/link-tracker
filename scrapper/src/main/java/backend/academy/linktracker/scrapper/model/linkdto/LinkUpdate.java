@@ -1,8 +1,11 @@
 package backend.academy.linktracker.scrapper.model.linkdto;
 
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.URL;
 import java.util.List;
+import org.hibernate.validator.constraints.URL;
 
-public record LinkUpdate(long id, @URL String url, @NotNull String description, @NotNull List<Long> tgChatIds) {
-}
+public record LinkUpdate(
+        long id,
+        @URL String url,
+        @NotNull String description,
+        @NotNull List<Long> tgChatIds) {}

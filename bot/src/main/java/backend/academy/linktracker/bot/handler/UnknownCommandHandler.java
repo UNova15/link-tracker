@@ -13,8 +13,7 @@ public class UnknownCommandHandler implements Handler {
 
     @Override
     public String handle(UserMessage message, SessionData session) {
-        try (MDC.MDCCloseable ignored = MDC.putCloseable(
-            "userId", String.valueOf(message.id()))) {
+        try (MDC.MDCCloseable ignored = MDC.putCloseable("userId", String.valueOf(message.id()))) {
             MDC.put("userMessage", message.text());
             logger.info("Некорректное сообщение");
         }

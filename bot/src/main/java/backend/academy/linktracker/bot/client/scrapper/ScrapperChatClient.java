@@ -14,27 +14,30 @@ public class ScrapperChatClient {
     private final RestClient scrapperClient;
 
     @Autowired
-    public ScrapperChatClient(RestClient scrapperClient, ScrapperClientProperties properties, ScrapperErrorHandler errorHandler) {
+    public ScrapperChatClient(
+            RestClient scrapperClient, ScrapperClientProperties properties, ScrapperErrorHandler errorHandler) {
         this.scrapperClient = scrapperClient;
         this.chatRegistrationEndpoint = properties.getChatEndpoint();
         this.errorHandler = errorHandler;
     }
 
     public void registrationChat(long chatId) {
-        scrapperClient.post()
-            .uri(chatRegistrationEndpoint + chatId)
-            .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperClientError)
-            .toBodilessEntity();
+        scrapperClient
+                .post()
+                .uri(chatRegistrationEndpoint + chatId)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
+                .onStatus(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperClientError)
+                .toBodilessEntity();
     }
 
     public void removeChat(long chatId) {
-        scrapperClient.delete()
-            .uri(chatRegistrationEndpoint + chatId)
-            .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError,errorHandler::handleScrapperClientError)
-            .onStatus(HttpStatusCode::is5xxServerError,errorHandler::handleScrapperClientError)
-            .toBodilessEntity();
+        scrapperClient
+                .delete()
+                .uri(chatRegistrationEndpoint + chatId)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
+                .onStatus(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperClientError)
+                .toBodilessEntity();
     }
 }

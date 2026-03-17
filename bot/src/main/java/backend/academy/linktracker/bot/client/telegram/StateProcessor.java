@@ -17,11 +17,10 @@ public class StateProcessor {
         this.newState = newState;
     }
 
-    public String process(long id,String text) {
-        SessionData session = storage.findSession(id).orElseGet(()->storage.createSession(id,newState));
+    public String process(long id, String text) {
+        SessionData session = storage.findSession(id).orElseGet(() -> storage.createSession(id, newState));
 
-        UserMessage message = new UserMessage(id,text);
-        return session.getState().process(message,session);
+        UserMessage message = new UserMessage(id, text);
+        return session.getState().process(message, session);
     }
-
 }

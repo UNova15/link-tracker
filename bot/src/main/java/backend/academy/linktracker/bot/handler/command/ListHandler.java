@@ -1,23 +1,23 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.model.Command;
 import backend.academy.linktracker.bot.model.LinkResponse;
 import backend.academy.linktracker.bot.model.ListLinkResponse;
+import backend.academy.linktracker.bot.model.SessionData;
 import backend.academy.linktracker.bot.model.UserMessage;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import java.util.List;
-import java.util.Optional;
 
-//Возможно нарушает srp но не знаю как исправить
+// Возможно нарушает srp но не знаю как исправить
 @Component
 public class ListHandler extends CommandHandler {
     private static final Logger logger = LoggerFactory.getLogger(ListHandler.class);
@@ -43,21 +43,21 @@ public class ListHandler extends CommandHandler {
             changeState(session);
             return formateResponse(links);
         } catch (ScrapperClientException exception) {
-            logger.error("Ошибка при поиске ссылок пользователя {}. {}", message.id(), exception.getErrorResponse().stackTrace());
+            logger.error(
+                    "Ошибка при поиске ссылок пользователя {}. {}",
+                    message.id(),
+                    exception.getErrorResponse().stackTrace());
             return "Ошибка при поиске ссылок. Повторите попытке позже";
         }
     }
 
     private List<String> filterLinksByTag(ListLinkResponse response, Optional<String> tag) {
-        if (tag.isEmpty()) {
-            return response.links().stream()
-                .map(LinkResponse::url)
-                .toList();
-        }
-        return response.links().stream()
-            .filter(link -> link.tags().contains(tag.get()))
-            .map(LinkResponse::url)
-            .toList();
+        return tag.map(s -> response.links().stream()
+                        .filter(link -> link.tags().contains(s))
+                        .map(LinkResponse::url)
+                        .toList())
+                .orElseGet(
+                        () -> response.links().stream().map(LinkResponse::url).toList());
     }
 
     private String formateResponse(List<String> links) {

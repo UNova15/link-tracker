@@ -16,19 +16,23 @@ public class TelegramBotClient {
     private final TelegramBotHandler telegramBotHandler;
 
     @Autowired
-    public TelegramBotClient(@Qualifier("telegramBotHttpClient") RestClient telegramClient, TelegramBotProperties properties, TelegramBotHandler telegramBotHandler) {
+    public TelegramBotClient(
+            @Qualifier("telegramBotHttpClient") RestClient telegramClient,
+            TelegramBotProperties properties,
+            TelegramBotHandler telegramBotHandler) {
         this.telegramClient = telegramClient;
         this.updateEndpoint = properties.getUpdateEndpoint();
         this.telegramBotHandler = telegramBotHandler;
     }
 
     public void sendUpdateRequest(LinkUpdate update) {
-        telegramClient.post()
-            .uri(updateEndpoint)
-            .body(update)
-            .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError, telegramBotHandler::handleTelegramError)
-            .onStatus(HttpStatusCode::is5xxServerError, telegramBotHandler::handleTelegramError)
-            .toBodilessEntity();
+        telegramClient
+                .post()
+                .uri(updateEndpoint)
+                .body(update)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, telegramBotHandler::handleTelegramError)
+                .onStatus(HttpStatusCode::is5xxServerError, telegramBotHandler::handleTelegramError)
+                .toBodilessEntity();
     }
 }

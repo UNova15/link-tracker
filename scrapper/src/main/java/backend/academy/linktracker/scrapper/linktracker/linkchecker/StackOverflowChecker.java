@@ -1,14 +1,14 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.model.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.model.StackOverflowResponse;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
+import java.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.Instant;
 
 @Service
 public class StackOverflowChecker extends LinkChecker {
@@ -31,8 +31,9 @@ public class StackOverflowChecker extends LinkChecker {
 
     private boolean isUpdatedAfterLastCheck(StackOverflowResponse<StackOverflowQuestion> response, Instant lastCheck) {
         return response != null
-            && response.items() != null
-            && !response.items().isEmpty()
-            && Instant.ofEpochSecond(response.items().getFirst().lastActivityDate()).isAfter(lastCheck);
+                && response.items() != null
+                && !response.items().isEmpty()
+                && Instant.ofEpochSecond(response.items().getFirst().lastActivityDate())
+                        .isAfter(lastCheck);
     }
 }

@@ -2,12 +2,10 @@ package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
 import backend.academy.linktracker.scrapper.model.Subscription;
-import lombok.Getter;
-import org.springframework.stereotype.Repository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class SubscriptionRepository {
@@ -15,21 +13,21 @@ public class SubscriptionRepository {
 
     public List<Long> findChatsIdByLinkId(long linkId) {
         return subscriptions.stream()
-            .filter(subscription -> subscription.linkId() == linkId)
-            .map(Subscription::chatId)
-            .toList();
+                .filter(subscription -> subscription.linkId() == linkId)
+                .map(Subscription::chatId)
+                .toList();
     }
 
     public List<Subscription> findSubscriptionsByChatId(long chatId) {
         return subscriptions.stream()
-            .filter(subscription -> subscription.chatId() == chatId)
-            .toList();
+                .filter(subscription -> subscription.chatId() == chatId)
+                .toList();
     }
 
-    public List<Long> findLinksIdByChatId(long chatId){
+    public List<Long> findLinksIdByChatId(long chatId) {
         return findSubscriptionsByChatId(chatId).stream()
-            .map(Subscription::linkId)
-            .toList();
+                .map(Subscription::linkId)
+                .toList();
     }
 
     public void saveSubscription(long chatId, long linkId, List<String> tags) {
@@ -38,14 +36,15 @@ public class SubscriptionRepository {
 
     public Subscription removeSubscription(long chatId, long linkId) {
         Subscription subscription = subscriptions.stream()
-            .filter(sub -> sub.linkId() == linkId && sub.chatId() == chatId)
-            .findFirst().orElseThrow(() -> new LinkNotFoundException(chatId, linkId));
+                .filter(sub -> sub.linkId() == linkId && sub.chatId() == chatId)
+                .findFirst()
+                .orElseThrow(() -> new LinkNotFoundException(chatId, linkId));
         subscriptions.remove(subscription);
         return subscription;
     }
 
     public boolean exist(long chatId, long linkId) {
         return subscriptions.stream()
-            .anyMatch(subscription -> subscription.linkId() == linkId && subscription.chatId() == chatId);
+                .anyMatch(subscription -> subscription.linkId() == linkId && subscription.chatId() == chatId);
     }
 }

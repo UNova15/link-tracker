@@ -3,9 +3,9 @@ package backend.academy.linktracker.scrapper.parser;
 import backend.academy.linktracker.scrapper.exception.IncorrectLinkFormatException;
 import backend.academy.linktracker.scrapper.model.GitHubDto;
 import backend.academy.linktracker.scrapper.model.LinkType;
-import org.springframework.stereotype.Component;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Component;
 
 @Component
 public class LinkParser {

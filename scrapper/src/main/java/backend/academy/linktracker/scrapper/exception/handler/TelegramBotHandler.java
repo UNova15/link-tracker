@@ -3,10 +3,10 @@ package backend.academy.linktracker.scrapper.exception.handler;
 import backend.academy.linktracker.scrapper.exception.ApiErrorResponse;
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import java.io.IOException;
 
 @Component
 public class TelegramBotHandler {
@@ -20,6 +20,4 @@ public class TelegramBotHandler {
         ApiErrorResponse resp = mapper.readValue(response.getBody().readAllBytes(), ApiErrorResponse.class);
         throw new TelegramBotException(resp);
     }
-
-
 }

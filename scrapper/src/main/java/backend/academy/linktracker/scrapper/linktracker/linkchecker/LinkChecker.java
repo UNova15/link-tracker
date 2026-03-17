@@ -1,14 +1,14 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import lombok.Getter;
 
 @Getter
 public abstract class LinkChecker {
     private final LinkType linkType;
 
-    public LinkChecker(LinkType linkType){
+    public LinkChecker(LinkType linkType) {
         this.linkType = linkType;
     }
 

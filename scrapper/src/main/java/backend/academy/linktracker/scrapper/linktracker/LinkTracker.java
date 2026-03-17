@@ -2,23 +2,23 @@ package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.LinkType;
+import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import backend.academy.linktracker.scrapper.model.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.tgclient.TelegramBotClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LinkTracker {
@@ -30,12 +30,14 @@ public class LinkTracker {
     private final Map<LinkType, LinkChecker> checkers;
 
     @Autowired
-    public LinkTracker(List<LinkChecker> checkers, TelegramBotClient telegramBot,
-                       LinkRepository linkRepository, SubscriptionRepository subscriptionRepository) {
+    public LinkTracker(
+            List<LinkChecker> checkers,
+            TelegramBotClient telegramBot,
+            LinkRepository linkRepository,
+            SubscriptionRepository subscriptionRepository) {
         this.linkRepository = linkRepository;
         this.subscriptionRepository = subscriptionRepository;
-        this.checkers = checkers.stream()
-            .collect(Collectors.toMap(LinkChecker::getLinkType, Function.identity()));
+        this.checkers = checkers.stream().collect(Collectors.toMap(LinkChecker::getLinkType, Function.identity()));
         this.tgClient = telegramBot;
     }
 
@@ -57,8 +59,10 @@ public class LinkTracker {
                 }
                 linkRepository.updateLink(new Link(link, Instant.now()));
             } catch (TelegramBotException exception) {
-                logger.error("Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}", link.url(),
-                    exception.getApiErrorResponse().description());
+                logger.error(
+                        "Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}",
+                        link.url(),
+                        exception.getApiErrorResponse().description());
             }
         }
     }

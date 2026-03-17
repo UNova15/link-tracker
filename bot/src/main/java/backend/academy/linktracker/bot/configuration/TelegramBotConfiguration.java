@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.configuration;
 
-import backend.academy.linktracker.bot.properties.TelegramProperties;
 import backend.academy.linktracker.bot.client.telegram.BotUpdateListener;
+import backend.academy.linktracker.bot.properties.TelegramProperties;
 import com.pengrad.telegrambot.TelegramBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

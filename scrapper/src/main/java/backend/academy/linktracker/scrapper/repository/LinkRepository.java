@@ -2,7 +2,6 @@ package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.model.linkdto.Link;
-import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,8 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Repository;
 
-//In-memory имитация базы данных
+// In-memory имитация базы данных
 @Repository
 public class LinkRepository {
     private final AtomicLong idGenerator = new AtomicLong(1);
