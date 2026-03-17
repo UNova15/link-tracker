@@ -37,11 +37,13 @@ public class LinkService {
         if (!chatRepository.exists(chatId)) {
             throw new ChatNotFoundException(chatId);
         }
-        List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
-
+        List<Subscription> subscriptions = subscriptionRepository.findSubscriptionsByChatId(chatId);
+        List<Long> linksId = subscriptions.stream()
+            .map(Subscription::linkId)
+            .toList();
 
         List<Link> links = linkRepository.findLinksByLinksId(linksId);
-        return new ListLinksResponse(chatId, links);
+        return new ListLinksResponse(links, subscriptions);
     }
 
     public LinkResponse saveLink(long chatId, AddLinkRequest request) {
@@ -52,15 +54,15 @@ public class LinkService {
         Link link = linkRepository.findLinkByUrl(request.url())
             .orElseGet(() -> {
                 LinkType type = parser.parseLinkType(request.url());
-                return linkRepository.saveLink(type, request.url(), request.tags(), Instant.now());
+                return linkRepository.saveLink(type, request.url(), Instant.now());
             });
 
         if (subscriptionRepository.exist(chatId, link.id())) {
             throw new LinkAlreadyRegistratedException(request.url(), chatId);
         }
 
-        subscriptionRepository.saveSubscription(chatId, link.id());
-        return new LinkResponse(link.id(), link.url(), link.tags());
+        subscriptionRepository.saveSubscription(chatId, link.id(), request.tags());
+        return new LinkResponse(link.id(), link.url(), request.tags());
     }
 
     public LinkResponse removeLink(long chatId, RemoveLinkRequest request) {
@@ -68,26 +70,18 @@ public class LinkService {
             throw new ChatNotFoundException(chatId);
         }
 
-        List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
-        Link link = linkRepository.findLinkByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
+        Link link = linkRepository.findLinkByUrl(request.link())
+            .orElseThrow(() -> new LinkNotFoundException(request.link()));
 
-        if (!linksId.contains(link.id())) {
+        if (!subscriptionRepository.exist(chatId,link.id())) {
             throw new LinkNotFoundException(request.link(), chatId);
         }
-        subscriptionRepository.removeSubscription(chatId, link.id());
+        Subscription subscription = subscriptionRepository.removeSubscription(chatId, link.id());
 
         //проверка существования пользователей отслеживающих ссылку
-        boolean isActive = false;
-        for (Subscription subscription : subscriptionRepository.getSubscriptions()) {
-            if (subscription.linkId() == link.id()) {
-                isActive = true;
-                break;
-            }
-        }
-
-        if (!isActive) {
+        if (subscriptionRepository.findChatsIdByLinkId(link.id()).isEmpty()) {
             linkRepository.removeLink(link.url());
         }
-        return new LinkResponse(chatId, link.url(), link.tags());
+        return new LinkResponse(chatId, request.link(), subscription.tags());
     }
 }

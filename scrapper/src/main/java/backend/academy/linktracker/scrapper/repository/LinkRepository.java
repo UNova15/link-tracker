@@ -22,9 +22,9 @@ public class LinkRepository {
         return repository.values();
     }
 
-    public Link saveLink(LinkType type, String url, List<String> tags, Instant lastChackTime) {
+    public Link saveLink(LinkType type, String url, Instant lastChackTime) {
         long id = idGenerator.getAndIncrement();
-        Link link = new Link(id, type, url, tags, lastChackTime);
+        Link link = new Link(id, type, url, lastChackTime);
 
         repository.put(url, link);
         return link;

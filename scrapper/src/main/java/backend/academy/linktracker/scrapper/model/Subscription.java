@@ -1,4 +1,6 @@
 package backend.academy.linktracker.scrapper.model;
 
-public record Subscription(long chatId, long linkId) {
+import java.util.List;
+
+public record Subscription(long chatId, long linkId, List<String> tags) {
 }
