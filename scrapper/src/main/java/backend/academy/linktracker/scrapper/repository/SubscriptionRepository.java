@@ -34,4 +34,11 @@ public class SubscriptionRepository {
         subscriptions.remove(new Subscription(chatId, linkId));
     }
 
+    public boolean exist(long chatId, long linkId) {
+        long count = subscriptions.stream()
+            .filter(subscription -> subscription.linkId() == linkId && subscription.chatId() == chatId)
+            .count();
+
+        return count != 0;
+    }
 }

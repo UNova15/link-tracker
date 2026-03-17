@@ -15,16 +15,21 @@ public class RequestArgsParser {
             .toList();
     }
 
-    public String parseRemoveLink(String message) {
-        return parseCommandArgs(message).getFirst();
+    public String parseCommand(String command) {
+        return command.split(" ")[0];
+    }
+
+    public Optional<String> parseRemoveLink(String message) {
+        return parseCommandArgs(message).stream().findFirst();
     }
 
     public Optional<String> parseListTag(String message) {
-        return Optional.ofNullable(parseCommandArgs(message).getFirst());
+        return parseCommandArgs(message).stream().findFirst();
     }
 
     private List<String> parseCommandArgs(String message) {
         return Arrays.stream(message.split(" "))
+            //пропуск команды
             .skip(1)
             .map(String::trim)
             .filter(tag -> !tag.isEmpty())

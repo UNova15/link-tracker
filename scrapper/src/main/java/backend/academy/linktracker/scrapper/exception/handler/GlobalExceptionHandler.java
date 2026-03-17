@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({ChatAlreadyExistException.class, LinkAlreadyExistException.class})
+    @ExceptionHandler({ChatAlreadyExistException.class, LinkAlreadyRegistratedException.class})
     public ResponseEntity<ApiErrorResponse> handleChatAlreadyExistException(ResourceAlreadyExist exception) {
         logger.warn("Создание уже существующего ресурса. {}", exception.getMessage());
 

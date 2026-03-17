@@ -24,9 +24,9 @@ public class StackOverflowChecker extends LinkChecker {
 
     @Override
     public boolean checkLink(Link link) {
-        long questionId = parser.parseStackOverflowLink(link.getUrl());
+        long questionId = parser.parseStackOverflowLink(link.url());
         StackOverflowResponse<StackOverflowQuestion> response = client.sendURequestForUpdates(questionId);
-        return isUpdatedAfterLastCheck(response, link.getLastCheck());
+        return isUpdatedAfterLastCheck(response, link.lastCheck());
     }
 
     private boolean isUpdatedAfterLastCheck(StackOverflowResponse<StackOverflowQuestion> response, Instant lastCheck) {

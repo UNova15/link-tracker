@@ -17,7 +17,7 @@ public class UpdateService {
 
     public void sendUpdateMessage(LinkUpdate linkUpdate) {
         for (long id : linkUpdate.tgChatIds()) {
-            SendMessage message = new SendMessage(id, linkUpdate.description());
+            SendMessage message = new SendMessage(id, linkUpdate.description() + ": " + linkUpdate.url());
             bot.execute(message);
         }
     }

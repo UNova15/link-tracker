@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import java.util.Optional;
 
 @Component
 public class UntrackHandler extends CommandHandler {
@@ -30,9 +31,14 @@ public class UntrackHandler extends CommandHandler {
 
     @Override
     public String handle(UserMessage message, SessionData session) {
-        String link = parser.parseRemoveLink(message.text());
+        Optional<String> link = parser.parseRemoveLink(message.text());
 
-        RemoveLinkRequest request = new RemoveLinkRequest(link);
+        if (link.isEmpty()) {
+            logger.warn("Отсутствует ссылка на удаляемый ресурс у пользователя {}", message.id());
+            return "Отсутствует ссылка на удаляемый ресурс";
+        }
+
+        RemoveLinkRequest request = new RemoveLinkRequest(link.get());
 
         try {
             scrapperClient.removeLink(message.id(), request);

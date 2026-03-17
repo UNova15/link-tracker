@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,21 +42,22 @@ public class LinkTracker {
     @Scheduled(fixedDelayString = "${app.shedulerinterval}")
     public void updateNotification() {
 
-        Set<Link> activeLink = linkRepository.getAllLinks();
+        Collection<Link> activeLink = linkRepository.getAllLinks();
 
         for (Link link : activeLink) {
-            LinkChecker checker = checkers.get(link.getType());
+            LinkChecker checker = checkers.get(link.type());
+
             boolean isUpdated = checker.checkLink(link);
             try {
                 if (isUpdated) {
-                    List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
-                    LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), "Обновление ссылки", chatsId);
+                    List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.id());
+                    LinkUpdate update = new LinkUpdate(link.id(), link.url(), "Обновление ссылки", chatsId);
 
                     tgClient.sendUpdateRequest(update);
                 }
-                link.setLastCheck(Instant.now());
+                linkRepository.updateLink(new Link(link, Instant.now()));
             } catch (TelegramBotException exception) {
-                logger.error("Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}", link.getUrl(),
+                logger.error("Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}", link.url(),
                     exception.getApiErrorResponse().description());
             }
         }

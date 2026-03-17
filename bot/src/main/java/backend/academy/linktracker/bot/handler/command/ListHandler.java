@@ -62,10 +62,10 @@ public class ListHandler extends CommandHandler {
 
     private String formateResponse(List<String> links) {
         StringBuilder builder = new StringBuilder();
-
+        builder.append("Отслеживаемые ссылки:\n");
         for (String link : links) {
             builder.append(link);
-            builder.append("/n");
+            builder.append("\n");
         }
         return builder.toString();
     }

@@ -1,32 +1,32 @@
 package backend.academy.linktracker.scrapper.repository;
 
-import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
 import backend.academy.linktracker.scrapper.model.LinkType;
 import backend.academy.linktracker.scrapper.model.linkdto.Link;
 import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 //In-memory имитация базы данных
 @Repository
 public class LinkRepository {
     private final AtomicLong idGenerator = new AtomicLong(1);
-    private final Set<Link> repository = new HashSet<>();
+    private final Map<String, Link> repository = new ConcurrentHashMap<>();
 
-    public Set<Link> getAllLinks() {
-        return repository;
+    public Collection<Link> getAllLinks() {
+        return repository.values();
     }
 
-    public Link saveLink(LinkType type, String url, String[] tags, Instant lastChackTime) {
+    public Link saveLink(LinkType type, String url, List<String> tags, Instant lastChackTime) {
         long id = idGenerator.getAndIncrement();
         Link link = new Link(id, type, url, tags, lastChackTime);
 
-        repository.add(link);
+        repository.put(url, link);
         return link;
     }
 
@@ -34,8 +34,8 @@ public class LinkRepository {
         List<Link> links = new ArrayList<>();
 
         for (long linkId : linksId) {
-            for (Link link : repository) {
-                if (link.getId() == linkId) {
+            for (Link link : repository.values()) {
+                if (link.id() == linkId) {
                     links.add(link);
                     break;
                 }
@@ -45,19 +45,15 @@ public class LinkRepository {
         return links;
     }
 
-    public Link removeLink(String url) {
-        Link link = findLinkByUrl(url).orElseThrow(() -> new LinkNotFoundException(url));
-        repository.remove(link);
-        return link;
+    public void updateLink(Link link) {
+        repository.put(link.url(), link);
+    }
+
+    public void removeLink(String url) {
+        repository.remove(url);
     }
 
     public Optional<Link> findLinkByUrl(String url) {
-        return repository.stream()
-            .filter(link -> link.getUrl().equals(url))
-            .findAny();
-    }
-
-    public boolean exists(String url) {
-        return findLinkByUrl(url).isPresent();
+        return Optional.ofNullable(repository.get(url));
     }
 }

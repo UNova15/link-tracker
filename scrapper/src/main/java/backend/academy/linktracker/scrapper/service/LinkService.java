@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.service;
 
 import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
-import backend.academy.linktracker.scrapper.exception.LinkAlreadyExistException;
+import backend.academy.linktracker.scrapper.exception.LinkAlreadyRegistratedException;
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
 import backend.academy.linktracker.scrapper.model.Subscription;
 import backend.academy.linktracker.scrapper.model.linkdto.*;
@@ -49,15 +49,18 @@ public class LinkService {
             throw new ChatNotFoundException(chatId);
         }
 
-        if (linkRepository.exists(request.url())) {
-            throw new LinkAlreadyExistException(request.url(), chatId);
+        Link link = linkRepository.findLinkByUrl(request.url())
+            .orElseGet(() -> {
+                LinkType type = parser.parseLinkType(request.url());
+                return linkRepository.saveLink(type, request.url(), request.tags(), Instant.now());
+            });
+
+        if (subscriptionRepository.exist(chatId, link.id())) {
+            throw new LinkAlreadyRegistratedException(request.url(), chatId);
         }
-        LinkType type = parser.parseLinkType(request.url());
 
-        Link link = linkRepository.saveLink(type, request.url(), request.tags(), Instant.now());
-        subscriptionRepository.saveSubscription(chatId, link.getId());
-
-        return new LinkResponse(link.getId(), link.getUrl(), link.getTags());
+        subscriptionRepository.saveSubscription(chatId, link.id());
+        return new LinkResponse(link.id(), link.url(), link.tags());
     }
 
     public LinkResponse removeLink(long chatId, RemoveLinkRequest request) {
@@ -68,24 +71,23 @@ public class LinkService {
         List<Long> linksId = subscriptionRepository.findLinksIdByChatId(chatId);
         Link link = linkRepository.findLinkByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
 
-        if (!linksId.contains(link.getId())) {
+        if (!linksId.contains(link.id())) {
             throw new LinkNotFoundException(request.link(), chatId);
         }
-
-        subscriptionRepository.removeSubscription(chatId, link.getId());
+        subscriptionRepository.removeSubscription(chatId, link.id());
 
         //проверка существования пользователей отслеживающих ссылку
         boolean isActive = false;
         for (Subscription subscription : subscriptionRepository.getSubscriptions()) {
-            if (subscription.linkId() == link.getId()) {
+            if (subscription.linkId() == link.id()) {
                 isActive = true;
                 break;
             }
         }
 
         if (!isActive) {
-            linkRepository.removeLink(link.getUrl());
+            linkRepository.removeLink(link.url());
         }
-        return new LinkResponse(chatId, link.getUrl(), link.getTags());
+        return new LinkResponse(chatId, link.url(), link.tags());
     }
 }
