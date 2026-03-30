@@ -1,0 +1,7 @@
+.git
+.idea
+**/.idea
+target/
+**/target/
+*.log
+**/*.log

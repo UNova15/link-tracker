@@ -1,0 +1,9 @@
+Для запуска требуется установленный docker и docker compose
+Необходимо создать файл .env в корне проект и определить в нем 4 переменные окружения:
+TELEGRAM_BOT_TOKEN - токен тг бота
+GITHUB_TOKEN - токен github
+STACKOVERFLOW_KEY - ключ stackoverflow
+STACKOVERFLOW_ACCESS_KEY - ключ доступа stackoverflow
+
+Запуск из корня проекта:
+docker compose up --build

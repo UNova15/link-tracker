@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 spring:
   application:
@@ -13,19 +13,19 @@ logging:
       file: ecs
 
 app:
-  shedulerinterval:
-    6000
+  shedulerinterval: 6000
+
   stackoverflow:
-    key: ${STACKOVERFLOW_KEY} # Use env variable. DO NOT KEEP TOKEN HERE
-    access-token: ${STACKOVERFLOW_ACCESS_KEY} # Use env variable. DO NOT KEEP TOKEN HERE
+    key: ${STACKOVERFLOW_KEY}
+    access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
     question-endpoint: /questions/{id}
 
   github:
-    token: ${GITHUB_TOKEN} # Use env variable. DO NOT KEEP TOKEN HERE
+    token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
     issues-endpoint: /repos/{owner}/{repo}/issues
 
   telegram-bot:
-    base-url: http://localhost:8080
+    base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
     update-endpoint: /updates

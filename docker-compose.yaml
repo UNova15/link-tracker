@@ -1,0 +1,30 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+
+    environment:
+      SERVER_PORT: 8080
+      APP_SCRAPPER_BASE_URL: http://scrapper:8081
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
+    ports:
+      - "8080:8080"
+
+  scrapper:
+    build:
+      context: .
+      dockerfile: scrapper/Dockerfile
+
+    environment:
+      SERVER_PORT: 8081
+      APP_TELEGRAM_BOT_BASE_URL: http://bot:8080
+      STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}
+      STACKOVERFLOW_ACCESS_KEY: ${STACKOVERFLOW_ACCESS_KEY}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+
+    ports:
+      - "8081:8081"
+
+

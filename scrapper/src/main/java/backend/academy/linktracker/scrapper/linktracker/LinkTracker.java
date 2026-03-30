@@ -45,10 +45,8 @@ public class LinkTracker {
     public void updateNotification() {
 
         Collection<Link> activeLink = linkRepository.getAllLinks();
-
         for (Link link : activeLink) {
             LinkChecker checker = checkers.get(link.type());
-
             boolean isUpdated = checker.checkLink(link);
             try {
                 if (isUpdated) {
