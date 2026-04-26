@@ -1,12 +1,11 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
-import backend.academy.linktracker.scrapper.model.GitHubDto;
-import backend.academy.linktracker.scrapper.model.GitHubResponse;
-import backend.academy.linktracker.scrapper.model.LinkType;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
+import backend.academy.linktracker.scrapper.dto.GitHubDto;
+import backend.academy.linktracker.scrapper.dto.GitHubResponse;
+import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +13,6 @@ public class GitHubLinkChecker extends LinkChecker {
     private final GitHubClient client;
     private final LinkParser parser;
 
-    @Autowired
     public GitHubLinkChecker(GitHubClient client, LinkParser parser) {
         super(LinkType.GIT_HUB);
         this.client = client;

@@ -1,6 +1,5 @@
-package backend.academy.linktracker.scrapper.model.linkdto;
+package backend.academy.linktracker.scrapper.domain;
 
-import backend.academy.linktracker.scrapper.model.LinkType;
 import java.time.Instant;
 
 public record Link(long id, LinkType type, String url, Instant lastCheck) {

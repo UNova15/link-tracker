@@ -1,6 +1,6 @@
 package backend.academy.linktracker.scrapper.repository;
 
-import backend.academy.linktracker.scrapper.model.Chat;
+import backend.academy.linktracker.scrapper.domain.Chat;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;

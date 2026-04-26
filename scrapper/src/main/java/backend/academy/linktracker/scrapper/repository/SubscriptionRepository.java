@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
-import backend.academy.linktracker.scrapper.model.Subscription;
+import backend.academy.linktracker.scrapper.domain.Subscription;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

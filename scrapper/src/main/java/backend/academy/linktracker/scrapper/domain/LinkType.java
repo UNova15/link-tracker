@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.model;
+package backend.academy.linktracker.scrapper.domain;
 
 public enum LinkType {
     GIT_HUB,

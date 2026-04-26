@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.exception;
 
-import backend.academy.linktracker.bot.model.ApiErrorResponse;
+import backend.academy.linktracker.bot.dto.ApiErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.springframework.http.HttpRequest;

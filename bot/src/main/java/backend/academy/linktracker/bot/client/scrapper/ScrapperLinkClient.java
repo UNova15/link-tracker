@@ -1,12 +1,11 @@
 package backend.academy.linktracker.bot.client.scrapper;
 
 import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
-import backend.academy.linktracker.bot.model.AddLinkRequest;
-import backend.academy.linktracker.bot.model.LinkResponse;
-import backend.academy.linktracker.bot.model.ListLinkResponse;
-import backend.academy.linktracker.bot.model.RemoveLinkRequest;
+import backend.academy.linktracker.bot.dto.AddLinkRequest;
+import backend.academy.linktracker.bot.dto.LinkResponse;
+import backend.academy.linktracker.bot.dto.ListLinkResponse;
+import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
 import backend.academy.linktracker.bot.properties.ScrapperClientProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ public class ScrapperLinkClient {
     private final RestClient scrapperClient;
     private final ScrapperErrorHandler errorHandler;
 
-    @Autowired
     public ScrapperLinkClient(
             RestClient scrapperClient, ScrapperClientProperties properties, ScrapperErrorHandler errorHandler) {
         this.linkEndpoint = properties.getLinksEndpoint();

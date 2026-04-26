@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.model;
+package backend.academy.linktracker.bot.dto;
 
 import java.util.List;
 import org.hibernate.validator.constraints.URL;

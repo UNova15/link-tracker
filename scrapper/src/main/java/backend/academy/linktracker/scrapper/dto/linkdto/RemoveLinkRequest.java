@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.model.linkdto;
+package backend.academy.linktracker.scrapper.dto.linkdto;
 
 import jakarta.validation.constraints.NotNull;
 

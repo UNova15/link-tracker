@@ -1,9 +1,8 @@
 package backend.academy.linktracker.scrapper.linksclient;
 
-import backend.academy.linktracker.scrapper.model.StackOverflowQuestion;
-import backend.academy.linktracker.scrapper.model.StackOverflowResponse;
+import backend.academy.linktracker.scrapper.dto.StackOverflowQuestion;
+import backend.academy.linktracker.scrapper.dto.StackOverflowResponse;
 import backend.academy.linktracker.scrapper.properties.StackoverflowProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ public class StackOverflowClient {
     private final StackoverflowProperties properties;
     private final RestClient stackOverflowClient;
 
-    @Autowired
     public StackOverflowClient(
             @Qualifier("stackOverflowHttpClient") RestClient stackOverflowClient, StackoverflowProperties properties) {
         this.stackOverflowClient = stackOverflowClient;

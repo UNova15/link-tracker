@@ -1,18 +1,14 @@
 package backend.academy.linktracker.scrapper.properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration
+@AllArgsConstructor
 public class ClientConfiguration {
     private final GithubProperties githubProperties;
-
-    @Autowired
-    public ClientConfiguration(GithubProperties githubProperties) {
-        this.githubProperties = githubProperties;
-    }
 
     @Bean
     public RestClient gitHubHttpClient(GithubProperties properties) {

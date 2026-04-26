@@ -3,15 +3,14 @@ package backend.academy.linktracker.bot.configuration;
 import backend.academy.linktracker.bot.client.telegram.BotUpdateListener;
 import backend.academy.linktracker.bot.properties.TelegramProperties;
 import com.pengrad.telegrambot.TelegramBot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 public class TelegramBotConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(TelegramBotConfiguration.class);
 
     @Bean
     public TelegramBot telegramBot(TelegramProperties properties) {
@@ -20,7 +19,7 @@ public class TelegramBotConfiguration {
                 .updateListenerSleep(properties.getUpdateListenerSleep().toMillis());
 
         if (properties.isDebug()) {
-            logger.info("Запуск в режиме debug");
+            log.info("Запуск в режиме debug");
             builder.debug();
         }
 

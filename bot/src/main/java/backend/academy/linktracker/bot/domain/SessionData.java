@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.model;
+package backend.academy.linktracker.bot.domain;
 
 import backend.academy.linktracker.bot.state.State;
 import java.util.List;

@@ -1,9 +1,8 @@
 package backend.academy.linktracker.scrapper.tgclient;
 
 import backend.academy.linktracker.scrapper.exception.handler.TelegramBotHandler;
-import backend.academy.linktracker.scrapper.model.linkdto.LinkUpdate;
+import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ public class TelegramBotClient {
     private final String updateEndpoint;
     private final TelegramBotHandler telegramBotHandler;
 
-    @Autowired
     public TelegramBotClient(
             @Qualifier("telegramBotHttpClient") RestClient telegramClient,
             TelegramBotProperties properties,

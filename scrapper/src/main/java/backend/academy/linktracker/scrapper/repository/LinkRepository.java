@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.repository;
 
-import backend.academy.linktracker.scrapper.model.LinkType;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
+import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.domain.Link;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;

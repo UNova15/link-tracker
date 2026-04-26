@@ -2,7 +2,6 @@ package backend.academy.linktracker.bot.client.scrapper;
 
 import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
 import backend.academy.linktracker.bot.properties.ScrapperClientProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -13,7 +12,6 @@ public class ScrapperChatClient {
     private final String chatRegistrationEndpoint;
     private final RestClient scrapperClient;
 
-    @Autowired
     public ScrapperChatClient(
             RestClient scrapperClient, ScrapperClientProperties properties, ScrapperErrorHandler errorHandler) {
         this.scrapperClient = scrapperClient;

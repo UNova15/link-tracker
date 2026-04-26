@@ -2,23 +2,22 @@ package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.model.Command;
-import backend.academy.linktracker.bot.model.SessionData;
-import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.domain.Command;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class StartHandler extends CommandHandler {
-    private static final Logger logger = LoggerFactory.getLogger(StartHandler.class);
+    private static final String SUCCESS_MESSAGE = "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
+    private static final String ERROR_MESSAGE = "Ошибка сохранения пользователя. Попробуйте позже";
 
     private final ScrapperChatClient scrapperChatClient;
 
-    @Autowired
     public StartHandler(ScrapperChatClient scrapperChatClient, @Lazy AwaitCommandState awaitCommand) {
         super(new Command("/start", "Запуск бота"), awaitCommand);
         this.scrapperChatClient = scrapperChatClient;
@@ -29,13 +28,13 @@ public class StartHandler extends CommandHandler {
         try {
             scrapperChatClient.registrationChat(message.id());
             changeState(session);
-            return "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
+            return SUCCESS_MESSAGE;
         } catch (ScrapperClientException exception) {
-            logger.error(
+            log.error(
                     "Ошибка сохранения пользователя {}. {}",
                     message.id(),
                     exception.getErrorResponse().stackTrace());
-            return "Ошибка сохранения пользователя. Попробуйте позже";
+            return ERROR_MESSAGE;
         }
     }
 }

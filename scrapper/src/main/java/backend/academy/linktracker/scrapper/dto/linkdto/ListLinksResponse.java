@@ -1,6 +1,7 @@
-package backend.academy.linktracker.scrapper.model.linkdto;
+package backend.academy.linktracker.scrapper.dto.linkdto;
 
-import backend.academy.linktracker.scrapper.model.Subscription;
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.domain.Subscription;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

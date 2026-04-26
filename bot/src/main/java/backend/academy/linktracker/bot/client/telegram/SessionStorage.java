@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.client.telegram;
 
-import backend.academy.linktracker.bot.model.SessionData;
+import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.state.State;
 import java.util.Map;
 import java.util.Optional;

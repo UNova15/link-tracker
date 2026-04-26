@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,6 @@ public class CommandRegistry {
     private final Map<String, CommandHandler> handlers;
     private final UnknownCommandHandler unknownCommandHandler;
 
-    @Autowired
     public CommandRegistry(List<CommandHandler> handlers, UnknownCommandHandler unknownCommandHandler) {
         this.unknownCommandHandler = unknownCommandHandler;
         this.handlers = handlers.stream().collect(Collectors.toMap(CommandHandler::getName, Function.identity()));

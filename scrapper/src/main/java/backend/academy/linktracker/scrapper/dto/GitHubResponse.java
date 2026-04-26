@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.model;
+package backend.academy.linktracker.scrapper.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

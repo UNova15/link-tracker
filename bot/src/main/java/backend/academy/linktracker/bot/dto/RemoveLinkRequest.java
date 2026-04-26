@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.model;
+package backend.academy.linktracker.bot.dto;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,12 +1,12 @@
 package backend.academy.linktracker.scrapper.controller;
 
-import backend.academy.linktracker.scrapper.model.linkdto.AddLinkRequest;
-import backend.academy.linktracker.scrapper.model.linkdto.LinkResponse;
-import backend.academy.linktracker.scrapper.model.linkdto.ListLinksResponse;
-import backend.academy.linktracker.scrapper.model.linkdto.RemoveLinkRequest;
+import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
+import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
+import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
+import backend.academy.linktracker.scrapper.dto.linkdto.RemoveLinkRequest;
 import backend.academy.linktracker.scrapper.service.LinkService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/links")
+@AllArgsConstructor
 public class LinksController {
     private final LinkService service;
-
-    @Autowired
-    public LinksController(LinkService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {

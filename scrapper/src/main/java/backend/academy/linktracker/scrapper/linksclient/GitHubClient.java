@@ -1,9 +1,8 @@
 package backend.academy.linktracker.scrapper.linksclient;
 
-import backend.academy.linktracker.scrapper.model.GitHubResponse;
+import backend.academy.linktracker.scrapper.dto.GitHubResponse;
 import backend.academy.linktracker.scrapper.properties.GithubProperties;
 import java.time.Instant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -13,7 +12,6 @@ public class GitHubClient {
     private final RestClient gitHubClient;
     private final GithubProperties properties;
 
-    @Autowired
     public GitHubClient(@Qualifier("gitHubHttpClient") RestClient gitHubClient, GithubProperties properties) {
         this.gitHubClient = gitHubClient;
         this.properties = properties;

@@ -1,19 +1,19 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.model.Command;
-import backend.academy.linktracker.bot.model.SessionData;
-import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.domain.Command;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HelpHandler extends CommandHandler {
+    private static final String LIST_COMMANDS_MESSAGE = "Список доступных команд:\n";
+
     private final CommandRegistry commands;
 
-    @Autowired
     public HelpHandler(@Lazy CommandRegistry commands, @Lazy AwaitCommandState awaitCommandState) {
         super(new Command("/help", "Вывод списка всех доступных команд"), awaitCommandState);
         this.commands = commands;
@@ -23,6 +23,6 @@ public class HelpHandler extends CommandHandler {
     public String handle(UserMessage message, SessionData session) {
         String commandsName = commands.toString();
         changeState(session);
-        return "Список доступных команд:\n" + commandsName;
+        return LIST_COMMANDS_MESSAGE + commandsName;
     }
 }

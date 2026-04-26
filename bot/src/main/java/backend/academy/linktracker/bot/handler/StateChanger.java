@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler;
 
-import backend.academy.linktracker.bot.model.SessionData;
+import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.state.State;
 
 public abstract class StateChanger implements Handler {

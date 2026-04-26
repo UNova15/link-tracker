@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.model.linkdto;
+package backend.academy.linktracker.scrapper.dto.linkdto;
 
 import java.util.List;
 import org.hibernate.validator.constraints.URL;

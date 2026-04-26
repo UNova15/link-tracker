@@ -2,9 +2,9 @@ package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
-import backend.academy.linktracker.scrapper.model.LinkType;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
-import backend.academy.linktracker.scrapper.model.linkdto.LinkUpdate;
+import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.tgclient.TelegramBotClient;
@@ -14,22 +14,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class LinkTracker {
-    private static final Logger logger = LoggerFactory.getLogger(LinkTracker.class);
+    private static final String UPDATE_MESSAGE = "Обновление ссылки";
 
     private final TelegramBotClient tgClient;
     private final LinkRepository linkRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final Map<LinkType, LinkChecker> checkers;
 
-    @Autowired
     public LinkTracker(
             List<LinkChecker> checkers,
             TelegramBotClient telegramBot,
@@ -51,13 +49,13 @@ public class LinkTracker {
             try {
                 if (isUpdated) {
                     List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.id());
-                    LinkUpdate update = new LinkUpdate(link.id(), link.url(), "Обновление ссылки", chatsId);
+                    LinkUpdate update = new LinkUpdate(link.id(), link.url(), UPDATE_MESSAGE, chatsId);
 
                     tgClient.sendUpdateRequest(update);
                 }
                 linkRepository.updateLink(new Link(link, Instant.now()));
             } catch (TelegramBotException exception) {
-                logger.error(
+                log.error(
                         "Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}",
                         link.url(),
                         exception.getApiErrorResponse().description());

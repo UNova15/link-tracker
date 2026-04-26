@@ -1,40 +1,31 @@
 package backend.academy.linktracker.scrapper.service;
 
+import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
+import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
+import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
+import backend.academy.linktracker.scrapper.dto.linkdto.RemoveLinkRequest;
 import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
 import backend.academy.linktracker.scrapper.exception.LinkAlreadyRegistratedException;
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
-import backend.academy.linktracker.scrapper.model.LinkType;
-import backend.academy.linktracker.scrapper.model.Subscription;
-import backend.academy.linktracker.scrapper.model.linkdto.*;
-import backend.academy.linktracker.scrapper.model.linkdto.Link;
+import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.domain.Subscription;
+import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.time.Instant;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class LinkService {
-
     private final LinkParser parser;
     private final LinkRepository linkRepository;
     private final ChatRepository chatRepository;
     private final SubscriptionRepository subscriptionRepository;
-
-    @Autowired
-    public LinkService(
-            LinkRepository linkRepository,
-            ChatRepository chatRepository,
-            SubscriptionRepository subscriptionRepository,
-            LinkParser parser) {
-        this.linkRepository = linkRepository;
-        this.subscriptionRepository = subscriptionRepository;
-        this.chatRepository = chatRepository;
-        this.parser = parser;
-    }
 
     public ListLinksResponse findLinksByChatId(long chatId) {
         if (!chatRepository.exists(chatId)) {

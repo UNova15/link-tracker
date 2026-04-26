@@ -2,29 +2,28 @@ package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.model.Command;
-import backend.academy.linktracker.bot.model.LinkResponse;
-import backend.academy.linktracker.bot.model.ListLinkResponse;
-import backend.academy.linktracker.bot.model.SessionData;
-import backend.academy.linktracker.bot.model.UserMessage;
+import backend.academy.linktracker.bot.domain.Command;
+import backend.academy.linktracker.bot.dto.LinkResponse;
+import backend.academy.linktracker.bot.dto.ListLinkResponse;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 // Возможно нарушает srp но не знаю как исправить
 @Component
+@Slf4j
 public class ListHandler extends CommandHandler {
-    private static final Logger logger = LoggerFactory.getLogger(ListHandler.class);
+    private static final String ERROR_MESSAGE = "Ошибка при поиске ссылок. Повторите попытке позже";
+
     private final ScrapperLinkClient scrapperLinkClient;
     private final RequestArgsParser parser;
 
-    @Autowired
     public ListHandler(@Lazy AwaitCommandState state, ScrapperLinkClient scrapperLinkClient, RequestArgsParser parser) {
         super(new Command("/list", "Вывод списка всех отслеживаемых ссылок"), state);
         this.scrapperLinkClient = scrapperLinkClient;
@@ -35,7 +34,7 @@ public class ListHandler extends CommandHandler {
     public String handle(UserMessage message, SessionData session) {
         try {
             Optional<String> tag = parser.parseListTag(message.text());
-
+            //фильтрация тегов должна быть на стороне скраппера, а потом уже в бд
             ListLinkResponse response = scrapperLinkClient.getLinks(message.id());
 
             List<String> links = filterLinksByTag(response, tag);
@@ -43,11 +42,11 @@ public class ListHandler extends CommandHandler {
             changeState(session);
             return formateResponse(links);
         } catch (ScrapperClientException exception) {
-            logger.error(
+            log.error(
                     "Ошибка при поиске ссылок пользователя {}. {}",
                     message.id(),
                     exception.getErrorResponse().stackTrace());
-            return "Ошибка при поиске ссылок. Повторите попытке позже";
+            return ERROR_MESSAGE;
         }
     }
 
