@@ -1,4 +1,4 @@
-package statetest;
+package unit.statetest;
 
 import backend.academy.linktracker.bot.configuration.CommandRegistry;
 import backend.academy.linktracker.bot.domain.SessionData;

@@ -16,14 +16,13 @@ public class RequestArgsParser {
     }
 
     public String parseCommand(String command) {
-        return command.split(" ")[0];
+        if(command == null || command.isBlank()){
+            return "";
+        }
+        return command.trim().split(" ")[0];
     }
 
-    public Optional<String> parseRemoveLink(String message) {
-        return parseCommandArgs(message).stream().findFirst();
-    }
-
-    public Optional<String> parseListTag(String message) {
+    public Optional<String> parseFirstCommandArgument(String message) {
         return parseCommandArgs(message).stream().findFirst();
     }
 

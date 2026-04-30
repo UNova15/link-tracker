@@ -31,12 +31,15 @@ public class UntrackHandler extends CommandHandler {
 
     @Override
     public String handle(UserMessage message, SessionData session) {
-        Optional<String> link = parser.parseRemoveLink(message.text());
+        Optional<String> link = parser.parseFirstCommandArgument(message.text());
 
-        RemoveLinkRequest request = new RemoveLinkRequest(link.orElseGet(() -> {
+        if(link.isEmpty()){
             log.warn("Отсутствует ссылка на удаляемый ресурс у пользователя {}", message.id());
+            changeState(session);
             return MISSING_LINK_TO_RESOURCE;
-        }));
+        }
+
+        RemoveLinkRequest request = new RemoveLinkRequest(link.get());
 
         try {
             scrapperClient.removeLink(message.id(), request);

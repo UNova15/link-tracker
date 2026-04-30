@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AddLinkHandler extends StateChanger {
     private static final String SUCCESS_MESSAGE = "Ссылка успешно сохранена";
-    private static final String ERROR_MESSAGE = "Ошибка сохранения ссылки: ";
+    private static final String ERROR_MESSAGE = "Ошибка сохранения ссылки";
 
     private final ScrapperLinkClient scrapperLinkClient;
     private final RequestArgsParser parser;
@@ -29,6 +29,13 @@ public class AddLinkHandler extends StateChanger {
         super(awaitCommandState);
         this.scrapperLinkClient = scrapperLinkClient;
         this.parser = parser;
+    }
+
+    @Override
+    protected void changeState(SessionData session) {
+        session.setState(newState);
+        session.setLink(null);
+        session.setTags(null);
     }
 
     @Override
@@ -48,7 +55,8 @@ public class AddLinkHandler extends StateChanger {
                     message.id(),
                     exception.getErrorResponse().description(),
                     exception.getErrorResponse().stackTrace());
-            return ERROR_MESSAGE + exception.getErrorResponse().exceptionMessage();
+            changeState(session);
+            return ERROR_MESSAGE;
         }
     }
 }

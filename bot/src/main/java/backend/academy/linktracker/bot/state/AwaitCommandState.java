@@ -18,7 +18,7 @@ public class AwaitCommandState implements State {
     public String process(UserMessage message, SessionData session) {
         String command = parser.parseCommand(message.text());
 
-        Handler handler = registry.getCommandHandler(command).orElse(registry.getUnknownCommandHandler());
+        Handler handler = registry.getCommandHandler(command).orElseGet(registry::getUnknownCommandHandler);
 
         return handler.handle(message, session);
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class AwaitTegState implements State {
+public class AwaitTagState implements State {
     private final AddLinkHandler addLinkHandler;
     private final CommandRegistry commandRegistry;
 

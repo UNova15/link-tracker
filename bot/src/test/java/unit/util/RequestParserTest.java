@@ -1,4 +1,4 @@
-package unit.parsertest;
+package unit.util;
 
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import org.junit.jupiter.api.Test;
