@@ -39,7 +39,7 @@ public class LinkTracker {
         this.tgClient = telegramBot;
     }
 
-    @Scheduled(fixedDelayString = "${app.shedulerinterval}")
+    @Scheduled(fixedDelayString = "${app.scheduler-interval}")
     public void updateNotification() {
 
         Collection<Link> activeLink = linkRepository.getAllLinks();

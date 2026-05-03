@@ -2,6 +2,16 @@ server:
   port: ${SERVER_PORT:8081}
 
 spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
   application:
     name: scrapper
 
@@ -13,7 +23,7 @@ logging:
       file: ecs
 
 app:
-  shedulerinterval: 6000
+  scheduler-interval: 6000
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
@@ -29,3 +39,5 @@ app:
   telegram-bot:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
     update-endpoint: /updates
+
+

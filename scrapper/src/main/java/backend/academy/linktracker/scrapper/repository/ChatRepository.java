@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
-// In-memory имитация базы данных
 @Repository
 public class ChatRepository {
     private final Map<Long, Chat> repository = new HashMap<>();
