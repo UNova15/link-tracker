@@ -25,6 +25,8 @@ logging:
 app:
   scheduler-interval: 6000
 
+  access-type: SQL
+
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}

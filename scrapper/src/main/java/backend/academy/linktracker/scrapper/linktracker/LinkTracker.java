@@ -8,8 +8,6 @@ import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.tgclient.TelegramBotClient;
-import java.time.Instant;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -42,22 +40,25 @@ public class LinkTracker {
     @Scheduled(fixedDelayString = "${app.scheduler-interval}")
     public void updateNotification() {
 
-        Collection<Link> activeLink = linkRepository.getAllLinks();
+        List<Link> activeLink = linkRepository.getAll();
         for (Link link : activeLink) {
-            LinkChecker checker = checkers.get(link.type());
-            boolean isUpdated = checker.checkLink(link);
-            try {
-                if (isUpdated) {
-                    List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.id());
-                    LinkUpdate update = new LinkUpdate(link.id(), link.url(), UPDATE_MESSAGE, chatsId);
+            LinkChecker checker = checkers.get(link.getType());
 
+            try {
+                boolean isUpdated = checker.checkLink(link);
+
+                if (isUpdated) {
+                    List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
+                    LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), UPDATE_MESSAGE, chatsId);
                     tgClient.sendUpdateRequest(update);
                 }
-                linkRepository.updateLink(new Link(link, Instant.now()));
+
+                link.markCheckedNow();
+                linkRepository.update(link);
             } catch (TelegramBotException exception) {
                 log.error(
-                        "Ошибка в уведомлении пользователей об изменения по ссылке: {}. {}",
-                        link.url(),
+                        "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
+                        link.getUrl(),
                         exception.getApiErrorResponse().description());
             }
         }

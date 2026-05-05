@@ -15,6 +15,9 @@
             <column name="url" type="varchar(200)">
                 <constraints nullable="false"/>
             </column>
+            <column name="last_check" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

@@ -1,50 +1,19 @@
 package backend.academy.linktracker.scrapper.repository;
 
-import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
 import backend.academy.linktracker.scrapper.domain.Subscription;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class SubscriptionRepository {
-    private final Set<Subscription> subscriptions = new HashSet<>();
+public interface SubscriptionRepository {
 
-    public List<Long> findChatsIdByLinkId(long linkId) {
-        return subscriptions.stream()
-                .filter(subscription -> subscription.linkId() == linkId)
-                .map(Subscription::chatId)
-                .toList();
-    }
+    List<Long> findChatsIdByLinkId(long linkId);
 
-    public List<Subscription> findSubscriptionsByChatId(long chatId) {
-        return subscriptions.stream()
-                .filter(subscription -> subscription.chatId() == chatId)
-                .toList();
-    }
+    List<Subscription> findSubscriptionsByChatId(long chatId);
 
-    public List<Long> findLinksIdByChatId(long chatId) {
-        return findSubscriptionsByChatId(chatId).stream()
-                .map(Subscription::linkId)
-                .toList();
-    }
+    List<Long> findLinksIdByChatId(long chatId);
 
-    public void saveSubscription(long chatId, long linkId, List<String> tags) {
-        subscriptions.add(new Subscription(chatId, linkId, tags));
-    }
+    void saveSubscription(Subscription subscription);
 
-    public Subscription removeSubscription(long chatId, long linkId) {
-        Subscription subscription = subscriptions.stream()
-                .filter(sub -> sub.linkId() == linkId && sub.chatId() == chatId)
-                .findFirst()
-                .orElseThrow(() -> new LinkNotFoundException(chatId, linkId));
-        subscriptions.remove(subscription);
-        return subscription;
-    }
+    Subscription removeSubscription(long chatId, long linkId);
 
-    public boolean exist(long chatId, long linkId) {
-        return subscriptions.stream()
-                .anyMatch(subscription -> subscription.linkId() == linkId && subscription.chatId() == chatId);
-    }
+    boolean exist(long chatId, long linkId);
 }

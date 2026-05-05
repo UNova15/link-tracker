@@ -21,9 +21,9 @@ public class GitHubLinkChecker extends LinkChecker {
 
     @Override
     public boolean checkLink(Link link) {
-        GitHubDto credentials = parser.parseGitHubLink(link.url());
+        GitHubDto credentials = parser.parseGitHubLink(link.getUrl());
         GitHubResponse[] response =
-                client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.lastCheck());
+                client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastCheck());
         return isUpdatedAfterLastCheck(response);
     }
 

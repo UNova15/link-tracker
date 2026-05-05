@@ -6,16 +6,29 @@
 
     <changeSet id="create-subscriptions-table" author="kirill">
         <createTable tableName="tags_subscriptions">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true"/>
+            <column name="chat_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
-            <column name="subscription_id" type="bigint">
-                <constraints foreignKeyName="fk_subscription_id" references="subscriptions(id)"/>
+            <column name="link_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
             <column name="tag" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="tags_subscriptions"
+            baseColumnNames="chat_id, link_id"
+            constraintName="fk_tags_subscriptions_chat_id_link_id"
+            referencedTableName="subscriptions"
+            referencedColumnNames="chat_id, link_id"
+            onDelete="CASCADE"/>
+
+        <addPrimaryKey
+            tableName="tags_subscriptions"
+            columnNames="link_id, chat_id, tag"
+            constraintName="pk_tags_subscriptions"/>
     </changeSet>
 
 </databaseChangeLog>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
 @AllArgsConstructor
-public class SqlChartRepository implements ChatRepository {
+public class SqlChatRepository implements ChatRepository {
     private final ChatDao chatDao;
 
     @Override
@@ -25,6 +25,6 @@ public class SqlChartRepository implements ChatRepository {
 
     @Override
     public boolean existById(long chatId) {
-        return chatDao.isExistById(chatId);
+        return chatDao.existById(chatId);
     }
 }

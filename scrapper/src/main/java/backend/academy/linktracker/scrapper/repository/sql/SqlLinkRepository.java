@@ -1,4 +1,47 @@
 package backend.academy.linktracker.scrapper.repository.sql;
 
-public class SqlLinkRepository {
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.repository.LinkRepository;
+import backend.academy.linktracker.scrapper.repository.sql.dao.LinkDao;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+@ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
+@AllArgsConstructor
+public class SqlLinkRepository implements LinkRepository {
+    private final LinkDao linkDao;
+
+    @Override
+    public List<Link> getAll() {
+        return linkDao.getAll();
+    }
+
+    @Override
+    public Link save(Link link) {
+        return linkDao.save(link);
+    }
+
+    @Override
+    public List<Link> findAllByIdIn(List<Long> linksId) {
+        return linkDao.findAllByIdIn(linksId);
+    }
+
+    @Override
+    public void update(Link link) {
+        linkDao.update(link);
+    }
+
+    @Override
+    public void removeByUrl(String url) {
+        linkDao.removeByUrl(url);
+    }
+
+    @Override
+    public Optional<Link> findByUrl(String url) {
+        return linkDao.findByUrl(url);
+    }
 }

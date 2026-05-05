@@ -1,4 +1,4 @@
 package backend.academy.linktracker.scrapper.repository.sql.mapper;
 
-public class SubscriptionKey {
+public record SubscriptionKey(long chatId, long linkId) {
 }

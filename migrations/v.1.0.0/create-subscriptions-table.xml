@@ -6,16 +6,22 @@
 
     <changeSet id="create-subscriptions-table" author="kirill">
         <createTable tableName="subscriptions">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
             <column name="chat_id" type="bigint">
-                <constraints foreignKeyName="fk_subscriptions_chat_id" references="chats(id)"/>
+                <constraints nullable="false"
+                             foreignKeyName="fk_subscriptions_chat_id"
+                             references="chats(id)"/>
             </column>
             <column name="link_id" type="bigint">
-                <constraints foreignKeyName="fk_links_id" references="links(id)"/>
+                <constraints nullable="false"
+                             foreignKeyName="fk_links_id"
+                             references="links(id)"/>
             </column>
         </createTable>
+
+        <addPrimaryKey
+            tableName="subscriptions"
+            columnNames="chat_id,link_id"
+            constraintName="pk_subscriptions"/>
     </changeSet>
 
 </databaseChangeLog>

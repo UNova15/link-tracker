@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.service;
 
+import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.exception.ChatAlreadyExistException;
 import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
@@ -12,16 +13,17 @@ public class ChatService {
     private final ChatRepository repository;
 
     public void saveChat(long chatId) {
-        if (repository.exists(chatId)) {
+        if (repository.existById(chatId)) {
             throw new ChatAlreadyExistException(chatId);
         }
-        repository.saveChat(chatId);
+        Chat chat = Chat.createNew(chatId);
+        repository.save(chat);
     }
 
     public void deleteChat(long chatId) {
-        if (!repository.exists(chatId)) {
+        if (!repository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
         }
-        repository.deleteChat(chatId);
+        repository.deleteById(chatId);
     }
 }
