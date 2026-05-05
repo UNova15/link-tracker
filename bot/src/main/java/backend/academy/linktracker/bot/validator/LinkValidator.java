@@ -3,10 +3,10 @@ package backend.academy.linktracker.bot.validator;
 import backend.academy.linktracker.bot.dto.ValidateLink;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor

@@ -1,10 +1,10 @@
 package backend.academy.linktracker.bot.client.scrapper;
 
-import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
 import backend.academy.linktracker.bot.dto.LinkResponse;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
 import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
+import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
 import backend.academy.linktracker.bot.properties.ScrapperClientProperties;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;

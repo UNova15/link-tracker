@@ -2,20 +2,20 @@ package backend.academy.linktracker.bot.util;
 
 import backend.academy.linktracker.bot.dto.LinkResponse;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ListCommandHelper {
 
     public List<String> filterLinksByTag(ListLinkResponse response, Optional<String> tag) {
         return tag.map(s -> response.links().stream()
-                .filter(link -> link.tags().contains(s))
-                .map(LinkResponse::url)
-                .toList())
-            .orElseGet(
-                () -> response.links().stream().map(LinkResponse::url).toList());
+                        .filter(link -> link.tags().contains(s))
+                        .map(LinkResponse::url)
+                        .toList())
+                .orElseGet(
+                        () -> response.links().stream().map(LinkResponse::url).toList());
     }
 
     public String formateResponse(List<String> links) {

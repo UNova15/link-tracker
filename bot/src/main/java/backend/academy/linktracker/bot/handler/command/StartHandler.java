@@ -1,10 +1,10 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class StartHandler extends CommandHandler {
-    private static final String SUCCESS_MESSAGE = "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
+    private static final String SUCCESS_MESSAGE =
+            "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
     private static final String ERROR_MESSAGE = "Ошибка сохранения пользователя. Попробуйте позже";
 
     private final ScrapperChatClient scrapperChatClient;

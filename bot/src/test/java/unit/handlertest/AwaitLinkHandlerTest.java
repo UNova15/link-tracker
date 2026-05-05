@@ -1,27 +1,27 @@
 package unit.handlertest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
+
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.handler.statehandler.AwaitLinkHandler;
 import backend.academy.linktracker.bot.state.AwaitTagState;
 import backend.academy.linktracker.bot.validator.LinkValidator;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class AwaitLinkHandlerTest {
 
     @Mock
     private AwaitTagState awaitTagState;
+
     @Mock
     private LinkValidator linkValidator;
 

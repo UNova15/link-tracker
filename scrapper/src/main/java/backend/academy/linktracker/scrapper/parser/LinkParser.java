@@ -1,8 +1,8 @@
 package backend.academy.linktracker.scrapper.parser;
 
-import backend.academy.linktracker.scrapper.exception.IncorrectLinkFormatException;
-import backend.academy.linktracker.scrapper.dto.GitHubDto;
 import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.dto.GitHubDto;
+import backend.academy.linktracker.scrapper.exception.IncorrectLinkFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;

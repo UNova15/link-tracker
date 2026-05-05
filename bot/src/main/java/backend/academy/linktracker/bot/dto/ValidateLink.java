@@ -4,8 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 public record ValidateLink(
-    @NotBlank(message = "Ссылка не должна быть пустой")
-    @URL(message = "Некорректный формат ссылки")
-    String url
-) {
-}
+        @NotBlank(message = "Ссылка не должна быть пустой") @URL(message = "Некорректный формат ссылки")
+        String url) {}

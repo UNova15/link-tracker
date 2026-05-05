@@ -1,11 +1,10 @@
 package unit.util;
 
-import backend.academy.linktracker.bot.util.RequestArgsParser;
-import org.junit.jupiter.api.Test;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class RequestParserTest {
     private final RequestArgsParser parser = new RequestArgsParser();

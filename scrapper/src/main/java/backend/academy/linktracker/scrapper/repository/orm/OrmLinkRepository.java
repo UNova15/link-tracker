@@ -5,11 +5,11 @@ import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.orm.entity.LinkEntity;
 import backend.academy.linktracker.scrapper.repository.orm.jparepository.LinkJpaRepository;
+import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @ConditionalOnProperty(name = "app.access-type", havingValue = "ORM")

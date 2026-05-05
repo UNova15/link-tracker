@@ -1,18 +1,18 @@
 package unit.validator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import backend.academy.linktracker.bot.validator.LinkValidator;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class LinkValidatorTest {
@@ -26,13 +26,13 @@ public class LinkValidatorTest {
         linkValidator = new LinkValidator(validator);
     }
 
-
     @ParameterizedTest
-    @ValueSource(strings = {
-        "https://stackoverflow.com/questions/1234",
-        "http://github.com/my-repo/issues",
-        "https://www.google.com"
-    })
+    @ValueSource(
+            strings = {
+                "https://stackoverflow.com/questions/1234",
+                "http://github.com/my-repo/issues",
+                "https://www.google.com"
+            })
     void validate_withValidUrl_returnEmpty(String url) {
         Optional<String> value = linkValidator.validate(url);
 
@@ -51,13 +51,9 @@ public class LinkValidatorTest {
         assertTrue(expectedMessage1.equals(value.get()) || expectedMessage2.equals(value.get()));
     }
 
-
     @ParameterizedTest
-    @ValueSource(strings = {
-        "htps://stackoverflow.com/questions/1234",
-        "hеtp:/github.com/my-repo/issues",
-        "www.google.com"
-    })
+    @ValueSource(
+            strings = {"htps://stackoverflow.com/questions/1234", "hеtp:/github.com/my-repo/issues", "www.google.com"})
     void validate_withInvalidUrl_returnEmpty(String url) {
         String expectedString = "Некорректный формат ссылки";
 

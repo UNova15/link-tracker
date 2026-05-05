@@ -1,5 +1,8 @@
 package unit.handlertest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.handler.command.CancelHandler;
@@ -10,9 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class CancelHandlerTest {
@@ -28,10 +28,10 @@ public class CancelHandlerTest {
         UserMessage message = new UserMessage(1, "Text");
         SessionData sessionData = new SessionData(null);
 
-        String actualMessage = cancelHandler.handle(message,sessionData);
+        String actualMessage = cancelHandler.handle(message, sessionData);
 
-        assertEquals(expectedMessage,actualMessage);
-        assertEquals(awaitCommandState,sessionData.getState());
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(awaitCommandState, sessionData.getState());
     }
 
     @Test
@@ -41,9 +41,9 @@ public class CancelHandlerTest {
         NewState newState = mock(NewState.class);
         SessionData sessionData = new SessionData(newState);
 
-        String actualMessage = cancelHandler.handle(message,sessionData);
+        String actualMessage = cancelHandler.handle(message, sessionData);
 
-        assertEquals(expectedMessage,actualMessage);
-        assertEquals(awaitCommandState,sessionData.getState());
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(awaitCommandState, sessionData.getState());
     }
 }

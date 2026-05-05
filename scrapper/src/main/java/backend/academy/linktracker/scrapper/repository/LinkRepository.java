@@ -4,7 +4,6 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface LinkRepository {
 
     List<Link> getAll();

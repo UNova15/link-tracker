@@ -1,10 +1,10 @@
 package backend.academy.linktracker.scrapper.linktracker;
 
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.domain.LinkType;
+import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
-import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.domain.Link;
-import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.tgclient.TelegramBotClient;

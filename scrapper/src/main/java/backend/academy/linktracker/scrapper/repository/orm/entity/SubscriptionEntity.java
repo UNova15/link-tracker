@@ -13,12 +13,12 @@ import jakarta.persistence.PostLoad;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
-import java.util.List;
 
 @Entity
 @Table(name = "subscriptions")
@@ -37,12 +37,11 @@ public class SubscriptionEntity implements Persistable<SubscriptionId> {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
-        name = "tags_subscriptions",
-        joinColumns = {
-            @JoinColumn(name = "chat_id", referencedColumnName = "chat_id"),
-            @JoinColumn(name = "link_id", referencedColumnName = "link_id")
-        }
-    )
+            name = "tags_subscriptions",
+            joinColumns = {
+                @JoinColumn(name = "chat_id", referencedColumnName = "chat_id"),
+                @JoinColumn(name = "link_id", referencedColumnName = "link_id")
+            })
     @Column(name = "tag", nullable = false)
     private List<String> tags;
 

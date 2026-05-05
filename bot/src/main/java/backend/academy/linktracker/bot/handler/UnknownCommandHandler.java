@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class UnknownCommandHandler implements Handler {
-    private static final String MESSAGE = "Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.";
+    private static final String MESSAGE =
+            "Неизвестная команда. Воспользуйтесь /help, чтобы посмотреть список доступных команд.";
 
     @Override
     public String handle(UserMessage message, SessionData session) {

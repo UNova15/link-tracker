@@ -1,10 +1,10 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
-import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.GitHubDto;
 import backend.academy.linktracker.scrapper.dto.GitHubResponse;
-import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
 import org.springframework.stereotype.Service;
 

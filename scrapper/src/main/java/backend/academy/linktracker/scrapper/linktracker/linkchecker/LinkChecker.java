@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
-import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.domain.LinkType;
 import lombok.Getter;
 
 @Getter

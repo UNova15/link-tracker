@@ -1,13 +1,12 @@
 package unit.handlertest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.handler.UnknownUserHandler;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class UnknownUserHandlerTest {
 
@@ -21,7 +20,7 @@ public class UnknownUserHandlerTest {
 
         String actualMessage = unknownUserHandler.handle(message, sessionData);
 
-        assertEquals(expectedMessage,actualMessage);
+        assertEquals(expectedMessage, actualMessage);
         assertNull(sessionData.getState());
         assertNull(sessionData.getLink());
         assertNull(sessionData.getTags());

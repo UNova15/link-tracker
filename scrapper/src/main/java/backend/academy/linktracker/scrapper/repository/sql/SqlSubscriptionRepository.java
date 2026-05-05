@@ -4,11 +4,11 @@ import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.exception.SubscriptionNotFoundException;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.repository.sql.dao.SubscriptionDao;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Repository
 @ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
@@ -40,8 +40,9 @@ public class SqlSubscriptionRepository implements SubscriptionRepository {
 
     @Override
     public Subscription removeSubscription(long chatId, long linkId) {
-        Subscription subscription = subscriptionDao.findUsersSubscription(chatId, linkId)
-            .orElseThrow(() -> new SubscriptionNotFoundException(chatId, linkId));
+        Subscription subscription = subscriptionDao
+                .findUsersSubscription(chatId, linkId)
+                .orElseThrow(() -> new SubscriptionNotFoundException(chatId, linkId));
         subscriptionDao.removeSubscription(chatId, linkId);
         return subscription;
     }

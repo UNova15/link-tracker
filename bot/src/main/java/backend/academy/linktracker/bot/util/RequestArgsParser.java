@@ -16,7 +16,7 @@ public class RequestArgsParser {
     }
 
     public String parseCommand(String command) {
-        if(command == null || command.isBlank()){
+        if (command == null || command.isBlank()) {
             return "";
         }
         return command.trim().split(" ")[0];

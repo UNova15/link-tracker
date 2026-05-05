@@ -1,13 +1,13 @@
 package unit.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import backend.academy.linktracker.bot.dto.LinkResponse;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
 import backend.academy.linktracker.bot.util.ListCommandHelper;
-import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class ListCommandHelperTest {
 
@@ -48,7 +48,8 @@ public class ListCommandHelperTest {
         LinkResponse linkResponse3 = new LinkResponse(3, "https://askdkaldj", List.of("Work"));
         LinkResponse linkResponse4 = new LinkResponse(2, "https://askdm", List.of("Something"));
 
-        ListLinkResponse response = new ListLinkResponse(List.of(linkResponse1, linkResponse2, linkResponse3, linkResponse4), 4);
+        ListLinkResponse response =
+                new ListLinkResponse(List.of(linkResponse1, linkResponse2, linkResponse3, linkResponse4), 4);
 
         List<String> expectedList = List.of("https://1234", "https://askdkaldj");
 
@@ -65,7 +66,8 @@ public class ListCommandHelperTest {
         LinkResponse linkResponse3 = new LinkResponse(3, "https://askdkaldj", List.of("Work"));
         LinkResponse linkResponse4 = new LinkResponse(2, "https://askdm", List.of("Something"));
 
-        ListLinkResponse response = new ListLinkResponse(List.of(linkResponse1, linkResponse2, linkResponse3, linkResponse4), 4);
+        ListLinkResponse response =
+                new ListLinkResponse(List.of(linkResponse1, linkResponse2, linkResponse3, linkResponse4), 4);
 
         List<String> expectedList = List.of("https://1234", "https://askdm", "https://askdkaldj", "https://askdm");
 
@@ -73,5 +75,4 @@ public class ListCommandHelperTest {
 
         assertEquals(expectedList, actualLinks);
     }
-
 }

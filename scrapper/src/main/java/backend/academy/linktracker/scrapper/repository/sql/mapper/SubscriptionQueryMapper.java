@@ -1,15 +1,15 @@
 package backend.academy.linktracker.scrapper.repository.sql.mapper;
 
 import backend.academy.linktracker.scrapper.domain.Subscription;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
@@ -33,11 +33,8 @@ public class SubscriptionQueryMapper implements ResultSetExtractor<List<Subscrip
         }
 
         return tagsBySubscription.entrySet().stream()
-            .map(entry -> Subscription.createNew(
-                entry.getKey().chatId(),
-                entry.getKey().linkId(),
-                entry.getValue()
-            ))
-            .toList();
+                .map(entry -> Subscription.createNew(
+                        entry.getKey().chatId(), entry.getKey().linkId(), entry.getValue()))
+                .toList();
     }
 }

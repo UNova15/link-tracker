@@ -1,11 +1,11 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.domain.Command;
-import backend.academy.linktracker.bot.dto.ListLinkResponse;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.dto.ListLinkResponse;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.ListCommandHelper;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
@@ -24,8 +24,11 @@ public class ListHandler extends CommandHandler {
     private final ListCommandHelper listCommandHelper;
     private final RequestArgsParser parser;
 
-    public ListHandler(@Lazy AwaitCommandState state, ScrapperLinkClient scrapperLinkClient,
-                       RequestArgsParser parser,ListCommandHelper listCommandHelper) {
+    public ListHandler(
+            @Lazy AwaitCommandState state,
+            ScrapperLinkClient scrapperLinkClient,
+            RequestArgsParser parser,
+            ListCommandHelper listCommandHelper) {
         super(new Command("/list", "Вывод списка всех отслеживаемых ссылок"), state);
         this.scrapperLinkClient = scrapperLinkClient;
         this.listCommandHelper = listCommandHelper;

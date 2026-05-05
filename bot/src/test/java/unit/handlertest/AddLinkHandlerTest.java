@@ -1,5 +1,13 @@
 package unit.handlertest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
@@ -10,30 +18,22 @@ import backend.academy.linktracker.bot.handler.statehandler.AddLinkHandler;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.state.NewState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.endsWith;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 public class AddLinkHandlerTest {
 
     @Mock
     private ScrapperLinkClient scrapperLinkClient;
+
     @Mock
     private RequestArgsParser parser;
+
     @Mock
     private AwaitCommandState awaitCommandState;
 
@@ -104,7 +104,9 @@ public class AddLinkHandlerTest {
         AddLinkRequest request = new AddLinkRequest(link, tags);
 
         when(parser.parseTags(messageText)).thenReturn(tags);
-        doThrow(new ScrapperClientException(mock(ApiErrorResponse.class))).when(scrapperLinkClient).addLink(chatId, request);
+        doThrow(new ScrapperClientException(mock(ApiErrorResponse.class)))
+                .when(scrapperLinkClient)
+                .addLink(chatId, request);
 
         String actualMessage = addLinkHandler.handle(message, session);
 

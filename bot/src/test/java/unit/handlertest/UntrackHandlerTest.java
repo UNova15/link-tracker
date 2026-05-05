@@ -1,24 +1,5 @@
 package unit.handlertest;
 
-import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.domain.SessionData;
-import backend.academy.linktracker.bot.domain.UserMessage;
-import backend.academy.linktracker.bot.dto.ApiErrorResponse;
-import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.handler.command.UntrackHandler;
-import backend.academy.linktracker.bot.state.AwaitCommandState;
-import backend.academy.linktracker.bot.state.NewState;
-import backend.academy.linktracker.bot.util.RequestArgsParser;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,12 +11,32 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.dto.ApiErrorResponse;
+import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
+import backend.academy.linktracker.bot.handler.command.UntrackHandler;
+import backend.academy.linktracker.bot.state.AwaitCommandState;
+import backend.academy.linktracker.bot.state.NewState;
+import backend.academy.linktracker.bot.util.RequestArgsParser;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 public class UntrackHandlerTest {
     @Mock
     private AwaitCommandState awaitCommandState;
+
     @Mock
     private ScrapperLinkClient client;
+
     @Mock
     private RequestArgsParser parser;
 
@@ -134,7 +135,8 @@ public class UntrackHandlerTest {
         SessionData sessionData = new SessionData(null);
 
         when(parser.parseFirstCommandArgument(userMessage)).thenReturn(Optional.of(url));
-        ScrapperClientException exception = new ScrapperClientException(new ApiErrorResponse("", "", "", "", new String[]{""}));
+        ScrapperClientException exception =
+                new ScrapperClientException(new ApiErrorResponse("", "", "", "", new String[] {""}));
 
         doThrow(exception).when(client).removeLink(anyLong(), any(RemoveLinkRequest.class));
 
@@ -143,5 +145,4 @@ public class UntrackHandlerTest {
         assertEquals(expectedMessage, actualMessage);
         assertNull(sessionData.getState());
     }
-
 }

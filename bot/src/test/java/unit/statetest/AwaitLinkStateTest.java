@@ -1,25 +1,24 @@
 package unit.statetest;
 
-import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.domain.SessionData;
-import backend.academy.linktracker.bot.domain.UserMessage;
-import backend.academy.linktracker.bot.handler.Handler;
-import backend.academy.linktracker.bot.handler.statehandler.AwaitLinkHandler;
-import backend.academy.linktracker.bot.state.AwaitLinkState;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import backend.academy.linktracker.bot.configuration.CommandRegistry;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.handler.Handler;
+import backend.academy.linktracker.bot.handler.statehandler.AwaitLinkHandler;
+import backend.academy.linktracker.bot.state.AwaitLinkState;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class AwaitLinkStateTest {

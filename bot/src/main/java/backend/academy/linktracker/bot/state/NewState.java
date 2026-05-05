@@ -1,9 +1,9 @@
 package backend.academy.linktracker.bot.state;
 
-import backend.academy.linktracker.bot.handler.UnknownUserHandler;
-import backend.academy.linktracker.bot.handler.command.StartHandler;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.handler.UnknownUserHandler;
+import backend.academy.linktracker.bot.handler.command.StartHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

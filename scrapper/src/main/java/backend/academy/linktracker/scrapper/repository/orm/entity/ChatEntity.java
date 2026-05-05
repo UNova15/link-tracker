@@ -8,12 +8,12 @@ import jakarta.persistence.PostLoad;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chats")
@@ -32,7 +32,7 @@ public class ChatEntity implements Persistable<Long> {
 
     @PostLoad
     @PostPersist
-    private void markNotNew() {
+    protected void markNotNew() {
         this.isNew = false;
     }
 

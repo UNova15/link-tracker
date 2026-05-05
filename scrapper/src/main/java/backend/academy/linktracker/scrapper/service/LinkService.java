@@ -4,10 +4,10 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.parser.LinkParser;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
@@ -22,19 +22,18 @@ public class LinkService {
     }
 
     public Link findOrCreateLink(String url) {
-        return linkRepository.findByUrl(url)
-            .orElseGet(() -> saveLink(url));
+        return linkRepository.findByUrl(url).orElseGet(() -> saveLink(url));
     }
 
-    public List<Link> findLinksByIds(List<Long> linkIds){
+    public List<Link> findLinksByIds(List<Long> linkIds) {
         return linkRepository.findAllByIdIn(linkIds);
     }
 
-    public Optional<Link> findByUrl(String url){
+    public Optional<Link> findByUrl(String url) {
         return linkRepository.findByUrl(url);
     }
 
-    public void deleteLink(String url){
+    public void deleteLink(String url) {
         linkRepository.removeByUrl(url);
     }
 }

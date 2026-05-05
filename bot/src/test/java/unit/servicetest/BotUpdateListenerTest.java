@@ -1,20 +1,5 @@
 package unit.servicetest;
 
-import backend.academy.linktracker.bot.client.telegram.BotUpdateListener;
-import backend.academy.linktracker.bot.client.telegram.StateProcessor;
-import com.google.gson.Gson;
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +8,21 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import backend.academy.linktracker.bot.client.telegram.BotUpdateListener;
+import backend.academy.linktracker.bot.client.telegram.StateProcessor;
+import com.google.gson.Gson;
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 public class BotUpdateListenerTest {
 
@@ -30,8 +30,10 @@ public class BotUpdateListenerTest {
 
     @Mock
     private TelegramBot bot;
+
     @Mock
     private StateProcessor processor;
+
     @InjectMocks
     private BotUpdateListener botUpdateListener;
 

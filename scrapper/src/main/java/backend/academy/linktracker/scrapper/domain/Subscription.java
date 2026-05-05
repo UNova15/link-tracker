@@ -1,11 +1,10 @@
 package backend.academy.linktracker.scrapper.domain;
 
+import java.util.Collections;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.aspectj.apache.bcel.generic.TABLESWITCH;
-import java.util.Collections;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

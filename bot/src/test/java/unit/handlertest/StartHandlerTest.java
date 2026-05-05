@@ -1,5 +1,11 @@
 package unit.handlertest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
@@ -14,18 +20,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-
 @ExtendWith(MockitoExtension.class)
 public class StartHandlerTest {
 
     @Mock
     private ScrapperChatClient client;
+
     @Mock
     private AwaitCommandState awaitCommand;
 
@@ -58,8 +58,8 @@ public class StartHandlerTest {
         SessionData sessionData = new SessionData(null);
 
         doThrow(new ScrapperClientException(mock(ApiErrorResponse.class)))
-            .when(client)
-            .registrationChat(userId);
+                .when(client)
+                .registrationChat(userId);
 
         String actualMessage = startHandler.handle(message, sessionData);
 

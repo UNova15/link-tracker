@@ -1,25 +1,24 @@
 package unit.statetest;
 
-import backend.academy.linktracker.bot.configuration.CommandRegistry;
-import backend.academy.linktracker.bot.domain.SessionData;
-import backend.academy.linktracker.bot.domain.UserMessage;
-import backend.academy.linktracker.bot.handler.Handler;
-import backend.academy.linktracker.bot.handler.statehandler.AddLinkHandler;
-import backend.academy.linktracker.bot.state.AwaitTagState;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import backend.academy.linktracker.bot.configuration.CommandRegistry;
+import backend.academy.linktracker.bot.domain.SessionData;
+import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.handler.Handler;
+import backend.academy.linktracker.bot.handler.statehandler.AddLinkHandler;
+import backend.academy.linktracker.bot.state.AwaitTagState;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class AwaitTagStateTest {
@@ -62,13 +61,13 @@ public class AwaitTagStateTest {
         Handler handler = mock(Handler.class);
 
         when(commandRegistry.getCommandHandler(userMessage)).thenReturn(Optional.of(handler));
-        when(handler.handle(message,sessionData)).thenReturn(expectedMessage);
+        when(handler.handle(message, sessionData)).thenReturn(expectedMessage);
 
         String actualMessage = awaitTagState.process(message, sessionData);
 
         assertEquals(expectedMessage, actualMessage);
         verify(commandRegistry).getCommandHandler(userMessage);
         verify(handler).handle(message, sessionData);
-        verify(addLinkHandler,never()).handle(any(UserMessage.class),any(SessionData.class));
+        verify(addLinkHandler, never()).handle(any(UserMessage.class), any(SessionData.class));
     }
 }

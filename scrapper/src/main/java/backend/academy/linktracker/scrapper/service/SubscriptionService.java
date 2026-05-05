@@ -1,5 +1,7 @@
 package backend.academy.linktracker.scrapper.service;
 
+import backend.academy.linktracker.scrapper.domain.Link;
+import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
@@ -7,8 +9,6 @@ import backend.academy.linktracker.scrapper.dto.linkdto.RemoveLinkRequest;
 import backend.academy.linktracker.scrapper.exception.ChatNotFoundException;
 import backend.academy.linktracker.scrapper.exception.LinkAlreadyRegistratedException;
 import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
-import backend.academy.linktracker.scrapper.domain.Subscription;
-import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
@@ -59,8 +59,7 @@ public class SubscriptionService {
             throw new ChatNotFoundException(chatId);
         }
 
-        Link link = linkService.findByUrl(request.link())
-            .orElseThrow(() -> new LinkNotFoundException(request.link()));
+        Link link = linkService.findByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
 
         Subscription subscription = subscriptionRepository.removeSubscription(chatId, link.getId());
 

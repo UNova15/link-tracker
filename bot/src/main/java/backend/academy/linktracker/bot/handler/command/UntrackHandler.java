@@ -1,14 +1,13 @@
 package backend.academy.linktracker.bot.handler.command;
 
 import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.domain.Command;
-import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
+import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
+import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -31,27 +30,26 @@ public class UntrackHandler extends CommandHandler {
 
     @Override
     public String handle(UserMessage message, SessionData session) {
-        Optional<String> link = parser.parseFirstCommandArgument(message.text());
-
-        if(link.isEmpty()){
-            log.warn("Отсутствует ссылка на удаляемый ресурс у пользователя {}", message.id());
-            changeState(session);
-            return MISSING_LINK_TO_RESOURCE;
-        }
-
-        RemoveLinkRequest request = new RemoveLinkRequest(link.get());
-
-        try {
-            scrapperClient.removeLink(message.id(), request);
-            changeState(session);
-            return SUCCESS_MESSAGE;
-        } catch (ScrapperClientException exception) {
-            log.error(
-                    "Ошибка удаления ссылки {} пользователя {}. {}",
-                    message.text(),
-                    message.id(),
-                    exception.getErrorResponse().stackTrace());
-            return ERROR_MESSAGE;
-        }
+        return parser.parseFirstCommandArgument(message.text())
+                .map(link -> {
+                    RemoveLinkRequest request = new RemoveLinkRequest(link);
+                    try {
+                        scrapperClient.removeLink(message.id(), request);
+                        changeState(session);
+                        return SUCCESS_MESSAGE;
+                    } catch (ScrapperClientException exception) {
+                        log.error(
+                                "Ошибка удаления ссылки {} пользователя {}. {}",
+                                message.text(),
+                                message.id(),
+                                exception.getErrorResponse().stackTrace());
+                        return ERROR_MESSAGE;
+                    }
+                })
+                .orElseGet(() -> {
+                    log.warn("Отсутствует ссылка на удаляемый ресурс у пользователя {}", message.id());
+                    changeState(session);
+                    return MISSING_LINK_TO_RESOURCE;
+                });
     }
 }

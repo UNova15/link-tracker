@@ -1,5 +1,11 @@
 package unit.statetest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.handler.UnknownUserHandler;
@@ -11,17 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class NewStateTest {
 
     @Mock
     private StartHandler startHandler;
+
     @Mock
     private UnknownUserHandler unknownUserHandler;
 
@@ -59,11 +60,11 @@ public class NewStateTest {
         when(unknownUserHandler.handle(message, sessionData)).thenReturn(expectedMessage);
         when(startHandler.getName()).thenReturn(command);
 
-        String actualMessage = newState.process(message,sessionData);
+        String actualMessage = newState.process(message, sessionData);
 
-        verify(unknownUserHandler).handle(message,sessionData);
-        verify(startHandler,never()).handle(any(UserMessage.class),any(SessionData.class));
-        assertEquals(expectedMessage,actualMessage);
+        verify(unknownUserHandler).handle(message, sessionData);
+        verify(startHandler, never()).handle(any(UserMessage.class), any(SessionData.class));
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
@@ -78,10 +79,10 @@ public class NewStateTest {
         when(unknownUserHandler.handle(message, sessionData)).thenReturn(expectedMessage);
         when(startHandler.getName()).thenReturn(command);
 
-        String actualMessage = newState.process(message,sessionData);
+        String actualMessage = newState.process(message, sessionData);
 
-        verify(unknownUserHandler).handle(message,sessionData);
-        verify(startHandler,never()).handle(any(UserMessage.class),any(SessionData.class));
-        assertEquals(expectedMessage,actualMessage);
+        verify(unknownUserHandler).handle(message, sessionData);
+        verify(startHandler, never()).handle(any(UserMessage.class), any(SessionData.class));
+        assertEquals(expectedMessage, actualMessage);
     }
 }
