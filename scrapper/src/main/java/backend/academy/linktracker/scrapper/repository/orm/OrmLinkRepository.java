@@ -5,22 +5,23 @@ import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.orm.entity.LinkEntity;
 import backend.academy.linktracker.scrapper.repository.orm.jparepository.LinkJpaRepository;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "ORM")
+@Profile("orm")
 @AllArgsConstructor
 public class OrmLinkRepository implements LinkRepository {
     private final LinkJpaRepository repository;
     private final LinkMapper linkMapper;
 
     @Override
-    public List<Link> getAll() {
-        List<LinkEntity> links = repository.findAll();
+    public List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime) {
+        List<LinkEntity> links = repository.findLinksToCheckWithDelayTime(lastCheckId, linksLimit, delayTime);
         return linkMapper.fromListLinkEntity(links);
     }
 

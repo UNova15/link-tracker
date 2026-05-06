@@ -19,6 +19,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createIndex tableName="links" indexName="ix_links_last_check">
+            <column name="last_check"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

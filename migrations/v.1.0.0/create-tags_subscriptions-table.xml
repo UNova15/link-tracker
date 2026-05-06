@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="create-subscriptions-table" author="kirill">
+    <changeSet id="create-tags-subscriptions-table" author="kirill">
         <createTable tableName="tags_subscriptions">
             <column name="chat_id" type="bigint">
                 <constraints nullable="false"/>
@@ -23,11 +23,11 @@
             constraintName="fk_tags_subscriptions_chat_id_link_id"
             referencedTableName="subscriptions"
             referencedColumnNames="chat_id, link_id"
-            onDelete="CASCADE"/>
+            deleteCascade="true"/>
 
         <addPrimaryKey
             tableName="tags_subscriptions"
-            columnNames="link_id, chat_id, tag"
+            columnNames=" chat_id,link_id, tag"
             constraintName="pk_tags_subscriptions"/>
     </changeSet>
 

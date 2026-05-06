@@ -5,11 +5,11 @@ import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.orm.entity.ChatEntity;
 import backend.academy.linktracker.scrapper.repository.orm.jparepository.ChatJpaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "ORM")
+@Profile("orm")
 @AllArgsConstructor
 public class OrmChatRepositoryImpl implements ChatRepository {
     private final ChatJpaRepository chatRepository;

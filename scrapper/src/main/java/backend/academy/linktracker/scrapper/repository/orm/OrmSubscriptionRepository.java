@@ -9,11 +9,11 @@ import backend.academy.linktracker.scrapper.repository.orm.entity.SubscriptionId
 import backend.academy.linktracker.scrapper.repository.orm.jparepository.SubscriptionJpaRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "ORM")
+@Profile("orm")
 @AllArgsConstructor
 public class OrmSubscriptionRepository implements SubscriptionRepository {
     private final SubscriptionJpaRepository repository;

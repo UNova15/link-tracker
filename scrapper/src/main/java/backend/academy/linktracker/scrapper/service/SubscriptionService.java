@@ -15,6 +15,7 @@ import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +27,7 @@ public class SubscriptionService {
 
     private final LinkMapper linkMapper;
 
+    @Transactional(readOnly = true)
     public ListLinksResponse findSubscriptionsWithLinks(long chatId) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -37,6 +39,7 @@ public class SubscriptionService {
         return linkMapper.toListLinkResponse(subscriptions, links);
     }
 
+    @Transactional
     public LinkResponse createSubscription(long chatId, AddLinkRequest request) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -54,6 +57,7 @@ public class SubscriptionService {
         return linkMapper.toLinkResponse(link, subscription.getTags());
     }
 
+    @Transactional
     public LinkResponse removeSubscription(long chatId, RemoveLinkRequest request) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -62,11 +66,8 @@ public class SubscriptionService {
         Link link = linkService.findByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
 
         Subscription subscription = subscriptionRepository.removeSubscription(chatId, link.getId());
+        linkService.removeUntraceableLinks(link.getId(), link.getUrl());
 
-        // проверка существования пользователей отслеживающих ссылку
-        if (subscriptionRepository.findChatsIdByLinkId(link.getId()).isEmpty()) {
-            linkService.deleteLink(request.link());
-        }
-        return new LinkResponse(chatId, request.link(), subscription.getTags());
+        return linkMapper.toLinkResponse(link, subscription.getTags());
     }
 }

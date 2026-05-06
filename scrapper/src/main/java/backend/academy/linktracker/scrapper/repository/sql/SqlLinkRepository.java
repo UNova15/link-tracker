@@ -3,21 +3,22 @@ package backend.academy.linktracker.scrapper.repository.sql;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.sql.dao.LinkDao;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
+@Profile("sql")
 @AllArgsConstructor
 public class SqlLinkRepository implements LinkRepository {
     private final LinkDao linkDao;
 
     @Override
-    public List<Link> getAll() {
-        return linkDao.getAll();
+    public List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime) {
+        return linkDao.findLinksToCheckWithDelayTime(lastCheckId,linksLimit,delayTime);
     }
 
     @Override

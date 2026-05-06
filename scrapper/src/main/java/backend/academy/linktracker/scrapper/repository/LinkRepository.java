@@ -1,12 +1,13 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.domain.Link;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 public interface LinkRepository {
 
-    List<Link> getAll();
+    List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime);
 
     Link save(Link link);
 

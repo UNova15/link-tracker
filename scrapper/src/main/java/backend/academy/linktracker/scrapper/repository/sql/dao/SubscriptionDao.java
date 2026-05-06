@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
+@Profile("sql")
 @AllArgsConstructor
 public class SubscriptionDao {
     private final JdbcTemplate template;

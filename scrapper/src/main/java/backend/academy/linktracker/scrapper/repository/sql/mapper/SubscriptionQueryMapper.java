@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
+@Profile("sql")
 public class SubscriptionQueryMapper implements ResultSetExtractor<List<Subscription>> {
 
     @Override

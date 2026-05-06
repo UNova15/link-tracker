@@ -9,19 +9,25 @@
             <column name="chat_id" type="bigint">
                 <constraints nullable="false"
                              foreignKeyName="fk_subscriptions_chat_id"
-                             references="chats(id)"/>
+                             references="chats(id)"
+                             deleteCascade="true"/>
             </column>
             <column name="link_id" type="bigint">
                 <constraints nullable="false"
                              foreignKeyName="fk_links_id"
-                             references="links(id)"/>
+                             references="links(id)"
+                             deleteCascade="true"/>
             </column>
         </createTable>
 
         <addPrimaryKey
             tableName="subscriptions"
-            columnNames="chat_id,link_id"
+            columnNames="chat_id, link_id"
             constraintName="pk_subscriptions"/>
+
+        <createIndex tableName="subscriptions" indexName="ix_subscriptions_link_id">
+            <column name="link_id"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

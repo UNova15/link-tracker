@@ -6,12 +6,12 @@ import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import backend.academy.linktracker.scrapper.repository.sql.dao.SubscriptionDao;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@ConditionalOnProperty(name = "app.access-type", havingValue = "SQL")
+@Profile("sql")
 @AllArgsConstructor
 public class SqlSubscriptionRepository implements SubscriptionRepository {
     private final SubscriptionDao subscriptionDao;
