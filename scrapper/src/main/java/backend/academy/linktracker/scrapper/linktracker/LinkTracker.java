@@ -33,10 +33,10 @@ public class LinkTracker {
     private long scanTime;
 
     public LinkTracker(
-        List<LinkChecker> checkers,
-        TelegramBotClient telegramBot,
-        LinkRepository linkRepository,
-        SubscriptionRepository subscriptionRepository) {
+            List<LinkChecker> checkers,
+            TelegramBotClient telegramBot,
+            LinkRepository linkRepository,
+            SubscriptionRepository subscriptionRepository) {
         this.linkRepository = linkRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.checkers = checkers.stream().collect(Collectors.toMap(LinkChecker::getLinkType, Function.identity()));
@@ -60,7 +60,6 @@ public class LinkTracker {
         }
     }
 
-
     private void processLinks(List<Link> activeLink) {
         for (Link link : activeLink) {
             LinkChecker checker = checkers.get(link.getType());
@@ -78,11 +77,11 @@ public class LinkTracker {
                 linkRepository.update(link);
             } catch (TelegramBotException exception) {
                 log.error(
-                    "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
-                    link.getUrl(),
-                    exception.getApiErrorResponse().description());
+                        "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
+                        link.getUrl(),
+                        exception.getApiErrorResponse().description());
             } catch (Exception exception) {
-                log.error("Ошибка при проверке ссылки {}: {}", link.getUrl(), exception.getMessage(), exception);
+                log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
             }
         }
     }

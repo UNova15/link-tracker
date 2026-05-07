@@ -20,7 +20,8 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Long> {
         ORDER BY id
         LIMIT :linksLimit
         """, nativeQuery = true)
-    List<LinkEntity> findLinksToCheckWithDelayTime(@Param("lastCheckId") long lastCheckId,
-                                                   @Param("linksLimit") long linksLimit,
-                                                   @Param("delayTime") Instant delayTime);
+    List<LinkEntity> findLinksToCheckWithDelayTime(
+            @Param("lastCheckId") long lastCheckId,
+            @Param("linksLimit") long linksLimit,
+            @Param("delayTime") Instant delayTime);
 }
