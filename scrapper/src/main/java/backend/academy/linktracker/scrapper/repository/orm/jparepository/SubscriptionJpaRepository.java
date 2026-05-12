@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionEntity, SubscriptionId> {
-    List<Long> findAllChatIdByLinkId(long linkId);
+    List<SubscriptionEntity> findAllChatIdByLinkId(long linkId);
 
     List<SubscriptionEntity> findAllByChatId(long chatId);
 }

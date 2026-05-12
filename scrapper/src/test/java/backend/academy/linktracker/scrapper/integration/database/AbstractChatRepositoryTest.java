@@ -1,5 +1,7 @@
 package backend.academy.linktracker.scrapper.integration.database;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
@@ -10,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest("spring.main.lazy-initialization=true")
 @Transactional
@@ -25,7 +25,7 @@ public abstract class AbstractChatRepositoryTest {
     protected LinkTracker linkTracker;
 
     @Test
-    void save_withValidChat_saveLink(){
+    protected void save_withValidChat_saveLink() {
         Chat chat = Chat.createNew(1);
 
         chatRepository.save(chat);
@@ -34,7 +34,7 @@ public abstract class AbstractChatRepositoryTest {
     }
 
     @Test
-    void deleteById_withValidChat_deleteChat(){
+    protected void deleteById_withValidChat_deleteChat() {
         Chat chat = Chat.createNew(1);
 
         chatRepository.deleteById(chat.getChatId());

@@ -1,10 +1,16 @@
 package backend.academy.linktracker.scrapper.integration.database;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,14 +18,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 
 @SpringBootTest("spring.main.lazy-initialization=true")
 @Transactional
@@ -33,7 +31,7 @@ public abstract class AbstractLinkRepositoryTest {
     protected LinkTracker linkTracker;
 
     @Test
-    void save_withValidLink_saveLink() {
+    protected void save_withValidLink_saveLink() {
         Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com");
 
         linkRepository.save(link);
@@ -49,7 +47,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    void save_withEqualsLinksUrl_throwException() {
+    protected void save_withEqualsLinksUrl_throwException() {
         Link link1 = Link.createNew(LinkType.GIT_HUB, "https://github.com");
         Link link2 = Link.createNew(LinkType.STACK_OVERFLOW, "https://github.com");
 
@@ -59,7 +57,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    void findLinksFilteredByDelayTime_withUnupdatedLinks_returnUnupdatedLinks() {
+    protected void findLinksFilteredByDelayTime_withUnupdatedLinks_returnUnupdatedLinks() {
         long lastCheckId = 0;
         long linksLimit = 10;
 
@@ -76,13 +74,13 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> links = linkRepository.findLinksFilteredByDelayTime(lastCheckId, linksLimit, delayTime);
 
         assertThat(links)
-            .hasSize(3)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-            .containsExactlyInAnyOrder(link1, link2, link3);
+                .hasSize(3)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
-    void findLinksFilteredByDelayTime_withUpdatedLinks_returnUnupdatedLinks() {
+    protected void findLinksFilteredByDelayTime_withUpdatedLinks_returnUnupdatedLinks() {
         long lastCheckId = 0;
         long linksLimit = 10;
 
@@ -102,7 +100,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    void findAllByIdIn_withExistsId_returnListOfLinks() {
+    protected void findAllByIdIn_withExistsId_returnListOfLinks() {
         Link link1 = Link.createNew(LinkType.GIT_HUB, "https://github.com1");
         Link link2 = Link.createNew(LinkType.STACK_OVERFLOW, "https://github.com2");
         Link link3 = Link.createNew(LinkType.GIT_HUB, "https://github.com3");
@@ -118,13 +116,13 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> actualLinks = linkRepository.findAllByIdIn(linkIds);
 
         assertThat(actualLinks)
-            .hasSize(3)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-            .containsExactlyInAnyOrder(link1, link2, link3);
+                .hasSize(3)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
-    void findAllByIdIn_withNonExistsId_returnListOfLinks() {
+    protected void findAllByIdIn_withNonExistsId_returnListOfLinks() {
         List<Long> linkIds = List.of(1L, 2L, 4L);
 
         List<Link> actualLinks = linkRepository.findAllByIdIn(linkIds);
@@ -133,7 +131,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    void update_withValidLink_updateLink() {
+    protected void update_withValidLink_updateLink() {
         Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com1");
         Link savedLink = linkRepository.save(link);
         Instant oldTime = link.getLastCheck();
@@ -153,7 +151,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    void removeByUrl_deleteExistLink_deleteLink() {
+    protected void removeByUrl_deleteExistLink_deleteLink() {
         Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com");
         linkRepository.save(link);
 

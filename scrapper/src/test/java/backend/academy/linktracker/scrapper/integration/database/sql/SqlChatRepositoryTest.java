@@ -4,6 +4,4 @@ import backend.academy.linktracker.scrapper.integration.database.AbstractChatRep
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("sql")
-public class SqlChatRepositoryTest extends AbstractChatRepositoryTest {
-
-}
+public class SqlChatRepositoryTest extends AbstractChatRepositoryTest {}

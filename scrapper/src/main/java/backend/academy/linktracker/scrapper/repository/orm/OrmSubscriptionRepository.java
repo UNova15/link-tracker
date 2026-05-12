@@ -21,7 +21,9 @@ public class OrmSubscriptionRepository implements SubscriptionRepository {
 
     @Override
     public List<Long> findChatsIdByLinkId(long linkId) {
-        return repository.findAllChatIdByLinkId(linkId);
+        return repository.findAllChatIdByLinkId(linkId).stream()
+                .map(SubscriptionEntity::getChatId)
+                .toList();
     }
 
     @Override

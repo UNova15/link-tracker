@@ -4,5 +4,4 @@ import backend.academy.linktracker.scrapper.integration.database.AbstractChatRep
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("orm")
-public class OrmChatRepositoryTest  extends AbstractChatRepositoryTest {
-}
+public class OrmChatRepositoryTest extends AbstractChatRepositoryTest {}
