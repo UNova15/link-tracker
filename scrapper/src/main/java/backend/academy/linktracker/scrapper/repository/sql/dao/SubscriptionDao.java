@@ -30,14 +30,6 @@ public class SubscriptionDao {
                 .list();
     }
 
-    public List<Long> findLinksIdByChatId(long chatId) {
-        return jdbcClient
-                .sql("SELECT link_id FROM subscriptions WHERE chat_id=:chatId")
-                .param("chatId", chatId)
-                .query(Long.class)
-                .list();
-    }
-
     public boolean exists(long chatId, long linkId) {
         return jdbcClient
                 .sql("SELECT EXISTS(SELECT 1 FROM subscriptions WHERE chat_id=:chatId AND link_id=:linkId)")

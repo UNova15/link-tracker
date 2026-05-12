@@ -23,6 +23,9 @@
         <createIndex tableName="links" indexName="ix_links_last_check">
             <column name="last_check"/>
         </createIndex>
+        <addUniqueConstraint tableName="links"
+                             columnNames="url"
+                             constraintName="links_uniq_url"/>
     </changeSet>
 
 </databaseChangeLog>

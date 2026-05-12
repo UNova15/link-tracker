@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper;
 
+import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
 import org.springframework.boot.SpringApplication;
 
 public class TestScrapperApplication {

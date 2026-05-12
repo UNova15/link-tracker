@@ -9,8 +9,6 @@ public interface SubscriptionRepository {
 
     List<Subscription> findSubscriptionsByChatId(long chatId);
 
-    List<Long> findLinksIdByChatId(long chatId);
-
     void saveSubscription(Subscription subscription);
 
     Subscription removeSubscription(long chatId, long linkId);

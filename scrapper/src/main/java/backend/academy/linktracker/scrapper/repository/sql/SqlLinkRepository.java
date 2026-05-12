@@ -17,7 +17,7 @@ public class SqlLinkRepository implements LinkRepository {
     private final LinkDao linkDao;
 
     @Override
-    public List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime) {
+    public List<Link> findLinksFilteredByDelayTime(long lastCheckId, long linksLimit, Instant delayTime) {
         return linkDao.findLinksToCheckWithDelayTime(lastCheckId, linksLimit, delayTime);
     }
 

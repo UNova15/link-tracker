@@ -49,7 +49,7 @@ public class LinkTracker {
         long lastCheckId = 0;
 
         while (true) {
-            List<Link> activeLinks = linkRepository.findLinksToCheck(lastCheckId, LINKS_LIMIT, delayTime);
+            List<Link> activeLinks = linkRepository.findLinksFilteredByDelayTime(lastCheckId, LINKS_LIMIT, delayTime);
 
             if (activeLinks.isEmpty()) {
                 break;

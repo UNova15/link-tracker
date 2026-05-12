@@ -9,6 +9,4 @@ public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionEnt
     List<Long> findAllChatIdByLinkId(long linkId);
 
     List<SubscriptionEntity> findAllByChatId(long chatId);
-
-    List<Long> findLinkIdsByChatId(long chatId);
 }

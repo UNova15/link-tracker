@@ -1,8 +1,10 @@
 package backend.academy.linktracker.scrapper.domain;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
@@ -17,7 +19,9 @@ public class Link {
         if (type == null || url == null || url.isBlank()) {
             throw new IllegalArgumentException("Incorrect data to create link");
         }
-        return new Link(null, type, url, Instant.now());
+
+        Instant createdAt = Instant.now().truncatedTo(ChronoUnit.MICROS);
+        return new Link(null, type, url, createdAt);
     }
 
     public static Link restore(long id, LinkType type, String url, Instant lastCheck) {
@@ -33,6 +37,6 @@ public class Link {
     }
 
     public void markCheckedNow() {
-        this.lastCheck = Instant.now();
+        this.lastCheck = Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 }

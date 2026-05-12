@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface LinkRepository {
 
-    List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime);
+    List<Link> findLinksFilteredByDelayTime(long lastCheckId, long linksLimit, Instant delayTime);
 
     Link save(Link link);
 

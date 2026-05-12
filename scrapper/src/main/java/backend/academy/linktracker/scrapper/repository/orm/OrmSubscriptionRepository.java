@@ -31,11 +31,6 @@ public class OrmSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public List<Long> findLinksIdByChatId(long chatId) {
-        return repository.findLinkIdsByChatId(chatId);
-    }
-
-    @Override
     public void saveSubscription(Subscription subscription) {
         SubscriptionEntity entity = SubscriptionEntity.createFromSubscription(subscription);
         repository.save(entity);

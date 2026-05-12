@@ -22,11 +22,6 @@ public class SqlSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public List<Long> findLinksIdByChatId(long chatId) {
-        return subscriptionDao.findLinksIdByChatId(chatId);
-    }
-
-    @Override
     public List<Subscription> findSubscriptionsByChatId(long chatId) {
         return subscriptionDao.findSubscriptionsByChatId(chatId);
     }

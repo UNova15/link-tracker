@@ -20,14 +20,14 @@ public class OrmLinkRepository implements LinkRepository {
     private final LinkMapper linkMapper;
 
     @Override
-    public List<Link> findLinksToCheck(long lastCheckId, long linksLimit, Instant delayTime) {
+    public List<Link> findLinksFilteredByDelayTime(long lastCheckId, long linksLimit, Instant delayTime) {
         List<LinkEntity> links = repository.findLinksToCheckWithDelayTime(lastCheckId, linksLimit, delayTime);
         return linkMapper.fromListLinkEntity(links);
     }
 
     @Override
     public Link save(Link link) {
-        LinkEntity linkEntity = LinkEntity.fromLink(link);
+        LinkEntity linkEntity = LinkEntity.fromDomain(link);
         LinkEntity savedLink = repository.save(linkEntity);
         return linkMapper.fromLinkEntity(savedLink);
     }
@@ -40,7 +40,7 @@ public class OrmLinkRepository implements LinkRepository {
 
     @Override
     public void update(Link link) {
-        LinkEntity linkEntity = LinkEntity.fromLink(link);
+        LinkEntity linkEntity = LinkEntity.fromDomain(link);
         repository.save(linkEntity);
     }
 
