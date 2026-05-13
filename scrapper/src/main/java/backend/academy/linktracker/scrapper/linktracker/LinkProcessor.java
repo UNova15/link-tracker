@@ -7,8 +7,11 @@ import backend.academy.linktracker.scrapper.exception.TelegramBotException;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
 import backend.academy.linktracker.scrapper.messagesender.MessageSender;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,33 +25,57 @@ public class LinkProcessor {
     private final SubscriptionRepository subscriptionRepository;
     private final Map<LinkType, LinkChecker> checkers;
 
+    private final ExecutorService executorService;
+    private final int numberOfThreads;
+
+    public void runProcessLinks(List<Link> activeLink) {
+        int total = activeLink.size();
+        if (total == 0) return;
+
+        int chunkSize = (int) Math.ceil((double) total / numberOfThreads);
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (int i = 0; i < total; i += chunkSize) {
+            int end = Math.min(total, i + chunkSize);
+
+            List<Link> chunk = activeLink.subList(i, end);
+
+            futures.add(CompletableFuture.runAsync(
+                    () -> {
+                        for (Link link : chunk) {
+                            processSingleLink(link);
+                        }
+                    },
+                    executorService));
+        }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+    }
+
+    private void processSingleLink(Link link) {
+        LinkChecker checker = checkers.get(link.getType());
+
+        try {
+            boolean isUpdated = checker.checkLink(link);
+
+            if (isUpdated) {
+                sendNotification(link, UPDATE_MESSAGE);
+            }
+
+            link.markCheckedNow();
+        } catch (TelegramBotException exception) {
+            log.error(
+                    "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
+                    link.getUrl(),
+                    exception.getApiErrorResponse().description());
+        } catch (Exception exception) {
+            log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
+            sendNotification(link, ERROR_MESSAGE.formatted(link.getUrl()));
+        }
+    }
+
     private void sendNotification(Link link, String message) {
         List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
         LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), message, chatsId);
         sender.send(update);
-    }
-
-    public void processLinks(List<Link> activeLink) {
-        for (Link link : activeLink) {
-            LinkChecker checker = checkers.get(link.getType());
-
-            try {
-                boolean isUpdated = checker.checkLink(link);
-
-                if (isUpdated) {
-                    sendNotification(link, UPDATE_MESSAGE);
-                }
-
-                link.markCheckedNow();
-            } catch (TelegramBotException exception) {
-                log.error(
-                        "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
-                        link.getUrl(),
-                        exception.getApiErrorResponse().description());
-            } catch (Exception exception) {
-                log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
-                sendNotification(link, ERROR_MESSAGE.formatted(link.getUrl()));
-            }
-        }
     }
 }

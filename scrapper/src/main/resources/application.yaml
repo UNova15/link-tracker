@@ -21,7 +21,8 @@ app:
   scheduler-interval: 3000
   age-of-links: 6000
 
-  batch-size: ${BATCH_SIZE:100}
+  batch-size: 100
+  number-of-threads: 4
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}

@@ -36,12 +36,11 @@ public class LinkTracker {
             if (activeLinks.isEmpty()) {
                 break;
             }
-            processor.processLinks(activeLinks);
+            processor.runProcessLinks(activeLinks);
 
             // возможно будут лишние select при merge для jpa реализации но как исправить это я не знаю
             // собственный jpql запрос не позволит сопоставить время обновления и id записи одновременно
             linkRepository.updateLastCheckForLink(activeLinks);
-
             lastCheckId = activeLinks.getLast().getId();
         }
     }

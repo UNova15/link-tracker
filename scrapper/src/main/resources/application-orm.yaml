@@ -2,8 +2,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
       jdbc:
-        batch_size: ${BATCH_SIZE:100}
+        batch_size: ${app.batch-size}
         order_inserts: true
         order_updates: true
-

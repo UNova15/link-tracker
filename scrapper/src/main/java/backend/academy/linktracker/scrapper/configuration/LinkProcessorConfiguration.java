@@ -7,20 +7,33 @@ import backend.academy.linktracker.scrapper.messagesender.MessageSender;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class LinkProcessorConfiguration {
+    @Value("${app.number-of-threads}")
+    private int numberOfThreads;
 
     @Bean
     public LinkProcessor linkProcessor(
-            List<LinkChecker> allCheckers, MessageSender messageSender, SubscriptionRepository subscriptionRepository) {
+            List<LinkChecker> allCheckers,
+            MessageSender messageSender,
+            SubscriptionRepository subscriptionRepository,
+            ExecutorService executorService) {
         Map<LinkType, LinkChecker> checkers =
                 allCheckers.stream().collect(Collectors.toMap(LinkChecker::getLinkType, Function.identity()));
 
-        return new LinkProcessor(messageSender, subscriptionRepository, checkers);
+        return new LinkProcessor(messageSender, subscriptionRepository, checkers, executorService, numberOfThreads);
+    }
+
+    @Bean
+    public ExecutorService linkProcessorThreadPool() {
+        return Executors.newFixedThreadPool(numberOfThreads);
     }
 }

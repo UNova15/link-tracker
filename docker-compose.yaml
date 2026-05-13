@@ -33,7 +33,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: ${PROFILE}
 
-      BATCH_SIZE: 100
 
     depends_on:
       liquibase:
