@@ -64,17 +64,18 @@ public abstract class AbstractSubscriptionRepositoryTest {
         return subscription;
     }
 
+    // TODO дописать проверку вставки тегов
     @Test
     protected void saveSubscription_withValidSubscription_saveSubscription() {
         Subscription subscription =
                 createAndSaveExampleOfSubscription(1, LinkType.GIT_HUB, "https://github.com", List.of("tag1", "tag2"));
 
-        assertThat(subscriptionRepository.exist(subscription.getChatId(), subscription.getLinkId()))
+        assertThat(subscriptionRepository.exists(subscription.getChatId(), subscription.getLinkId()))
                 .isTrue();
     }
 
     @Test
-    protected void saveSubscription_withRecurringSubscriptions_throwException() {
+    protected void saveSubscription_withDuplicateSubscription_throwException() {
         Subscription subscription =
                 createAndSaveExampleOfSubscription(1, LinkType.GIT_HUB, "https://github.com", List.of("tag1", "tag2"));
 
@@ -90,7 +91,7 @@ public abstract class AbstractSubscriptionRepositoryTest {
         Subscription removedSubscription =
                 subscriptionRepository.removeSubscription(subscription.getChatId(), subscription.getLinkId());
 
-        assertThat(subscriptionRepository.exist(subscription.getChatId(), subscription.getLinkId()))
+        assertThat(subscriptionRepository.exists(subscription.getChatId(), subscription.getLinkId()))
                 .isFalse();
         assertThat(removedSubscription).usingRecursiveComparison().isEqualTo(subscription);
     }

@@ -27,7 +27,7 @@ public class OrmSubscriptionRepositoryTest extends AbstractSubscriptionRepositor
         entityManager.flush();
         entityManager.clear();
 
-        assertThat(subscriptionRepository.exist(subscription.getChatId(), subscription.getLinkId()))
+        assertThat(subscriptionRepository.exists(subscription.getChatId(), subscription.getLinkId()))
                 .isFalse();
         assertThat(removedSubscription).usingRecursiveComparison().isEqualTo(subscription);
     }

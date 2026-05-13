@@ -32,8 +32,8 @@ public class SqlLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void update(Link link) {
-        linkDao.update(link);
+    public void updateLastCheckForLink(List<Link> link) {
+        linkDao.updateLastCheckForLink(link);
     }
 
     @Override

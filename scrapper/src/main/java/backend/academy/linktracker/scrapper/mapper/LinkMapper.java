@@ -17,6 +17,10 @@ public class LinkMapper {
         return linkEntities.stream().map(this::fromLinkEntity).toList();
     }
 
+    public List<LinkEntity> toListOfLinkEntity(List<Link> links) {
+        return links.stream().map(LinkEntity::fromDomain).toList();
+    }
+
     public Link fromLinkEntity(LinkEntity linkEntity) {
         return Link.restore(linkEntity.getId(), linkEntity.getType(), linkEntity.getUrl(), linkEntity.getLastCheck());
     }

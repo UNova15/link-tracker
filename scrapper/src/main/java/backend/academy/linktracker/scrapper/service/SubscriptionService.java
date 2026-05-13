@@ -47,7 +47,7 @@ public class SubscriptionService {
 
         Link link = linkService.findOrCreateLink(request.url());
 
-        if (subscriptionRepository.exist(chatId, link.getId())) {
+        if (subscriptionRepository.exists(chatId, link.getId())) {
             throw new LinkAlreadyRegistratedException(request.url(), chatId);
         }
 

@@ -131,13 +131,13 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    protected void update_withValidLink_updateLink() {
+    protected void update_withValidLink_updateLastCheckForLinkLink() {
         Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com1");
         Link savedLink = linkRepository.save(link);
         Instant oldTime = link.getLastCheck();
 
         savedLink.markCheckedNow();
-        linkRepository.update(savedLink);
+        linkRepository.updateLastCheckForLink(savedLink);
 
         Optional<Link> actualLinkOpt = linkRepository.findByUrl(link.getUrl());
         assertThat(actualLinkOpt).isPresent();

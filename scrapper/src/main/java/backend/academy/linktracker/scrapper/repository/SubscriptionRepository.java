@@ -13,5 +13,5 @@ public interface SubscriptionRepository {
 
     Subscription removeSubscription(long chatId, long linkId);
 
-    boolean exist(long chatId, long linkId);
+    boolean exists(long chatId, long linkId);
 }

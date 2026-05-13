@@ -43,7 +43,7 @@ public class SqlSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public boolean exist(long chatId, long linkId) {
+    public boolean exists(long chatId, long linkId) {
         return subscriptionDao.exists(chatId, linkId);
     }
 }

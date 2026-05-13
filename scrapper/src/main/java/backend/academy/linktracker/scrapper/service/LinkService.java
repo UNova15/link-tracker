@@ -2,9 +2,9 @@ package backend.academy.linktracker.scrapper.service;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.parser.LinkParser;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
+import backend.academy.linktracker.scrapper.util.LinkParser;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;

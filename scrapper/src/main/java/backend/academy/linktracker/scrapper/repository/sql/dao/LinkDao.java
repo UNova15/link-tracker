@@ -2,12 +2,16 @@ package backend.academy.linktracker.scrapper.repository.sql.dao;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.repository.sql.mapper.LinkRowMapper;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Repository;
 @Profile("sql")
 @AllArgsConstructor
 public class LinkDao {
+    private final JdbcTemplate template;
     private final JdbcClient jdbcClient;
     private final LinkRowMapper mapper;
 
@@ -52,14 +57,21 @@ public class LinkDao {
                 .list();
     }
 
-    public void update(Link link) {
-        jdbcClient
-                .sql("UPDATE links SET type=:type,url=:url,last_check=:lastCheck WHERE id=:linkId")
-                .param("type", link.getType().toString())
-                .param("url", link.getUrl())
-                .param("lastCheck", Timestamp.from(link.getLastCheck()))
-                .param("linkId", link.getId())
-                .update();
+    public void updateLastCheckForLink(List<Link> links) {
+        template.batchUpdate("UPDATE links SET last_check = ? WHERE id = ?", new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Link link = links.get(i);
+
+                ps.setTimestamp(1, Timestamp.from(link.getLastCheck()));
+                ps.setLong(2, link.getId());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return links.size();
+            }
+        });
     }
 
     public void removeByUrl(String url) {

@@ -18,7 +18,10 @@ logging:
       file: ecs
 
 app:
-  scheduler-interval: 6000
+  scheduler-interval: 3000
+  age-of-links: 6000
+
+  batch-size: ${BATCH_SIZE:100}
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}

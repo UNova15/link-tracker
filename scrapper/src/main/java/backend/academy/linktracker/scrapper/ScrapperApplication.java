@@ -14,3 +14,6 @@ public class ScrapperApplication {
         SpringApplication.run(ScrapperApplication.class, args);
     }
 }
+
+// TODO создать фабрику в бот сервисе для облегчения конструктора
+// TODO логгирование переделать

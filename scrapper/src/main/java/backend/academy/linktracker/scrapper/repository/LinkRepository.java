@@ -13,7 +13,7 @@ public interface LinkRepository {
 
     List<Link> findAllByIdIn(List<Long> linksId);
 
-    void update(Link link);
+    void updateLastCheckForLink(List<Link> link);
 
     void removeByUrl(String url);
 

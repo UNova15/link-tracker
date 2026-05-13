@@ -5,7 +5,7 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.GitHubDto;
 import backend.academy.linktracker.scrapper.dto.GitHubResponse;
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
-import backend.academy.linktracker.scrapper.parser.LinkParser;
+import backend.academy.linktracker.scrapper.util.LinkParser;
 import org.springframework.stereotype.Service;
 
 @Service

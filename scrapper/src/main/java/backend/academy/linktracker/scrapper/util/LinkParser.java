@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.parser;
+package backend.academy.linktracker.scrapper.util;
 
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.GitHubDto;

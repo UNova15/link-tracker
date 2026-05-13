@@ -5,7 +5,7 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.dto.StackOverflowResponse;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
-import backend.academy.linktracker.scrapper.parser.LinkParser;
+import backend.academy.linktracker.scrapper.util.LinkParser;
 import java.time.Instant;
 import org.springframework.stereotype.Service;
 

@@ -53,7 +53,7 @@ public class OrmSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public boolean exist(long chatId, long linkId) {
+    public boolean exists(long chatId, long linkId) {
         SubscriptionId subscriptionId = new SubscriptionId(chatId, linkId);
         return repository.existsById(subscriptionId);
     }

@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.tgclient;
+package backend.academy.linktracker.scrapper.messagesender;
 
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.exception.handler.TelegramBotHandler;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class TelegramBotClient {
+public class TelegramBotClient implements MessageSender {
     private final RestClient telegramClient;
     private final String updateEndpoint;
     private final TelegramBotHandler telegramBotHandler;
@@ -23,7 +23,8 @@ public class TelegramBotClient {
         this.telegramBotHandler = telegramBotHandler;
     }
 
-    public void sendUpdateRequest(LinkUpdate update) {
+    @Override
+    public void send(LinkUpdate update) {
         telegramClient
                 .post()
                 .uri(updateEndpoint)
