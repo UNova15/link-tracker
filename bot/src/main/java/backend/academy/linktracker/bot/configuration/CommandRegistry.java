@@ -3,22 +3,14 @@ package backend.academy.linktracker.bot.configuration;
 import backend.academy.linktracker.bot.handler.Handler;
 import backend.academy.linktracker.bot.handler.UnknownCommandHandler;
 import backend.academy.linktracker.bot.handler.command.CommandHandler;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
 
-@Component
+@AllArgsConstructor
 public class CommandRegistry {
     private final Map<String, CommandHandler> handlers;
     private final UnknownCommandHandler unknownCommandHandler;
-
-    public CommandRegistry(List<CommandHandler> handlers, UnknownCommandHandler unknownCommandHandler) {
-        this.unknownCommandHandler = unknownCommandHandler;
-        this.handlers = handlers.stream().collect(Collectors.toMap(CommandHandler::getName, Function.identity()));
-    }
 
     public Optional<Handler> getCommandHandler(String name) {
         return Optional.ofNullable(handlers.get(name));

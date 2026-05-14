@@ -26,7 +26,6 @@ public class GitHubClient {
                         .queryParam("since", lastCheck.toString())
                         .queryParam("sort", "updated")
                         .queryParam("direction", "desc")
-                        .queryParam("per_page", 1)
                         .build(owner, repo))
                 .retrieve()
                 .body(GitHubResponse[].class);

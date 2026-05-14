@@ -7,10 +7,11 @@ import backend.academy.linktracker.scrapper.dto.StackOverflowResponse;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import java.time.Instant;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowChecker extends LinkChecker {
+public class StackOverflowChecker extends ResourceRequester {
     private final StackOverflowClient client;
     private final LinkParser parser;
 
@@ -21,10 +22,11 @@ public class StackOverflowChecker extends LinkChecker {
     }
 
     @Override
-    public boolean checkLink(Link link) {
+    public Optional<String> check(Link link) {
         long questionId = parser.parseStackOverflowLink(link.getUrl());
         StackOverflowResponse<StackOverflowQuestion> response = client.sendURequestForUpdates(questionId);
-        return isUpdatedAfterLastCheck(response, link.getLastCheck());
+
+
     }
 
     private boolean isUpdatedAfterLastCheck(StackOverflowResponse<StackOverflowQuestion> response, Instant lastCheck) {

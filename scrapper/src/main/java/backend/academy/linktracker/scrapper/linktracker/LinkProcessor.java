@@ -4,12 +4,13 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.LinkChecker;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceRequester;
 import backend.academy.linktracker.scrapper.messagesender.MessageSender;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import lombok.AllArgsConstructor;
@@ -18,12 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class LinkProcessor {
-    private static final String UPDATE_MESSAGE = "Обновление ссылки";
     private static final String ERROR_MESSAGE = "Ошибка проверки ссылки: %s";
 
     private final MessageSender sender;
     private final SubscriptionRepository subscriptionRepository;
-    private final Map<LinkType, LinkChecker> checkers;
+    private final Map<LinkType, ResourceRequester> checkers;
 
     private final ExecutorService executorService;
     private final int numberOfThreads;
@@ -43,7 +43,7 @@ public class LinkProcessor {
             futures.add(CompletableFuture.runAsync(
                     () -> {
                         for (Link link : chunk) {
-                            processSingleLink(link);
+                            processLink(link);
                         }
                     },
                     executorService));
@@ -51,15 +51,13 @@ public class LinkProcessor {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 
-    private void processSingleLink(Link link) {
-        LinkChecker checker = checkers.get(link.getType());
+    private void processLink(Link link) {
+        ResourceRequester checker = checkers.get(link.getType());
 
         try {
-            boolean isUpdated = checker.checkLink(link);
+            Optional<String> message = checker.check(link);
 
-            if (isUpdated) {
-                sendNotification(link, UPDATE_MESSAGE);
-            }
+            message.ifPresent(mes -> sendNotification(link, mes));
 
             link.markCheckedNow();
         } catch (TelegramBotException exception) {

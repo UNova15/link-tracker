@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.util;
 
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.GitHubDto;
+import backend.academy.linktracker.scrapper.dto.IssueCredential;
 import backend.academy.linktracker.scrapper.exception.IncorrectLinkFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,16 +18,16 @@ public class LinkParser {
         } else if (STACK_OVERFLOW_PATTERN.matcher(url).find()) {
             return LinkType.STACK_OVERFLOW;
         } else {
-            throw new IncorrectLinkFormatException(String.format("Incorrect link type: %s", url));
+            throw new IncorrectLinkFormatException("Incorrect link type: %s".formatted(url));
         }
     }
 
-    public GitHubDto parseGitHubLink(String url) {
+    public IssueCredential parseGitHubLink(String url) {
         Matcher matcher = GIT_HUB_PATTERN.matcher(url);
         if (matcher.find()) {
-            return new GitHubDto(matcher.group(1), matcher.group(2));
+            return new IssueCredential(matcher.group(1), matcher.group(2));
         }
-        throw new IncorrectLinkFormatException(String.format("Incorrect GitHub link: %s", url));
+        throw new IncorrectLinkFormatException("Incorrect GitHub link: %s".formatted(url));
     }
 
     public long parseStackOverflowLink(String url) {
@@ -36,6 +36,6 @@ public class LinkParser {
         if (matcher.find()) {
             return Long.parseLong(matcher.group(1));
         }
-        throw new IncorrectLinkFormatException(String.format("Incorrect StackOverflow link: %s", url));
+        throw new IncorrectLinkFormatException("Incorrect StackOverflow link: %s".formatted(url));
     }
 }
