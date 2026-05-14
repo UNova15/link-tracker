@@ -2,7 +2,6 @@ package backend.academy.linktracker.scrapper.messagesender;
 
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.exception.handler.TelegramBotHandler;
-import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -11,15 +10,11 @@ import org.springframework.web.client.RestClient;
 @Component
 public class TelegramBotClient implements MessageSender {
     private final RestClient telegramClient;
-    private final String updateEndpoint;
     private final TelegramBotHandler telegramBotHandler;
 
     public TelegramBotClient(
-            @Qualifier("telegramBotHttpClient") RestClient telegramClient,
-            TelegramBotProperties properties,
-            TelegramBotHandler telegramBotHandler) {
+            @Qualifier("telegramBotHttpClient") RestClient telegramClient, TelegramBotHandler telegramBotHandler) {
         this.telegramClient = telegramClient;
-        this.updateEndpoint = properties.getUpdateEndpoint();
         this.telegramBotHandler = telegramBotHandler;
     }
 
@@ -27,7 +22,7 @@ public class TelegramBotClient implements MessageSender {
     public void send(LinkUpdate update) {
         telegramClient
                 .post()
-                .uri(updateEndpoint)
+                .uri("/updates")
                 .body(update)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, telegramBotHandler::handleTelegramError)

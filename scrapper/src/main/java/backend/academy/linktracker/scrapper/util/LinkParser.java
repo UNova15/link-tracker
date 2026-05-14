@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.util;
 
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.IssueCredential;
+import backend.academy.linktracker.scrapper.dto.github.IssueCredential;
 import backend.academy.linktracker.scrapper.exception.IncorrectLinkFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -24,7 +24,4 @@ public class StackoverflowProperties {
 
     @NotEmpty
     private String baseUrl;
-
-    @NotEmpty
-    private String questionEndpoint;
 }

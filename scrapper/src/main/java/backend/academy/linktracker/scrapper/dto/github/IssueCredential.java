@@ -1,3 +1,3 @@
-package backend.academy.linktracker.scrapper.dto;
+package backend.academy.linktracker.scrapper.dto.github;
 
 public record IssueCredential(String owner, String repo) {}

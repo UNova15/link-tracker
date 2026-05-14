@@ -137,7 +137,7 @@ public abstract class AbstractLinkRepositoryTest {
         Instant oldTime = link.getLastCheck();
 
         savedLink.markCheckedNow();
-        linkRepository.updateLastCheckForLink(savedLink);
+        linkRepository.updateLastCheckForLink(List.of(savedLink));
 
         Optional<Link> actualLinkOpt = linkRepository.findByUrl(link.getUrl());
         assertThat(actualLinkOpt).isPresent();

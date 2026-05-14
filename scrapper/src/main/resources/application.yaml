@@ -28,15 +28,12 @@ app:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
-    question-endpoint: /questions/{id}
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
-    issues-endpoint: /repos/{owner}/{repo}/issues
 
   telegram-bot:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
-    update-endpoint: /updates
 
 

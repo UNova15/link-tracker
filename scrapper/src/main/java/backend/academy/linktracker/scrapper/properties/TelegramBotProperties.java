@@ -18,7 +18,4 @@ public class TelegramBotProperties {
 
     @NotEmpty
     private String baseUrl;
-
-    @NotEmpty
-    private String updateEndpoint;
 }

@@ -2,13 +2,14 @@ package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.IssueCredential;
-import backend.academy.linktracker.scrapper.dto.GitHubResponse;
+import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
+import backend.academy.linktracker.scrapper.dto.github.IssueCredential;
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.ResponseFormatter;
-import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GitHubRequester extends ResourceRequester {
@@ -26,10 +27,10 @@ public class GitHubRequester extends ResourceRequester {
     @Override
     public Optional<String> check(Link link) {
         IssueCredential credentials = parser.parseGitHubLink(link.getUrl());
-        GitHubResponse[] response =
-            client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastCheck());
+        List<GitHubResponse> response =
+                client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastCheck());
 
-        if (response != null && response.length != 0) {
+        if (response != null && !response.isEmpty()) {
             String formattedResponse = formatter.formatGitHubResponse(response);
             return Optional.of(formattedResponse);
         }
