@@ -15,18 +15,18 @@ public class ResponseFormatter {
     private static final int MAX_DESCRIPTION_SIZE = 200;
 
     private static final String GITHUB_PATTERN = """
-            *Обновление в GitHub*
-            Название Issue/PR: %s
-            Имя пользователя: %s
-            Время создания: %s
-            Описание: %s
+            *Обновление в GitHub*%n\
+            Название Issue/PR: %s%n\
+            Имя пользователя: %s%n\
+            Время создания: %s%n\
+            Описание: %s\
             """;
     private static final String STACK_OVERFLOW_PATTERN = """
-            *Обновление в StackOverFlow*
-            Вопрос: %s
-            Имя пользователя: %s
-            Время создания: %s
-            %s: %s
+             *Обновление в StackOverFlow*%n\
+            Вопрос: %s%n\
+            Имя пользователя: %s%n\
+            Время создания: %s%n\
+            %s: %s\
             """;
 
     public String formatStackOverflowResponse(

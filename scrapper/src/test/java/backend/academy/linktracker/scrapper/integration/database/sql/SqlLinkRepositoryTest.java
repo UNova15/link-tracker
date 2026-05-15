@@ -4,5 +4,4 @@ import backend.academy.linktracker.scrapper.integration.database.AbstractLinkRep
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("sql")
-public class SqlLinkRepositoryTest extends AbstractLinkRepositoryTest {
-}
+public class SqlLinkRepositoryTest extends AbstractLinkRepositoryTest {}

@@ -1,10 +1,15 @@
 package backend.academy.linktracker.scrapper.integration.database.orm;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.integration.database.AbstractLinkRepositoryTest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.junit.jupiter.api.Test;
@@ -12,17 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("orm")
 public class OrmLinkRepositoryTest extends AbstractLinkRepositoryTest {
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+
     @Autowired
     private EntityManager entityManager;
 
@@ -83,7 +84,7 @@ public class OrmLinkRepositoryTest extends AbstractLinkRepositoryTest {
         Statistics statistics = sessionFactory.getStatistics();
         statistics.clear();
 
-        linkRepository.findLinksFilteredByDelayTime(lastCheckId,countOfLinks,delayTime);
+        linkRepository.findLinksFilteredByDelayTime(lastCheckId, countOfLinks, delayTime);
 
         assertThat(statistics.getPrepareStatementCount()).isEqualTo(1);
         assertThat(statistics.getEntityLoadCount()).isEqualTo(countOfLinks);

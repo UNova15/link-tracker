@@ -40,8 +40,8 @@ public class LinkTracker {
             }
             processor.runProcessLinks(activeLinks);
 
-            //использовал @Transactional для решения проблемы N+1 при merge Hibernate, но кажется что
-            //это не оптимальное решение
+            // использовал @Transactional для решения проблемы N+1 при merge Hibernate, но кажется что
+            // это не оптимальное решение
             linkRepository.updateLastCheckForLink(activeLinks);
             lastCheckId = activeLinks.getLast().getId();
         }

@@ -75,9 +75,9 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> links = linkRepository.findLinksFilteredByDelayTime(lastCheckId, linksLimit, delayTime);
 
         assertThat(links)
-            .hasSize(3)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-            .containsExactlyInAnyOrder(link1, link2, link3);
+                .hasSize(3)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
@@ -117,9 +117,9 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> actualLinks = linkRepository.findAllByIdIn(linkIds);
 
         assertThat(actualLinks)
-            .hasSize(3)
-            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-            .containsExactlyInAnyOrder(link1, link2, link3);
+                .hasSize(3)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
