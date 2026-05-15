@@ -14,12 +14,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowChecker extends ResourceRequester {
+public class StackOverflowRequester extends ResourceRequester {
     private final StackOverflowClient client;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
 
-    public StackOverflowChecker(StackOverflowClient client, LinkParser parser, ResponseFormatter formatter) {
+    public StackOverflowRequester(StackOverflowClient client, LinkParser parser, ResponseFormatter formatter) {
         super(LinkType.STACK_OVERFLOW);
         this.client = client;
         this.parser = parser;

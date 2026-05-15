@@ -9,6 +9,7 @@ import backend.academy.linktracker.scrapper.integration.TestcontainersConfigurat
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    protected void findLinksFilteredByDelayTime_withUnupdatedLinks_returnUnupdatedLinks() {
+    protected void findLinksFilteredByDelayTime_withNonUpdatedLinks_returnUnupdatedLinks() {
         long lastCheckId = 0;
         long linksLimit = 10;
 
@@ -74,9 +75,9 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> links = linkRepository.findLinksFilteredByDelayTime(lastCheckId, linksLimit, delayTime);
 
         assertThat(links)
-                .hasSize(3)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-                .containsExactlyInAnyOrder(link1, link2, link3);
+            .hasSize(3)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+            .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
@@ -116,9 +117,9 @@ public abstract class AbstractLinkRepositoryTest {
         List<Link> actualLinks = linkRepository.findAllByIdIn(linkIds);
 
         assertThat(actualLinks)
-                .hasSize(3)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-                .containsExactlyInAnyOrder(link1, link2, link3);
+            .hasSize(3)
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+            .containsExactlyInAnyOrder(link1, link2, link3);
     }
 
     @Test
@@ -132,22 +133,35 @@ public abstract class AbstractLinkRepositoryTest {
 
     @Test
     protected void update_withValidLink_updateLastCheckForLinkLink() {
-        Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com1");
-        Link savedLink = linkRepository.save(link);
-        Instant oldTime = link.getLastCheck();
+        int linkCount = 5;
+        List<Link> links = new ArrayList<>();
+        List<Instant> creationTimes = new ArrayList<>();
 
-        savedLink.markCheckedNow();
-        linkRepository.updateLastCheckForLink(List.of(savedLink));
+        for (int i = 0; i < linkCount; i++) {
+            Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com" + i);
+            creationTimes.add(link.getLastCheck());
+            Link savedLink = linkRepository.save(link);
+            links.add(savedLink);
+        }
 
-        Optional<Link> actualLinkOpt = linkRepository.findByUrl(link.getUrl());
-        assertThat(actualLinkOpt).isPresent();
+        for (var link : links) {
+            link.markCheckedNow();
+        }
 
-        Link actualLink = actualLinkOpt.get();
+        linkRepository.updateLastCheckForLink(links);
 
-        assertThat(actualLink.getType()).isEqualTo(savedLink.getType());
-        assertThat(actualLink.getUrl()).isEqualTo(savedLink.getUrl());
-        assertThat(actualLink.getLastCheck()).isEqualTo(savedLink.getLastCheck());
-        assertThat(actualLink.getLastCheck()).isAfter(oldTime);
+        for (int i = 0; i < linkCount; i++) {
+            Link link = links.get(i);
+            Optional<Link> actualLinkOpt = linkRepository.findByUrl(link.getUrl());
+
+            assertThat(actualLinkOpt).isPresent();
+            Link actualLink = actualLinkOpt.get();
+
+            assertThat(actualLink.getType()).isEqualTo(link.getType());
+            assertThat(actualLink.getUrl()).isEqualTo(link.getUrl());
+            assertThat(actualLink.getLastCheck()).isEqualTo(link.getLastCheck());
+            assertThat(actualLink.getLastCheck()).isAfter(creationTimes.get(i));
+        }
     }
 
     @Test

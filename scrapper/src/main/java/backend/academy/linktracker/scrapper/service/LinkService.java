@@ -41,6 +41,7 @@ public class LinkService {
         linkRepository.removeByUrl(url);
     }
 
+    @Transactional
     public void removeUntraceableLinks(long linkId, String link) {
         if (subscriptionRepository.findChatsIdByLinkId(linkId).isEmpty()) {
             deleteLink(link);
