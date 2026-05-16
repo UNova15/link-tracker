@@ -1,0 +1,6 @@
+app:
+  github:
+    token: "test-github-token"
+  stackoverflow:
+    key: "test-stackoverflow-key"
+    access-token: "test-stackoverflow-token"

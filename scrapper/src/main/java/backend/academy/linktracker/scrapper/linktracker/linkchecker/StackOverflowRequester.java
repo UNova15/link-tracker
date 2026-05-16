@@ -50,6 +50,10 @@ public class StackOverflowRequester extends ResourceRequester {
 
     private List<StackOverflowContent> filterContentByCreationDate(
             List<StackOverflowContent> content, Instant lastCheck) {
+        if (content == null) {
+            return List.of();
+        }
+
         return content.stream()
                 .filter(comment -> Instant.ofEpochSecond(comment.creationDate()).isAfter(lastCheck))
                 .toList();
