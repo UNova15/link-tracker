@@ -10,7 +10,6 @@ import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import lombok.AllArgsConstructor;
@@ -55,9 +54,13 @@ public class LinkProcessor {
         ResourceRequester checker = checkers.get(link.getType());
 
         try {
-            Optional<String> message = checker.check(link);
+            checker.check(link).ifPresent(mes -> {
+                sendNotification(link, mes.text());
 
-            message.ifPresent(mes -> sendNotification(link, mes));
+                if(mes.newUpdateTime()!=null) {
+                    link.updateLastUpdateTime(mes.newUpdateTime());
+                }
+            });
 
             link.markCheckedNow();
         } catch (TelegramBotException exception) {

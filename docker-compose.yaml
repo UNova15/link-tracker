@@ -22,6 +22,7 @@ services:
       dockerfile: scrapper/Dockerfile
 
     environment:
+      TZ: UTC
       SERVER_PORT: 8081
       APP_TELEGRAM_BOT_BASE_URL: http://bot:8080
       STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}

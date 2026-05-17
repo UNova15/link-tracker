@@ -60,7 +60,7 @@ public class ResponseFormatter {
         String previewDescription = formatPreview(responses.description());
 
         return GITHUB_PATTERN.formatted(
-                responses.title(), responses.user().login(), responses.updatedAt(), previewDescription);
+                responses.title(), responses.user().login(), responses.createdAt(), previewDescription);
     }
 
     private String formatPreview(String description) {

@@ -55,7 +55,7 @@ public class OrmLinkRepositoryTest extends AbstractLinkRepositoryTest {
         Statistics statistics = sessionFactory.getStatistics();
         statistics.clear();
 
-        linkRepository.updateLastCheckForLink(links);
+        linkRepository.updateLastCheckAndLastUpdate(links);
 
         entityManager.flush();
 

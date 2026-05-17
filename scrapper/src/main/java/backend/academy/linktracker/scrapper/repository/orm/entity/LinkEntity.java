@@ -36,7 +36,10 @@ public class LinkEntity {
     @Column(name = "last_check", nullable = false)
     private Instant lastCheck;
 
+    @Column(name = "last_update")
+    private Instant lastUpdate;
+
     public static LinkEntity fromDomain(Link link) {
-        return new LinkEntity(link.getId(), link.getType(), link.getUrl(), link.getLastCheck());
+        return new LinkEntity(link.getId(), link.getType(), link.getUrl(), link.getLastCheck(),link.getLastUpdate());
     }
 }

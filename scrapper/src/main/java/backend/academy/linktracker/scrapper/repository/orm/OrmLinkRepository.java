@@ -39,7 +39,7 @@ public class OrmLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void updateLastCheckForLink(List<Link> links) {
+    public void updateLastCheckAndLastUpdate(List<Link> links) {
         List<LinkEntity> linkEntities = linkMapper.toListOfLinkEntity(links);
         repository.saveAll(linkEntities);
     }

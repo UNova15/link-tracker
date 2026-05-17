@@ -22,7 +22,7 @@ public class LinkMapper {
     }
 
     public Link fromLinkEntity(LinkEntity linkEntity) {
-        return Link.restore(linkEntity.getId(), linkEntity.getType(), linkEntity.getUrl(), linkEntity.getLastCheck());
+        return Link.restore(linkEntity.getId(), linkEntity.getType(), linkEntity.getUrl(), linkEntity.getLastCheck(),linkEntity.getLastUpdate());
     }
 
     public ListLinksResponse toListLinkResponse(List<Subscription> subscriptions, List<Link> links) {
