@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class LinkTracker {
     private long batchSize;
 
     @Scheduled(fixedDelayString = "${app.scheduler-interval}")
-    @Transactional
     public void sendNotification() {
         // Время, позже которого ссылки считаются устаревшими.
         // Если с последнего момента обновления ссылки прошло более scanTime миллисекунд ссылка считается устаревшей
@@ -40,6 +38,7 @@ public class LinkTracker {
             }
             processor.runProcessLinks(activeLinks);
 
+            // для orm реализации будет n+1 запрос из за merge jpa пофиксить не смог
             linkRepository.updateLastCheckAndLastUpdate(activeLinks);
             lastCheckId = activeLinks.getLast().getId();
         }

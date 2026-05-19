@@ -54,15 +54,13 @@ public class LinkProcessor {
         ResourceRequester checker = checkers.get(link.getType());
 
         try {
-            checker.check(link).ifPresent(mes -> {
-                sendNotification(link, mes.text());
+            checker.check(link).ifPresent(message -> {
+                sendNotification(link, message.text());
 
-                if(mes.newUpdateTime()!=null) {
-                    link.updateLastUpdateTime(mes.newUpdateTime());
+                if (message.newUpdateTime() != null) {
+                    link.updateLastUpdateTime(message.newUpdateTime());
                 }
             });
-
-            link.markCheckedNow();
         } catch (TelegramBotException exception) {
             log.error(
                     "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
@@ -71,6 +69,8 @@ public class LinkProcessor {
         } catch (Exception exception) {
             log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
             sendNotification(link, ERROR_MESSAGE.formatted(link.getUrl()));
+        } finally {
+            link.markCheckedNow();
         }
     }
 

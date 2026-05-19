@@ -102,11 +102,11 @@ public class GitHubAndStackOverflowApiTest {
                       {
                         "title": "Test Issue",
                         "user": { "login": "test_user" },
-                        "updated_at": "2026-05-10T12:00:00Z",
+                        "updated_at": "%s",
                         "body": "This is a test description"
                       }
                     ]
-                    """)));
+                    """.formatted(Instant.now().plusSeconds(10)))));
 
         linkProcessor.runProcessLinks(List.of(link));
 
@@ -199,11 +199,11 @@ public class GitHubAndStackOverflowApiTest {
                       {
                         "title": "Test Issue",
                         "user": { "login": "test_user" },
-                        "updated_at": "2026-05-10T12:00:00Z",
+                        "updated_at": "%s",
                         "body": "This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description"
                       }
                     ]
-                    """)));
+                    """.formatted(Instant.now().plusSeconds(10)))));
 
         linkProcessor.runProcessLinks(List.of(link));
 
@@ -267,11 +267,11 @@ public class GitHubAndStackOverflowApiTest {
                       {
                         "title": "Test Issue",
                         "user": { "login": "test_user" },
-                        "updated_at": "2026-05-10T12:00:00Z",
+                        "updated_at": "%s",
                         "body": "This is a test description"
                       }
                     ]
-                    """)));
+                    """.formatted(Instant.now().plusSeconds(10)))));
 
         github.stubFor(WireMock.get(WireMock.urlPathMatching("/repos/UNova15/my_project2/issues"))
                 .willReturn(aResponse().withStatus(500)));
@@ -293,8 +293,8 @@ public class GitHubAndStackOverflowApiTest {
                 .contains("This is a test description");
 
         LinkUpdate secondUpdate = captor.getAllValues().getLast();
-        assertThat(secondUpdate.id()).isEqualTo(link1.getId());
-        assertThat(secondUpdate.url()).isEqualTo(link1.getUrl());
+        assertThat(secondUpdate.id()).isEqualTo(link2.getId());
+        assertThat(secondUpdate.url()).isEqualTo(link2.getUrl());
         assertThat(secondUpdate.tgChatIds()).containsExactly(chat.getChatId());
 
         assertThat(secondUpdate.description())

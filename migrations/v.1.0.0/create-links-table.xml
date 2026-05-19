@@ -18,7 +18,9 @@
             <column name="last_check" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_update" type="timestamp"/>
+            <column name="last_update" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createIndex tableName="links" indexName="ix_links_last_check">

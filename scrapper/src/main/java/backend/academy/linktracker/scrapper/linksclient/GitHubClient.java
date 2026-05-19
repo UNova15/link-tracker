@@ -18,20 +18,17 @@ public class GitHubClient {
     }
 
     // Проверка обновления issues в github
-    public List<GitHubResponse> sendURequestForUpdates(String owner, String repo, Instant lastCheck) {
+    public List<GitHubResponse> sendURequestForUpdates(String owner, String repo, Instant lastUpdate) {
+        String sinceTime = lastUpdate.truncatedTo(ChronoUnit.SECONDS).toString();
 
         return gitHubClient
                 .get()
-                .uri(uriBuilder -> {
-                    uriBuilder.path("/repos/{owner}/{repo}/issues")
+                .uri(uriBuilder -> uriBuilder
+                        .path("/repos/{owner}/{repo}/issues")
                         .queryParam("sort", "created")
-                        .queryParam("direction", "desc");
-
-                    if(lastCheck!=null) {
-                        uriBuilder.queryParam("since",lastCheck.truncatedTo(ChronoUnit.SECONDS).toString());
-                    }
-                    return uriBuilder.build(owner, repo);
-                })
+                        .queryParam("direction", "desc")
+                        .queryParam("since", sinceTime)
+                        .build(owner, repo))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
     }

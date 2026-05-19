@@ -14,16 +14,13 @@ public class LinkRowMapper implements RowMapper<Link> {
     @Override
     public Link mapRow(ResultSet rs, int rowNum) throws SQLException {
         Timestamp lastUpdateTimeStamp = rs.getTimestamp("last_update");
-        Instant lastUpdate = lastUpdateTimeStamp !=null
-            ? lastUpdateTimeStamp.toInstant()
-            : null;
+        Instant lastUpdate = lastUpdateTimeStamp != null ? lastUpdateTimeStamp.toInstant() : null;
 
         return Link.restore(
                 rs.getLong("id"),
                 LinkType.valueOf(rs.getString("type")),
                 rs.getString("url"),
                 rs.getTimestamp("last_check").toInstant(),
-                lastUpdate
-        );
+                lastUpdate);
     }
 }
