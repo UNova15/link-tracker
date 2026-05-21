@@ -9,10 +9,10 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TelegramBotHandler {
+public class TelegramBotExceptionHandler {
     private final ObjectMapper mapper;
 
-    public TelegramBotHandler() {
+    public TelegramBotExceptionHandler() {
         this.mapper = new ObjectMapper();
     }
 

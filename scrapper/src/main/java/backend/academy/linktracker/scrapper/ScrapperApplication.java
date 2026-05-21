@@ -13,4 +13,6 @@ public class ScrapperApplication {
     static void main(String[] args) {
         SpringApplication.run(ScrapperApplication.class, args);
     }
+
+    //TODO переделать профили на Conditional для бд
 }

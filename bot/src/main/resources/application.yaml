@@ -5,6 +5,16 @@ spring:
   application:
     name: bot
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    consumer:
+      group-id: telegram-bot-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.default.type: backend.academy.linktracker.bot.dto.LinkUpdate
+
 logging:
   file:
     name: bot/log/application.log
@@ -13,6 +23,8 @@ logging:
       file: ecs
 
 app:
+  topic-name: ${APP_TOPIC_NAME}
+
   telegram:
     url: https://api.telegram.org/bot
     token: ${TELEGRAM_BOT_TOKEN}

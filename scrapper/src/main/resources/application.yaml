@@ -2,6 +2,14 @@ server:
   port: ${SERVER_PORT:8081}
 
 spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring.json.add.type.headers: false
+
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
@@ -18,9 +26,10 @@ logging:
       file: ecs
 
 app:
+  sender: ${MESSAGE_SENDER}
+  topic-name: ${APP_TOPIC_NAME}
   scheduler-interval: 3000
   age-of-links: 6000
-
   batch-size: 100
   number-of-threads: 4
 
@@ -33,7 +42,5 @@ app:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
 
-  telegram-bot:
-    base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
-
-
+  telegram:
+    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}

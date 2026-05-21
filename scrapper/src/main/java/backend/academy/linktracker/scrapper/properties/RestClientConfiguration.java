@@ -1,13 +1,14 @@
 package backend.academy.linktracker.scrapper.properties;
 
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration
 @AllArgsConstructor
-public class ClientConfiguration {
+public class RestClientConfiguration {
     private final GithubProperties githubProperties;
 
     @Bean
@@ -25,6 +26,7 @@ public class ClientConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "app",name = "sender", havingValue = "rest")
     public RestClient telegramBotHttpClient(TelegramBotProperties properties) {
         return RestClient.builder().baseUrl(properties.getBaseUrl()).build();
     }
