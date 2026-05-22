@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
+import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest("spring.main.lazy-initialization=true")
+@SpringBootTest({"spring.main.lazy-initialization=true",
+    "app.sender=http"
+})
 @Transactional
 @Import(TestContainersConfiguration.class)
 public abstract class AbstractChatRepositoryTest {
@@ -23,6 +26,9 @@ public abstract class AbstractChatRepositoryTest {
 
     @MockitoBean
     protected LinkTracker linkTracker;
+
+    @MockitoBean
+    private KafkaClient kafkaClient;
 
     @Test
     protected void save_withValidChat_saveLink() {

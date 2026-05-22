@@ -1,11 +1,11 @@
 package backend.academy.linktracker.bot.handler.statehandler;
 
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.handler.StateChanger;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import java.util.List;

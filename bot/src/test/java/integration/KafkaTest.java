@@ -1,8 +1,13 @@
 package integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+
 import backend.academy.linktracker.bot.dto.LinkUpdate;
 import backend.academy.linktracker.bot.kafka.UpdatesListener;
 import backend.academy.linktracker.bot.service.UpdateService;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,20 +23,15 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.kafka.KafkaContainer;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
-
-
-@SpringBootTest(classes = {UpdatesListener.class},
-    properties = {
-        "app.kafka.topic-name=test-topic",
-        "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
-        "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
-        "spring.kafka.consumer.group-id=test-group",
-    })
+@SpringBootTest(
+        classes = {UpdatesListener.class},
+        properties = {
+            "app.kafka.topic-name=test-topic",
+            "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
+            "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
+            "spring.kafka.consumer.group-id=test-group",
+        })
 @ImportAutoConfiguration(KafkaAutoConfiguration.class)
 @Import(KafkaConfiguration.class)
 @EnableKafka
@@ -43,7 +43,7 @@ public class KafkaTest {
     private UpdateService updateService;
 
     @Autowired
-    private KafkaTemplate<String,LinkUpdate> kafka;
+    private KafkaTemplate<String, LinkUpdate> kafka;
 
     @DynamicPropertySource
     static void settingProperties(DynamicPropertyRegistry registry) {

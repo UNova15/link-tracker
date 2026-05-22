@@ -21,10 +21,10 @@ public class KafkaConfiguration {
     private int partitions;
 
     @Bean
-    public NewTopic updates(){
+    public NewTopic updates() {
         return TopicBuilder.name(topicName)
-            .partitions(replicas)
-            .replicas(partitions)
-            .build();
+                .partitions(replicas)
+                .replicas(partitions)
+                .build();
     }
 }

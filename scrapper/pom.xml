@@ -116,7 +116,6 @@
         <!--     <artifactId>spring-boot-starter-data-redis</artifactId> -->
         <!-- </dependency> -->
 
-
         <!-- Opentelemetry support: -->
         <!-- <dependency> -->
         <!--     <groupId>org.springframework.boot</groupId> -->

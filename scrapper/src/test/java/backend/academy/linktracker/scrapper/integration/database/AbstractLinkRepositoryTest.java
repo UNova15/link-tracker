@@ -7,6 +7,7 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
+import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest("spring.main.lazy-initialization=true")
+@SpringBootTest({"spring.main.lazy-initialization=true",
+    "app.sender=http"
+})
 @Transactional
 @Import(TestContainersConfiguration.class)
 public abstract class AbstractLinkRepositoryTest {
@@ -30,6 +33,9 @@ public abstract class AbstractLinkRepositoryTest {
 
     @MockitoBean
     protected LinkTracker linkTracker;
+
+    @MockitoBean
+    private KafkaClient kafkaClient;
 
     @Test
     protected void save_withValidLink_saveLink() {

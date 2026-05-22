@@ -1,6 +1,8 @@
 package integration;
 
 import backend.academy.linktracker.bot.dto.LinkUpdate;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -12,22 +14,18 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
-import java.util.HashMap;
-import java.util.Map;
 
 @TestConfiguration
 public class KafkaConfiguration {
 
     @Bean
     NewTopic testTopic() {
-        return TopicBuilder.name("test-topic")
-            .replicas(1)
-            .partitions(1)
-            .build();
+        return TopicBuilder.name("test-topic").replicas(1).partitions(1).build();
     }
 
     @Bean
-    ProducerFactory<String, LinkUpdate> producerFactory(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
+    ProducerFactory<String, LinkUpdate> producerFactory(
+            @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);

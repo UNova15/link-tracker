@@ -21,12 +21,10 @@ public class KafkaClient implements MessageSender {
 
     @Override
     public void send(LinkUpdate update) {
-        kafka.send(topicName, update.url(), update)
-            .whenComplete((res, ex) -> {
-                if (ex != null) {
-                    log.error("Error to send message to Kafka: {}, exception: {}", update, ex.getMessage());
-                }
-            });
-
+        kafka.send(topicName, update.url(), update).whenComplete((res, ex) -> {
+            if (ex != null) {
+                log.error("Error to send message to Kafka: {}, exception: {}", update, ex.getMessage());
+            }
+        });
     }
 }

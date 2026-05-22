@@ -16,14 +16,13 @@ public class ScrapperClientConfiguration {
 
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(
-        @Value("${app.scrapper.base-url}") String baseUrl,
-        ScrapperErrorHandler errorHandler) {
+            @Value("${app.scrapper.base-url}") String baseUrl, ScrapperErrorHandler errorHandler) {
 
         RestClient restClient = RestClient.builder()
-            .baseUrl(baseUrl)
-            .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
-            .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperServerError)
-            .build();
+                .baseUrl(baseUrl)
+                .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
+                .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperServerError)
+                .build();
 
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         return HttpServiceProxyFactory.builderFor(adapter).build();

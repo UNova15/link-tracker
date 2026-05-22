@@ -6,12 +6,12 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.handler.command.StartHandler;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.state.NewState;
 import org.junit.jupiter.api.Test;

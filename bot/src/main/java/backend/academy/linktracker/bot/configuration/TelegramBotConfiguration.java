@@ -1,7 +1,6 @@
 package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.bot.telegramservice.BotUpdateListener;
-import backend.academy.linktracker.bot.properties.TelegramProperties;
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

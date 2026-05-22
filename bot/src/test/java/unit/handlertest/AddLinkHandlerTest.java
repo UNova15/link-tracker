@@ -8,13 +8,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
 import backend.academy.linktracker.bot.handler.statehandler.AddLinkHandler;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.state.NewState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;

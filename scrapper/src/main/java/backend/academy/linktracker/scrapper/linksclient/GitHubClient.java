@@ -1,35 +1,18 @@
 package backend.academy.linktracker.scrapper.linksclient;
 
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpExchange;
 
-@Component
-public class GitHubClient {
-    private final RestClient gitHubClient;
+@HttpExchange("/repos/{owner}/{repo}/issues")
+public interface GitHubClient {
 
-    public GitHubClient(@Qualifier("gitHubHttpClient") RestClient gitHubClient) {
-        this.gitHubClient = gitHubClient;
-    }
-
-    // Проверка обновления issues в github
-    public List<GitHubResponse> sendURequestForUpdates(String owner, String repo, Instant lastUpdate) {
-        String sinceTime = lastUpdate.truncatedTo(ChronoUnit.SECONDS).toString();
-
-        return gitHubClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/repos/{owner}/{repo}/issues")
-                        .queryParam("sort", "created")
-                        .queryParam("direction", "desc")
-                        .queryParam("since", sinceTime)
-                        .build(owner, repo))
-                .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
-    }
+    @GetExchange
+    List<GitHubResponse> sendURequestForUpdates(
+            @PathVariable("owner") String owner,
+            @PathVariable("repo") String repo,
+            @RequestParam("since") String sinceTime);
 }

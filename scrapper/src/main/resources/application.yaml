@@ -26,7 +26,7 @@ logging:
       file: ecs
 
 app:
-  sender: ${MESSAGE_SENDER}
+  sender: ${MESSAGE_SENDER:mq}
   kafka:
       topic-name: ${APP_TOPIC_NAME}
       replicas: ${REPLICA_FACTOR}

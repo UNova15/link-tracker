@@ -37,7 +37,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest("spring.main.lazy-initialization=true")
+@SpringBootTest({"spring.main.lazy-initialization=true",
+    "app.sender=http"
+})
 @Import(TestContainersConfiguration.class)
 @Transactional
 @ActiveProfiles({"sql", "test"})

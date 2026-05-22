@@ -35,7 +35,8 @@ public class StackOverflowRequester extends ResourceRequester {
     public Optional<CheckResult> check(Link link) {
         long questionId = parser.parseStackOverflowLink(link.getUrl());
 
-        StackOverflowResponse response = client.sendURequestForUpdates(questionId, link.getLastUpdate());
+        StackOverflowResponse response =
+                client.sendURequestForUpdates(questionId, link.getLastUpdate().getEpochSecond());
 
         if (response == null || response.items() == null || response.items().isEmpty()) {
             return Optional.empty();

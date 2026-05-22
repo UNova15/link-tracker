@@ -22,7 +22,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest("spring.main.lazy-initialization=true")
+@SpringBootTest({"spring.main.lazy-initialization=true",
+    "app.sender=http"
+})
 @Transactional
 @Import(TestContainersConfiguration.class)
 public abstract class AbstractSubscriptionRepositoryTest {
@@ -64,14 +66,18 @@ public abstract class AbstractSubscriptionRepositoryTest {
         return subscription;
     }
 
-    // TODO дописать проверку вставки тегов
     @Test
     protected void saveSubscription_withValidSubscription_saveSubscription() {
-        Subscription subscription =
-                createAndSaveExampleOfSubscription(1, LinkType.GIT_HUB, "https://github.com", List.of("tag1", "tag2"));
+        List<String> tags = List.of("tag1", "tag2");
+        Subscription subscription = createAndSaveExampleOfSubscription(1, LinkType.GIT_HUB, "https://github.com", tags);
 
         assertThat(subscriptionRepository.exists(subscription.getChatId(), subscription.getLinkId()))
                 .isTrue();
+
+        List<Subscription> subscriptions = subscriptionRepository.findSubscriptionsByChatId(1);
+        assertThat(subscriptions).hasSize(1);
+        Subscription actualSubscription = subscriptions.getFirst();
+        assertThat(actualSubscription.getTags()).isEqualTo(tags);
     }
 
     @Test

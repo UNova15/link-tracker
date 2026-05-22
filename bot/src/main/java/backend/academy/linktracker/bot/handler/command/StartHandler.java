@@ -1,10 +1,10 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.exception.ScrapperClientException;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;

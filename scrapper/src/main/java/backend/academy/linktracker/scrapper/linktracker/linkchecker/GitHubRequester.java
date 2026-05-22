@@ -10,6 +10,7 @@ import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.RequesterUtil;
 import backend.academy.linktracker.scrapper.util.ResponseFormatter;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,9 @@ public class GitHubRequester extends ResourceRequester {
     public Optional<CheckResult> check(Link link) {
         IssueCredential credentials = parser.parseGitHubLink(link.getUrl());
 
+        String sinceTime = link.getLastUpdate().truncatedTo(ChronoUnit.SECONDS).toString();
         List<GitHubResponse> response =
-                client.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastUpdate());
+                client.sendURequestForUpdates(credentials.owner(), credentials.repo(), sinceTime);
 
         if (response == null || response.isEmpty()) {
             return Optional.empty();
