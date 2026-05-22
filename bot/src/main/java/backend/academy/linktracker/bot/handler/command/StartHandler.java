@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;

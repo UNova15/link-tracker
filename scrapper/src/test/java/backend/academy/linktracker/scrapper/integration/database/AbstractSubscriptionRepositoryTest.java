@@ -7,7 +7,7 @@ import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Subscription;
-import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
+import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest("spring.main.lazy-initialization=true")
 @Transactional
-@Import(TestcontainersConfiguration.class)
+@Import(TestContainersConfiguration.class)
 public abstract class AbstractSubscriptionRepositoryTest {
 
     @Autowired

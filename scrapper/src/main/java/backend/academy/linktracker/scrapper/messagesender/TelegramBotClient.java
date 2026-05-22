@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+//TODO тоже переписать в декларативном стиле
 @Component
 @ConditionalOnProperty(prefix = "app",name = "sender", havingValue = "rest")
 public class TelegramBotClient implements MessageSender {

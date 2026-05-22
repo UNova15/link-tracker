@@ -16,7 +16,7 @@ public class KafkaClient implements MessageSender {
 
     private final KafkaTemplate<String, LinkUpdate> kafka;
 
-    @Value("${app.topic-name}")
+    @Value("${app.kafka.topic-name}")
     private String topicName;
 
     @Override

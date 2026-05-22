@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.client.telegram;
+package backend.academy.linktracker.bot.telegramservice;
 
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.state.State;

@@ -1,18 +1,41 @@
 package backend.academy.linktracker.bot.configuration;
 
-import backend.academy.linktracker.bot.properties.ScrapperClientProperties;
-import lombok.AllArgsConstructor;
+import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
-@AllArgsConstructor
 public class ScrapperClientConfiguration {
-    private final ScrapperClientProperties properties;
 
     @Bean
-    public RestClient scrapperClient() {
-        return RestClient.builder().baseUrl(properties.getBaseUrl()).build();
+    public HttpServiceProxyFactory httpServiceProxyFactory(
+        @Value("${app.scrapper.base-url}") String baseUrl,
+        ScrapperErrorHandler errorHandler) {
+
+        RestClient restClient = RestClient.builder()
+            .baseUrl(baseUrl)
+            .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
+            .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperServerError)
+            .build();
+
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        return HttpServiceProxyFactory.builderFor(adapter).build();
+    }
+
+    @Bean
+    public ScrapperChatClient scrapperChatClient(HttpServiceProxyFactory factory) {
+        return factory.createClient(ScrapperChatClient.class);
+    }
+
+    @Bean
+    public ScrapperLinkClient scrapperLinkClient(HttpServiceProxyFactory factory) {
+        return factory.createClient(ScrapperLinkClient.class);
     }
 }

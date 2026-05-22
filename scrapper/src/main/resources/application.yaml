@@ -27,7 +27,13 @@ logging:
 
 app:
   sender: ${MESSAGE_SENDER}
-  topic-name: ${APP_TOPIC_NAME}
+  kafka:
+      topic-name: ${APP_TOPIC_NAME}
+      replicas: ${REPLICA_FACTOR}
+      partitions: ${PARTITION_FACTOR}
+  http:
+    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
+
   scheduler-interval: 3000
   age-of-links: 6000
   batch-size: 100
@@ -41,6 +47,3 @@ app:
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
-
-  telegram:
-    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}

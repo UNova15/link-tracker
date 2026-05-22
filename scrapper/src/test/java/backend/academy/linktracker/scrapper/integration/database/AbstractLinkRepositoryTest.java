@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
+import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import java.time.Instant;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest("spring.main.lazy-initialization=true")
 @Transactional
-@Import(TestcontainersConfiguration.class)
+@Import(TestContainersConfiguration.class)
 public abstract class AbstractLinkRepositoryTest {
 
     @Autowired

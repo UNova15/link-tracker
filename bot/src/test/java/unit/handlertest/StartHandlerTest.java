@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import backend.academy.linktracker.bot.client.scrapper.ScrapperChatClient;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;

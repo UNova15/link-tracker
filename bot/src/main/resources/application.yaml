@@ -23,7 +23,8 @@ logging:
       file: ecs
 
 app:
-  topic-name: ${APP_TOPIC_NAME}
+  kafka:
+    topic-name: ${APP_TOPIC_NAME}
 
   telegram:
     url: https://api.telegram.org/bot
@@ -32,6 +33,4 @@ app:
     debug: false
 
   scrapper:
-    base-url: ${APP_SCRAPPER_BASE_URL:http://scrapper:8081}
-    chat-endpoint: /tg-chat/
-    links-endpoint: /links
+    base-url: ${APP_SCRAPPER_BASE_URL:https://scrapper:8081}

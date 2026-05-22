@@ -13,7 +13,7 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
-import backend.academy.linktracker.scrapper.integration.TestcontainersConfiguration;
+import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkProcessor;
 import backend.academy.linktracker.scrapper.messagesender.MessageSender;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
@@ -38,7 +38,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest("spring.main.lazy-initialization=true")
-@Import(TestcontainersConfiguration.class)
+@Import(TestContainersConfiguration.class)
 @Transactional
 @ActiveProfiles({"sql", "test"})
 public class GitHubAndStackOverflowApiTest {

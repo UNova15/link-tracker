@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-
+//TODO переписать в декларативном стиле
 @Component
 public class StackOverflowClient {
     private final StackoverflowProperties properties;

@@ -14,7 +14,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.MountableFile;
 
 @TestConfiguration(proxyBeanMethods = false)
-public class TestcontainersConfiguration {
+public class TestContainersConfiguration {
 
     @Bean
     @ServiceConnection

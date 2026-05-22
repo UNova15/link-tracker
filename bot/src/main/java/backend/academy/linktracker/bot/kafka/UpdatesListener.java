@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class UpdatesListener {
     private final UpdateService updateService;
 
-    @KafkaListener(topics = "${app.topic-name}",groupId = "telegram-bot-group")
+    @KafkaListener(topics = "${app.kafka.topic-name}",groupId = "telegram-bot-group")
     public void listen(LinkUpdate linkUpdate){
         updateService.sendUpdateMessage(linkUpdate);
     }

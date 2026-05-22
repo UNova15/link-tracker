@@ -1,4 +1,4 @@
-x-shared-env: &kafka
+x-shared-env: &Kafka
   KAFKA_BOOTSTRAP_SERVERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
   APP_TOPIC_NAME: link-updates
 
@@ -86,7 +86,7 @@ services:
       context: .
       dockerfile: bot/Dockerfile
     environment:
-      <<: *kafka
+      <<: *Kafka
       SERVER_PORT: 8080
       APP_SCRAPPER_BASE_URL: http://scrapper:8081
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
@@ -104,9 +104,11 @@ services:
 
     environment:
       TZ: UTC
-      <<: *kafka
+      <<: *Kafka
       SERVER_PORT: 8081
-      APP_TELEGRAM_BOT_BASE_URL: http://bot:8080
+      REPLICA_FACTOR: 3
+      PARTITION_FACTOR: 3
+      APP_TELEGRAM_BOT_BASE_URL: https://bot:8080
       STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}
       STACKOVERFLOW_ACCESS_KEY: ${STACKOVERFLOW_ACCESS_KEY}
       GITHUB_TOKEN: ${GITHUB_TOKEN}

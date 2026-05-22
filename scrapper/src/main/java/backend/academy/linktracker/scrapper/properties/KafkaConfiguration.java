@@ -11,14 +11,20 @@ import org.springframework.kafka.config.TopicBuilder;
 @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "mq", matchIfMissing = true)
 public class KafkaConfiguration {
 
-    @Value("${app.topic-name}")
+    @Value("${app.kafka.topic-name}")
     private String topicName;
+
+    @Value("${app.kafka.replicas}")
+    private int replicas;
+
+    @Value("${app.kafka.partitions}")
+    private int partitions;
 
     @Bean
     public NewTopic updates(){
         return TopicBuilder.name(topicName)
-            .partitions(3)
-            .replicas(3)
+            .partitions(replicas)
+            .replicas(partitions)
             .build();
     }
 }

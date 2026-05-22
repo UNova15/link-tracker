@@ -11,7 +11,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.scrapper.ScrapperLinkClient;
+import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;

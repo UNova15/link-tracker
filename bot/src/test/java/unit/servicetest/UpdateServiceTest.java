@@ -29,7 +29,7 @@ public class UpdateServiceTest {
 
     @Test
     void sendUpdateMessage_withValidLinkUpdate_invokeBotExecute() {
-        long[] chatIds = {101L, 202L, 303L};
+        List<Long> chatIds = List.of(101L, 202L, 303L);
         String expectedText = "New commit: http://1234.com";
         LinkUpdate linkUpdate = new LinkUpdate(1L, "http://1234.com", "New commit", chatIds);
 
@@ -55,7 +55,7 @@ public class UpdateServiceTest {
 
     @Test
     void sendUpdateMessage_withEmptyChat_dontInvokeBotExecute() {
-        long[] chatIds = new long[0];
+        List<Long> chatIds = List.of();
         String expectedText = "New commit: http://1234.com";
         LinkUpdate linkUpdate = new LinkUpdate(1L, "http://1234.com", "New commit", chatIds);
 
