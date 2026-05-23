@@ -1,9 +1,0 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      jdbc:
-        batch_size: ${app.batch-size}
-        order_inserts: true
-        order_updates: true

@@ -38,11 +38,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest({"spring.main.lazy-initialization=true",
-    "app.sender=http"
+    "app.sender=http",
+    "app.db-provider=sql"
 })
 @Import(TestContainersConfiguration.class)
 @Transactional
-@ActiveProfiles({"sql", "test"})
+@ActiveProfiles("test")
 public class GitHubAndStackOverflowApiTest {
 
     @Autowired

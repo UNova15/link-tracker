@@ -4,11 +4,11 @@ import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.sql.dao.ChatDao;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("sql")
+@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
 @AllArgsConstructor
 public class SqlChatRepository implements ChatRepository {
     private final ChatDao chatDao;

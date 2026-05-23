@@ -2,6 +2,9 @@ server:
   port: ${SERVER_PORT:8081}
 
 spring:
+  application:
+    name: scrapper
+
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
     producer:
@@ -15,8 +18,14 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
-  application:
-    name: scrapper
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      jdbc:
+        batch_size: ${app.batch-size}
+        order_inserts: true
+        order_updates: true
 
 logging:
   file:
@@ -27,6 +36,8 @@ logging:
 
 app:
   sender: ${MESSAGE_SENDER:mq}
+  db-provider: orm
+
   kafka:
       topic-name: ${APP_TOPIC_NAME}
       replicas: ${REPLICA_FACTOR}

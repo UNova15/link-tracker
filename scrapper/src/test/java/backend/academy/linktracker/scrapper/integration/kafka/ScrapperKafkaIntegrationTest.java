@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.kafka.KafkaContainer;
@@ -29,13 +28,13 @@ import org.testcontainers.kafka.KafkaContainer;
 @SpringBootTest(
         classes = {KafkaClient.class, KafkaConfiguration.class},
         properties = {
+            "app.db-provider=sql",
             "app.sender=mq",
             "app.kafka.topic-name=test-link-updates",
             "app.kafka.replicas=1",
             "app.kafka.partitions=1",
         })
 @ImportAutoConfiguration(KafkaAutoConfiguration.class)
-@ActiveProfiles("sql")
 public class ScrapperKafkaIntegrationTest {
 
     @Autowired

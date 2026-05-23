@@ -9,8 +9,9 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
-@ActiveProfiles("orm")
+@TestPropertySource(properties = "app.db-provider=sql")
 public class OrmSubscriptionRepositoryTest extends AbstractSubscriptionRepositoryTest {
 
     @Autowired

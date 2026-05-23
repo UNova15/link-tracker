@@ -7,11 +7,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("sql")
+@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
 @AllArgsConstructor
 public class SqlLinkRepository implements LinkRepository {
     private final LinkDao linkDao;

@@ -2,6 +2,7 @@ package backend.academy.linktracker.scrapper.integration.database.sql;
 
 import backend.academy.linktracker.scrapper.integration.database.AbstractChatRepositoryTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
-@ActiveProfiles("sql")
+@TestPropertySource(properties = "app.db-provider=sql")
 public class SqlChatRepositoryTest extends AbstractChatRepositoryTest {}
