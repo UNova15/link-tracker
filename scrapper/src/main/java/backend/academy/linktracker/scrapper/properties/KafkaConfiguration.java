@@ -23,8 +23,16 @@ public class KafkaConfiguration {
     @Bean
     public NewTopic updates() {
         return TopicBuilder.name(topicName)
-                .partitions(replicas)
-                .replicas(partitions)
+                .partitions(partitions)
+                .replicas(replicas)
+                .build();
+    }
+
+    @Bean
+    public NewTopic updatesDlq() {
+        return TopicBuilder.name(topicName + "-dlq")
+                .partitions(partitions)
+                .replicas(replicas)
                 .build();
     }
 }

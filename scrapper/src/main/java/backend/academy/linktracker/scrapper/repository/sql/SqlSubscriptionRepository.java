@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
+@ConditionalOnProperty(prefix = "app", name = "db-provider", havingValue = "sql")
 @AllArgsConstructor
 public class SqlSubscriptionRepository implements SubscriptionRepository {
     private final SubscriptionDao subscriptionDao;

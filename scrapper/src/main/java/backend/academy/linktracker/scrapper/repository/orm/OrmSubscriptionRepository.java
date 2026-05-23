@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "orm")
+@ConditionalOnProperty(prefix = "app", name = "db-provider", havingValue = "orm")
 @AllArgsConstructor
 public class OrmSubscriptionRepository implements SubscriptionRepository {
     private final SubscriptionJpaRepository repository;

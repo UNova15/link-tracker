@@ -24,7 +24,9 @@ logging:
 
 app:
   kafka:
-    topic-name: ${APP_TOPIC_NAME}
+    topic-name: ${APP_TOPIC_NAME:link-updates}
+    max-retries: ${RETRIES_COUNT:3}
+    time-out: ${TIME_OUT:6000}
 
   telegram:
     url: https://api.telegram.org/bot

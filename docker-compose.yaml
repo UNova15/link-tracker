@@ -87,6 +87,8 @@ services:
       dockerfile: bot/Dockerfile
     environment:
       <<: *Kafka
+      RETRIES_COUNT: 3
+      TIME_OUT: 6000
       SERVER_PORT: 8080
       APP_SCRAPPER_BASE_URL: http://scrapper:8081
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}

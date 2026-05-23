@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
+@ConditionalOnProperty(prefix = "app", name = "db-provider", havingValue = "sql")
 @AllArgsConstructor
 public class SqlLinkRepository implements LinkRepository {
     private final LinkDao linkDao;

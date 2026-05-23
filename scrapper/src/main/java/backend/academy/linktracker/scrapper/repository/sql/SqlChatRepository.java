@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
+@ConditionalOnProperty(prefix = "app", name = "db-provider", havingValue = "sql")
 @AllArgsConstructor
 public class SqlChatRepository implements ChatRepository {
     private final ChatDao chatDao;

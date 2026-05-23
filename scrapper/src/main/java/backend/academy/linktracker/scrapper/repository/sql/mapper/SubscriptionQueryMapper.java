@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(prefix = "app",name = "db-provider",havingValue = "sql")
+@ConditionalOnProperty(prefix = "app", name = "db-provider", havingValue = "sql")
 public class SubscriptionQueryMapper implements ResultSetExtractor<List<Subscription>> {
 
     @Override

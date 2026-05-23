@@ -22,9 +22,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest({"spring.main.lazy-initialization=true",
-    "app.sender=http"
-})
+@SpringBootTest({"spring.main.lazy-initialization=true", "app.sender=http"})
 @Transactional
 @Import(TestContainersConfiguration.class)
 public abstract class AbstractSubscriptionRepositoryTest {
