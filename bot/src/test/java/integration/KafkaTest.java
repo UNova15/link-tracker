@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.bot.dto.LinkUpdate;
 import backend.academy.linktracker.bot.kafka.UpdatesListener;
 import backend.academy.linktracker.bot.service.UpdateService;
@@ -43,7 +44,7 @@ public class KafkaTest {
     private UpdateService updateService;
 
     @Autowired
-    private KafkaTemplate<String, LinkUpdate> kafka;
+    private KafkaTemplate<String, LinkUpdateEvent> kafka;
 
     @DynamicPropertySource
     static void settingProperties(DynamicPropertyRegistry registry) {
@@ -62,7 +63,7 @@ public class KafkaTest {
 
     @Test
     void Kafka_pollKafka_getMessage() {
-        LinkUpdate linkUpdate = new LinkUpdate(1, "https://github.com", "New message", List.of(1L));
+        LinkUpdateEvent linkUpdate = new LinkUpdateEvent(1L, "https://github.com", "New message", List.of(1L));
 
         kafka.send("test-topic", linkUpdate);
 
@@ -70,9 +71,9 @@ public class KafkaTest {
         verify(updateService, timeout(5000).times(1)).sendUpdateMessage(captor.capture());
 
         LinkUpdate value = captor.getValue();
-        assertThat(value.id()).isEqualTo(linkUpdate.id());
-        assertThat(value.description()).isEqualTo(linkUpdate.description());
-        assertThat(value.url()).isEqualTo(linkUpdate.url());
-        assertThat(value.tgChatIds()).isEqualTo(linkUpdate.tgChatIds());
+        assertThat(value.id()).isEqualTo(linkUpdate.getId());
+        assertThat(value.description()).isEqualTo(linkUpdate.getDescription());
+        assertThat(value.url()).isEqualTo(linkUpdate.getUrl());
+        assertThat(value.tgChatIds()).isEqualTo(linkUpdate.getTgChatIds());
     }
 }

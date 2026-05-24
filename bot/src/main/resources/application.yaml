@@ -11,9 +11,16 @@ spring:
       group-id: telegram-bot-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
-        spring.json.value.default.type: backend.academy.linktracker.bot.dto.LinkUpdate
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+        specific.avro.reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
 
 logging:
   file:
@@ -25,8 +32,8 @@ logging:
 app:
   kafka:
     topic-name: ${APP_TOPIC_NAME:link-updates}
-    max-retries: ${RETRIES_COUNT:3}
-    time-out: ${TIME_OUT:6000}
+    max-retries: 3
+    time-out: 6000
 
   telegram:
     url: https://api.telegram.org/bot

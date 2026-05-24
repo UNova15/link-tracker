@@ -3,6 +3,22 @@ x-shared-env: &Kafka
   APP_TOPIC_NAME: link-updates
 
 services:
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.14
+    ports:
+      - "8085:8085"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka-1:9092,PLAINTEXT://kafka-2:9092,PLAINTEXT://kafka-3:9092'
+      CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
+
   kafka-1:
     image: apache/kafka:4.3.0
     ports:
@@ -87,10 +103,9 @@ services:
       dockerfile: bot/Dockerfile
     environment:
       <<: *Kafka
-      RETRIES_COUNT: 3
-      TIME_OUT: 6000
       SERVER_PORT: 8080
       APP_SCRAPPER_BASE_URL: http://scrapper:8081
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
     ports:
       - "8080:8080"
@@ -110,7 +125,10 @@ services:
       SERVER_PORT: 8081
       REPLICA_FACTOR: 3
       PARTITION_FACTOR: 3
+
       APP_TELEGRAM_BOT_BASE_URL: https://bot:8080
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
+
       STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}
       STACKOVERFLOW_ACCESS_KEY: ${STACKOVERFLOW_ACCESS_KEY}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
@@ -118,10 +136,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-
-      #перенести в application.yaml
-      SPRING_PROFILES_ACTIVE: orm
-      MESSAGE_SENDER: mq
 
     depends_on:
       liquibase:
@@ -132,6 +146,8 @@ services:
         condition: service_healthy
       kafka-3:
         condition: service_healthy
+      schema-registry:
+        condition: service_started
     ports:
       - "8081:8081"
 

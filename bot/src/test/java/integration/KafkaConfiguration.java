@@ -1,8 +1,8 @@
 package integration;
 
-import backend.academy.linktracker.bot.dto.LinkUpdate;
 import java.util.HashMap;
 import java.util.Map;
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -24,7 +24,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    ProducerFactory<String, LinkUpdate> producerFactory(
+    ProducerFactory<String, LinkUpdateEvent> producerFactory(
             @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
         Map<String, Object> configProps = new HashMap<>();
 
@@ -35,7 +35,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    KafkaTemplate<String, LinkUpdate> kafkaTemplate(ProducerFactory<String, LinkUpdate> producerFactory) {
+    KafkaTemplate<String, LinkUpdateEvent> kafkaTemplate(ProducerFactory<String, LinkUpdateEvent> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }

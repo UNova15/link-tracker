@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.messagesender;
 
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +15,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaClient implements MessageSender {
 
-    private final KafkaTemplate<String, LinkUpdate> kafka;
+    private final KafkaTemplate<String, LinkUpdateEvent> kafka;
 
     @Value("${app.kafka.topic-name}")
     private String topicName;
 
     @Override
     public void send(LinkUpdate update) {
-        kafka.send(topicName, update.url(), update).whenComplete((res, ex) -> {
+        LinkUpdateEvent linkUpdateEvent =
+                new LinkUpdateEvent(update.id(), update.url(), update.description(), update.tgChatIds());
+
+        kafka.send(topicName, linkUpdateEvent.getUrl(), linkUpdateEvent).whenComplete((res, ex) -> {
             if (ex != null) {
                 log.error("Error to send message to Kafka: {}, exception: {}", update, ex.getMessage());
             }

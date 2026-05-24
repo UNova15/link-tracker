@@ -2,12 +2,14 @@ package backend.academy.linktracker.scrapper.integration.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
 import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.properties.KafkaConfiguration;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.kafka.KafkaContainer;
@@ -33,6 +34,9 @@ import org.testcontainers.kafka.KafkaContainer;
             "app.kafka.topic-name=test-link-updates",
             "app.kafka.replicas=1",
             "app.kafka.partitions=1",
+            "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
+            "spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer",
+            "spring.kafka.producer.properties.schema.registry.url=mock://test-registry"
         })
 @ImportAutoConfiguration(KafkaAutoConfiguration.class)
 public class ScrapperKafkaIntegrationTest {
@@ -59,9 +63,9 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        LinkUpdate linkUpdate = new LinkUpdate(1, "https:/guthub.com", "New Update", List.of(1L, 2L));
+        LinkUpdate linkUpdate = new LinkUpdate(1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
 
-        KafkaConsumer<String, LinkUpdate> consumer = new KafkaConsumer<>(Map.of(
+        KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 kafka.getBootstrapServers(),
                 ConsumerConfig.GROUP_ID_CONFIG,
@@ -71,26 +75,26 @@ public class ScrapperKafkaIntegrationTest {
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 StringDeserializer.class,
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                JacksonJsonDeserializer.class,
-                "spring.json.trusted.packages",
-                "*",
-                "spring.json.value.default.type",
-                LinkUpdate.class));
+                KafkaAvroDeserializer.class,
+                "schema.registry.url",
+                "mock://test-registry",
+                "specific.avro.reader",
+                "true"));
 
         consumer.subscribe(List.of("test-link-updates"));
 
         kafkaClient.send(linkUpdate);
 
-        ConsumerRecords<String, LinkUpdate> records = consumer.poll(Duration.ofSeconds(10));
+        ConsumerRecords<String, LinkUpdateEvent> records = consumer.poll(Duration.ofSeconds(10));
 
         assertThat(records.count()).isEqualTo(1);
 
-        ConsumerRecord<String, LinkUpdate> record = records.iterator().next();
-        LinkUpdate value = record.value();
+        ConsumerRecord<String, LinkUpdateEvent> record = records.iterator().next();
+        LinkUpdateEvent value = record.value();
 
-        assertThat(value.id()).isEqualTo(1);
-        assertThat(value.description()).isEqualTo("New Update");
-        assertThat(value.url()).isEqualTo("https:/guthub.com");
-        assertThat(value.tgChatIds()).isEqualTo(List.of(1L, 2L));
+        assertThat(value.getId()).isEqualTo(1);
+        assertThat(value.getDescription()).isEqualTo("New Update");
+        assertThat(value.getUrl()).isEqualTo("https:/guthub.com");
+        assertThat(value.getTgChatIds()).isEqualTo(List.of(1L, 2L));
     }
 }

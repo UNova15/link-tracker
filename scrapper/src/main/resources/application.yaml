@@ -9,9 +9,10 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
     properties:
       spring.json.add.type.headers: false
+      schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -35,13 +36,13 @@ logging:
       file: ecs
 
 app:
-  sender: ${MESSAGE_SENDER:mq}
+  sender: mq
   db-provider: orm
 
   kafka:
-      topic-name: ${APP_TOPIC_NAME}
-      replicas: ${REPLICA_FACTOR}
-      partitions: ${PARTITION_FACTOR}
+    topic-name: ${APP_TOPIC_NAME}
+    replicas: ${REPLICA_FACTOR}
+    partitions: ${PARTITION_FACTOR}
   http:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
 

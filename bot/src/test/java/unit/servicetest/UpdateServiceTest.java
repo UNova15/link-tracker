@@ -6,7 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import backend.academy.linktracker.bot.dto.LinkUpdate;
+import backend.academy.linktracker.avro.LinkUpdate;
 import backend.academy.linktracker.bot.service.UpdateService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;

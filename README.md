@@ -13,6 +13,6 @@ LinkTracker – Telegram-бот, который отслеживает изме�
 
 Запуск из корня проекта: docker compose up
 
-Предполагается выбор режима работы в настройках docker compose:
-1) Провайдер базы данных MESSAGE_SENDER : orm (spring jpa hibernate) или sql
-2) Способ коммуникации Bot и Scrapper : mq (Kafka) или http (HttpClient)
+Предполагается выбор режима работы в настройках application.yaml:
+- app.sender - способ коммуникации Bot и Scrapper : mq (Kafka) или http (HttpClient)
+- db-provider - провайдер базы данных : orm (spring jpa hibernate) или sql

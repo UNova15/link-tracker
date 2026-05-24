@@ -1,3 +1,4 @@
+/*
 package backend.academy.linktracker.scrapper.properties;
 
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
@@ -10,3 +11,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "backend.academy.linktracker.scrapper.repository.orm.jparepository")
 @EntityScan(basePackages = "backend.academy.linktracker.scrapper.repository.orm.entity")
 public class OrmConfig {}
+*/

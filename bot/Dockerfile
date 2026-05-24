@@ -3,18 +3,16 @@ FROM maven:3.9.14-eclipse-temurin-25-noble AS builder
 WORKDIR /app
 
 COPY pom.xml .
-
 COPY bot/pom.xml bot/
-
 COPY ai-agent/pom.xml ai-agent/
-
 COPY build-report-aggregate/pom.xml  build-report-aggregate/
-
 COPY scrapper/pom.xml scrapper/
+COPY avro-schemes/pom.xml avro-schemes/
 
 RUN mvn dependency:go-offline -B
 
 COPY bot/src bot/src
+COPY avro-schemes/src avro-schemes/src
 
 RUN mvn package -pl bot -am -DskipTests
 
