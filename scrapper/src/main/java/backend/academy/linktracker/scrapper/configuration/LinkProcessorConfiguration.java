@@ -2,8 +2,7 @@ package backend.academy.linktracker.scrapper.configuration;
 
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.linktracker.LinkProcessor;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceRequester;
-import backend.academy.linktracker.scrapper.messagesender.MessageSender;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceProcessor;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +21,13 @@ public class LinkProcessorConfiguration {
 
     @Bean
     public LinkProcessor linkProcessor(
-            List<ResourceRequester> allCheckers,
-            MessageSender messageSender,
+            List<ResourceProcessor> allCheckers,
             SubscriptionRepository subscriptionRepository,
             ExecutorService executorService) {
-        Map<LinkType, ResourceRequester> checkers =
-                allCheckers.stream().collect(Collectors.toMap(ResourceRequester::getLinkType, Function.identity()));
+        Map<LinkType, ResourceProcessor> checkers =
+                allCheckers.stream().collect(Collectors.toMap(ResourceProcessor::getLinkType, Function.identity()));
 
-        return new LinkProcessor(messageSender, subscriptionRepository, checkers, executorService, numberOfThreads);
+        return new LinkProcessor(subscriptionRepository, checkers, executorService, numberOfThreads);
     }
 
     @Bean

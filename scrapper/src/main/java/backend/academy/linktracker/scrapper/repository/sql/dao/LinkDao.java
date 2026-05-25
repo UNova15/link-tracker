@@ -23,24 +23,24 @@ public class LinkDao {
     private final JdbcClient jdbcClient;
     private final LinkRowMapper mapper;
 
-    public List<Link> findLinksToCheckWithDelayTime(long lastCheckId, long linksLimit, Instant delayTime) {
+    public List<Link> findLinksFilteredByLastCheck(long lastCheckId, long linksLimit, Instant lastCheck) {
         return jdbcClient
                 .sql("""
                 SELECT * FROM links
                 WHERE id >:lastCheckId
-                AND last_check <= :delayTime
+                AND last_check <= :lastCheck
                 ORDER BY id
                 LIMIT :linksLimit
                 """)
                 .param("lastCheckId", lastCheckId)
                 .param("linksLimit", linksLimit)
-                .param("delayTime", Timestamp.from(delayTime))
+                .param("lastCheck", Timestamp.from(lastCheck))
                 .query(mapper)
                 .list();
     }
 
     public Link save(Link link) {
-        Timestamp lastUpdate = link.getLastUpdate() != null ? Timestamp.from(link.getLastUpdate()) : null;
+        Timestamp lastUpdate = Timestamp.from(link.getLastUpdate());
 
         return jdbcClient
                 .sql(

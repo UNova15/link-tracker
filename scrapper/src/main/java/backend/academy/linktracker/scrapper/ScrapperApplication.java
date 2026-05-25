@@ -14,3 +14,5 @@ public class ScrapperApplication {
         SpringApplication.run(ScrapperApplication.class, args);
     }
 }
+
+// TODO переделать scrapper rest client с использованием дто

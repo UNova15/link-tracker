@@ -4,7 +4,15 @@
     "namespace": "backend.academy.linktracker.avro",
     "fields": [
         {
-            "name": "id",
+            "name": "idempotence_key",
+            "type": {
+                "type": "string",
+                "logicalType": "uuid"
+            },
+            "doc": "Ключ идемпотентности для bot service"
+        },
+        {
+            "name": "link_id",
             "type": "long",
             "doc": "ID ссылки"
         },

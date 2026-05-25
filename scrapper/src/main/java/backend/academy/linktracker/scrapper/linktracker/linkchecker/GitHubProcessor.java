@@ -4,7 +4,7 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.github.IssueCredential;
-import backend.academy.linktracker.scrapper.dto.linkdto.CheckResult;
+import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.RequesterUtil;
@@ -16,13 +16,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GitHubRequester extends ResourceRequester {
+public class GitHubProcessor extends ResourceProcessor {
     private final GitHubClient client;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
     private final RequesterUtil requesterUtil;
 
-    public GitHubRequester(
+    public GitHubProcessor(
             GitHubClient client, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
         super(LinkType.GIT_HUB);
         this.client = client;
@@ -32,7 +32,7 @@ public class GitHubRequester extends ResourceRequester {
     }
 
     @Override
-    public Optional<CheckResult> check(Link link) {
+    public Optional<ProcessingResult> process(Link link) {
         IssueCredential credentials = parser.parseGitHubLink(link.getUrl());
 
         String sinceTime = link.getLastUpdate().truncatedTo(ChronoUnit.SECONDS).toString();
@@ -43,6 +43,7 @@ public class GitHubRequester extends ResourceRequester {
             return Optional.empty();
         }
 
+        // фильтрация по новым обновлениям
         List<GitHubResponse> filteredChanges =
                 requesterUtil.filterGitContentByCreationDate(response, link.getLastUpdate());
 
@@ -53,6 +54,6 @@ public class GitHubRequester extends ResourceRequester {
         String formattedResponse = formatter.formatGitHubResponse(filteredChanges);
         Instant maxUpdateTime = requesterUtil.findGitHubMaxUpdatedTime(filteredChanges);
 
-        return Optional.of(new CheckResult(formattedResponse, maxUpdateTime));
+        return Optional.of(new ProcessingResult(formattedResponse, maxUpdateTime));
     }
 }

@@ -20,7 +20,7 @@ public class OrmLinkRepository implements LinkRepository {
     private final LinkMapper linkMapper;
 
     @Override
-    public List<Link> findLinksFilteredByDelayTime(long lastCheckId, long linksLimit, Instant delayTime) {
+    public List<Link> findLinksFilteredByLastCheck(long lastCheckId, long linksLimit, Instant delayTime) {
         List<LinkEntity> links = repository.findLinksToCheckWithDelayTime(lastCheckId, linksLimit, delayTime);
         return linkMapper.fromListLinkEntity(links);
     }

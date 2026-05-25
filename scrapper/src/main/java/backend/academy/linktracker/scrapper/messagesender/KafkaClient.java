@@ -1,8 +1,9 @@
 package backend.academy.linktracker.scrapper.messagesender;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
+import backend.academy.linktracker.scrapper.domain.Notification;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,15 +21,23 @@ public class KafkaClient implements MessageSender {
     @Value("${app.kafka.topic-name}")
     private String topicName;
 
+    // TODO возможно плохая практика
     @Override
-    public void send(LinkUpdate update) {
-        LinkUpdateEvent linkUpdateEvent =
-                new LinkUpdateEvent(update.id(), update.url(), update.description(), update.tgChatIds());
+    @SneakyThrows
+    public void send(Notification update) {
+        LinkUpdateEvent linkUpdateEvent = new LinkUpdateEvent(
+                update.getIdempotenceKey(),
+                update.getLinkId(),
+                update.getUrl(),
+                update.getDescription(),
+                update.getTgChatIds());
 
-        kafka.send(topicName, linkUpdateEvent.getUrl(), linkUpdateEvent).whenComplete((res, ex) -> {
-            if (ex != null) {
-                log.error("Error to send message to Kafka: {}, exception: {}", update, ex.getMessage());
-            }
-        });
+        kafka.send(topicName, linkUpdateEvent.getUrl(), linkUpdateEvent)
+                .whenComplete((res, ex) -> {
+                    if (ex != null) {
+                        log.error("Error to send message to Kafka: {}, exception: {}", update, ex.getMessage());
+                    }
+                })
+                .get();
     }
 }

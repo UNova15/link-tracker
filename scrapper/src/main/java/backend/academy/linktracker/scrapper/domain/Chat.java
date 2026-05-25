@@ -15,7 +15,7 @@ public class Chat {
 
     public static Chat createNew(long chatId) {
         if (chatId < 0) {
-            throw new IllegalArgumentException("chat id must be positive");
+            throw new IllegalArgumentException("chat linkId must be positive");
         }
         return new Chat(chatId, LocalDateTime.now());
     }

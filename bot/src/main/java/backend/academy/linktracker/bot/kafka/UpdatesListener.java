@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.kafka;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.bot.dto.LinkUpdate;
+import backend.academy.linktracker.bot.domain.Notification;
 import backend.academy.linktracker.bot.service.UpdateService;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,12 +15,13 @@ public class UpdatesListener {
 
     @KafkaListener(topics = "${app.kafka.topic-name}", groupId = "telegram-bot-group")
     public void listen(@Payload LinkUpdateEvent linkUpdateEvent) {
-        LinkUpdate linkUpdate = new LinkUpdate(
-                linkUpdateEvent.getId(),
+        Notification notification = Notification.createNotification(
+                linkUpdateEvent.getIdempotenceKey(),
+                linkUpdateEvent.getLinkId(),
                 linkUpdateEvent.getUrl(),
                 linkUpdateEvent.getDescription(),
                 linkUpdateEvent.getTgChatIds());
 
-        updateService.sendUpdateMessage(linkUpdate);
+        updateService.sendUpdateMessage(notification);
     }
 }

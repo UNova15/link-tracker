@@ -76,7 +76,7 @@ public abstract class AbstractLinkRepositoryTest {
 
         Instant delayTime = Instant.now().plusSeconds(5);
 
-        List<Link> links = linkRepository.findLinksFilteredByDelayTime(lastCheckId, linksLimit, delayTime);
+        List<Link> links = linkRepository.findLinksFilteredByLastCheck(lastCheckId, linksLimit, delayTime);
 
         assertThat(links)
                 .hasSize(3)
@@ -99,7 +99,7 @@ public abstract class AbstractLinkRepositoryTest {
 
         Instant delayTime = Instant.now().minusSeconds(5);
 
-        List<Link> links = linkRepository.findLinksFilteredByDelayTime(lastCheckId, linksLimit, delayTime);
+        List<Link> links = linkRepository.findLinksFilteredByLastCheck(lastCheckId, linksLimit, delayTime);
 
         assertThat(links).isEmpty();
     }

@@ -70,4 +70,8 @@ public class SubscriptionService {
 
         return linkMapper.toLinkResponse(link, subscription.getTags());
     }
+
+    public boolean isExistsSubscriptionsToLink(long linkId) {
+        return !subscriptionRepository.findChatsIdByLinkId(linkId).isEmpty();
+    }
 }

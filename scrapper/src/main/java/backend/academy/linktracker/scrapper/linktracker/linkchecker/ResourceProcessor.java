@@ -2,17 +2,17 @@ package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.linkdto.CheckResult;
+import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import java.util.Optional;
 import lombok.Getter;
 
 @Getter
-public abstract class ResourceRequester {
+public abstract class ResourceProcessor {
     private final LinkType linkType;
 
-    public ResourceRequester(LinkType linkType) {
+    public ResourceProcessor(LinkType linkType) {
         this.linkType = linkType;
     }
 
-    public abstract Optional<CheckResult> check(Link link);
+    public abstract Optional<ProcessingResult> process(Link link);
 }

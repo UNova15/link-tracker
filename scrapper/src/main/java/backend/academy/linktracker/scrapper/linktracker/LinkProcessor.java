@@ -2,14 +2,16 @@ package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
-import backend.academy.linktracker.scrapper.exception.TelegramBotException;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceRequester;
-import backend.academy.linktracker.scrapper.messagesender.MessageSender;
+import backend.academy.linktracker.scrapper.domain.Notification;
+import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceProcessor;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import lombok.AllArgsConstructor;
@@ -20,63 +22,60 @@ import lombok.extern.slf4j.Slf4j;
 public class LinkProcessor {
     private static final String ERROR_MESSAGE = "Ошибка проверки ссылки: %s";
 
-    private final MessageSender sender;
     private final SubscriptionRepository subscriptionRepository;
-    private final Map<LinkType, ResourceRequester> checkers;
+    private final Map<LinkType, ResourceProcessor> linkProcessors;
 
     private final ExecutorService executorService;
     private final int numberOfThreads;
 
-    public void runProcessLinks(List<Link> activeLink) {
+    public List<Notification> runProcessLinks(List<Link> activeLink) {
         int total = activeLink.size();
-        if (total == 0) return;
+        if (total == 0) return List.of();
 
         int chunkSize = (int) Math.ceil((double) total / numberOfThreads);
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        List<CompletableFuture<List<Notification>>> futures = new ArrayList<>();
         for (int i = 0; i < total; i += chunkSize) {
             int end = Math.min(total, i + chunkSize);
 
             List<Link> chunk = activeLink.subList(i, end);
 
-            futures.add(CompletableFuture.runAsync(
+            futures.add(CompletableFuture.supplyAsync(
                     () -> {
+                        List<Notification> updates = new ArrayList<>();
                         for (Link link : chunk) {
-                            processLink(link);
+                            checkLink(link).ifPresent(updates::add);
                         }
+                        return updates;
                     },
                     executorService));
         }
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        return futures.stream()
+                .map(CompletableFuture::join)
+                .flatMap(Collection::stream)
+                .toList();
     }
 
-    private void processLink(Link link) {
-        ResourceRequester checker = checkers.get(link.getType());
+    private Optional<Notification> checkLink(Link link) {
+        ResourceProcessor processor = linkProcessors.get(link.getType());
 
         try {
-            checker.check(link).ifPresent(message -> {
-                sendNotification(link, message.text());
+            Optional<ProcessingResult> result = processor.process(link);
 
-                if (message.newUpdateTime() != null) {
-                    link.updateLastUpdateTime(message.newUpdateTime());
-                }
-            });
-        } catch (TelegramBotException exception) {
-            log.error(
-                    "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
-                    link.getUrl(),
-                    exception.getApiErrorResponse().description());
+            result.ifPresent(processingResult -> link.updateLastUpdateTime(processingResult.newUpdateTime()));
+            link.markCheckedNow();
+
+            List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
+            return result.map(
+                    res -> Notification.createNew(UUID.randomUUID(), link.getId(), link.getUrl(), res.text(), chatsId));
         } catch (Exception exception) {
             log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
-            sendNotification(link, ERROR_MESSAGE.formatted(link.getUrl()));
-        } finally {
-            link.markCheckedNow();
-        }
-    }
 
-    private void sendNotification(Link link, String message) {
-        List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
-        LinkUpdate update = new LinkUpdate(link.getId(), link.getUrl(), message, chatsId);
-        sender.send(update);
+            List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
+            return Optional.of(Notification.createNew(
+                    UUID.randomUUID(), link.getId(), link.getUrl(), ERROR_MESSAGE.formatted(link.getUrl()), chatsId));
+        }
     }
 }

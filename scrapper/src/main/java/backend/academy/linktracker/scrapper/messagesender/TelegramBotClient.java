@@ -1,6 +1,6 @@
 package backend.academy.linktracker.scrapper.messagesender;
 
-import backend.academy.linktracker.scrapper.dto.linkdto.LinkUpdate;
+import backend.academy.linktracker.scrapper.domain.Notification;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
@@ -8,7 +8,8 @@ import org.springframework.web.service.annotation.PostExchange;
 @HttpExchange("/updates")
 public interface TelegramBotClient extends MessageSender {
 
+    // TODO исправить и отдавать дто
     @Override
     @PostExchange
-    void send(@RequestBody LinkUpdate update);
+    void send(@RequestBody Notification update);
 }

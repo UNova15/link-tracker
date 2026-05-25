@@ -2,7 +2,7 @@ package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
-import backend.academy.linktracker.scrapper.dto.linkdto.CheckResult;
+import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowResponse;
@@ -16,13 +16,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowRequester extends ResourceRequester {
+public class StackOverflowProcessor extends ResourceProcessor {
     private final StackOverflowClient client;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
     private final RequesterUtil requesterUtil;
 
-    public StackOverflowRequester(
+    public StackOverflowProcessor(
             StackOverflowClient client, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
         super(LinkType.STACK_OVERFLOW);
         this.client = client;
@@ -32,7 +32,7 @@ public class StackOverflowRequester extends ResourceRequester {
     }
 
     @Override
-    public Optional<CheckResult> check(Link link) {
+    public Optional<ProcessingResult> process(Link link) {
         long questionId = parser.parseStackOverflowLink(link.getUrl());
 
         StackOverflowResponse response =
@@ -43,6 +43,7 @@ public class StackOverflowRequester extends ResourceRequester {
         }
         StackOverflowQuestion question = response.items().getFirst();
 
+        // фильтрация по новым обновлениям
         List<StackOverflowContent> updatedComments =
                 requesterUtil.filterStackOverflowContentByCreationDate(question.comments(), link.getLastUpdate());
         List<StackOverflowContent> updatedAnswers =
@@ -56,6 +57,6 @@ public class StackOverflowRequester extends ResourceRequester {
 
         Instant maxInstant = requesterUtil.findStackOverflowMaxUpdatedTime(updatedComments, updatedAnswers);
 
-        return Optional.of(new CheckResult(text, maxInstant));
+        return Optional.of(new ProcessingResult(text, maxInstant));
     }
 }

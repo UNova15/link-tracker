@@ -17,7 +17,7 @@ public class Subscription {
 
     public static Subscription createNew(long chatId, long linkId, List<String> tags) {
         if (chatId < 0 || linkId < 0 || tags == null) {
-            throw new IllegalArgumentException("chat id and link id must be positive");
+            throw new IllegalArgumentException("chat linkId and link linkId must be positive");
         }
         List<String> tagsCopy = List.copyOf(tags);
         return new Subscription(chatId, linkId, tagsCopy);

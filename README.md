@@ -15,4 +15,4 @@ LinkTracker – Telegram-бот, который отслеживает изме�
 
 Предполагается выбор режима работы в настройках application.yaml:
 - app.sender - способ коммуникации Bot и Scrapper : mq (Kafka) или http (HttpClient)
-- db-provider - провайдер базы данных : orm (spring jpa hibernate) или sql
+- app.db-provider - провайдер базы данных : orm (spring jpa hibernate) или sql

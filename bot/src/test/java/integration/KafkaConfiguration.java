@@ -1,8 +1,8 @@
 package integration;
 
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import java.util.HashMap;
 import java.util.Map;
-import backend.academy.linktracker.avro.LinkUpdateEvent;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

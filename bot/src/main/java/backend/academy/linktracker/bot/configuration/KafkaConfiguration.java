@@ -2,6 +2,9 @@ package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import jakarta.validation.ConstraintViolationException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,5 +39,11 @@ public class KafkaConfiguration {
                 ConstraintViolationException.class,
                 DeserializationException.class);
         return defaultErrorHandler;
+    }
+
+    // TODO заменить на нормальный кеш
+    @Bean
+    Set<UUID> idempotenceKeyStorage() {
+        return new HashSet<>();
     }
 }

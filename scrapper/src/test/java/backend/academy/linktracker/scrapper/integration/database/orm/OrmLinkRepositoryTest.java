@@ -84,7 +84,7 @@ public class OrmLinkRepositoryTest extends AbstractLinkRepositoryTest {
         Statistics statistics = sessionFactory.getStatistics();
         statistics.clear();
 
-        linkRepository.findLinksFilteredByDelayTime(lastCheckId, countOfLinks, delayTime);
+        linkRepository.findLinksFilteredByLastCheck(lastCheckId, countOfLinks, delayTime);
 
         assertThat(statistics.getPrepareStatementCount()).isEqualTo(1);
         assertThat(statistics.getEntityLoadCount()).isEqualTo(countOfLinks);
