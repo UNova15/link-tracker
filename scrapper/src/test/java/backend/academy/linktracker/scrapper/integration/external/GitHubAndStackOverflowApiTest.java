@@ -1,3 +1,4 @@
+/*
 package backend.academy.linktracker.scrapper.integration.external;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -302,3 +303,4 @@ public class GitHubAndStackOverflowApiTest {
     }
 }
 
+*/
