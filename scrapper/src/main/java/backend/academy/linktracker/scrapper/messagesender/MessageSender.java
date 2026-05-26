@@ -1,8 +1,9 @@
 package backend.academy.linktracker.scrapper.messagesender;
 
-import backend.academy.linktracker.scrapper.domain.Notification;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
+import java.util.List;
 
 public interface MessageSender {
 
-    void send(Notification update);
+    List<Long> send(List<NotificationRecord> records);
 }

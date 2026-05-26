@@ -14,7 +14,6 @@ public class Notification {
     private final String description;
     private final List<Long> tgChatIds;
 
-    // TODO отдельный валидатор + переписать
     public static Notification createNew(
             UUID idempotenceKey, long linkId, String url, String description, List<Long> tgChatIds) {
         if (idempotenceKey != null

@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.repository.sql.dao;
 
 import backend.academy.linktracker.scrapper.domain.Notification;
-import backend.academy.linktracker.scrapper.dto.linkdto.NotificationRecord;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.repository.sql.mapper.NotificationRowMapper;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -46,7 +46,6 @@ public class NotificationDao {
                     WHERE id>:startId
                     ORDER BY id ASC
                     LIMIT :notificationLimit
-                    FOR UPDATE SKIP LOCKED
                     """)
                 .param("startId", startId)
                 .param("notificationLimit", limit)

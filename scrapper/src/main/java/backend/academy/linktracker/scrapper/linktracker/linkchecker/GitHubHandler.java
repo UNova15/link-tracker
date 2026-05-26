@@ -16,13 +16,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GitHubProcessor extends ResourceProcessor {
+public class GitHubHandler extends ResourceHandler {
     private final GitHubClient client;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
     private final RequesterUtil requesterUtil;
 
-    public GitHubProcessor(
+    public GitHubHandler(
             GitHubClient client, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
         super(LinkType.GIT_HUB);
         this.client = client;

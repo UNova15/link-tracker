@@ -1,4 +1,3 @@
-/*
 package backend.academy.linktracker.scrapper.integration.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,6 +9,7 @@ import backend.academy.linktracker.scrapper.properties.KafkaConfiguration;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -64,7 +64,8 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        Notification notification = new Notification(1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
+        LinkUpdateEvent notification =
+                new LinkUpdateEvent(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
 
         KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -99,4 +100,3 @@ public class ScrapperKafkaIntegrationTest {
         assertThat(value.getTgChatIds()).isEqualTo(List.of(1L, 2L));
     }
 }
-*/

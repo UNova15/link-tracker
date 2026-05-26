@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,6 @@ public class KafkaConfiguration {
     // TODO заменить на нормальный кеш
     @Bean
     Set<UUID> idempotenceKeyStorage() {
-        return new HashSet<>();
+        return ConcurrentHashMap.newKeySet();
     }
 }

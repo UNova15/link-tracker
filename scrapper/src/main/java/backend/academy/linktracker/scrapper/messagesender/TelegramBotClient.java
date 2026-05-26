@@ -6,10 +6,8 @@ import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
 @HttpExchange("/updates")
-public interface TelegramBotClient extends MessageSender {
+public interface TelegramBotClient {
 
-    // TODO исправить и отдавать дто
-    @Override
     @PostExchange
-    void send(@RequestBody Notification update);
+    void send(@RequestBody Notification notification);
 }

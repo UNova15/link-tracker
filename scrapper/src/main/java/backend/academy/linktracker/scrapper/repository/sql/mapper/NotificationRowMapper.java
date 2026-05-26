@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.repository.sql.mapper;
 
 import backend.academy.linktracker.scrapper.domain.Notification;
-import backend.academy.linktracker.scrapper.dto.linkdto.NotificationRecord;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import lombok.AllArgsConstructor;

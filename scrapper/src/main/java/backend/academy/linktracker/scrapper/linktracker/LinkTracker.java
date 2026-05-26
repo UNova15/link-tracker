@@ -23,7 +23,7 @@ public class LinkTracker {
     @Value("${app.batch-size}")
     private long batchSize;
 
-    @Scheduled(fixedDelayString = "${app.check_link-interval}")
+    @Scheduled(fixedDelayString = "${app.check-link-interval}")
     public void sendNotification() {
         // Время, позже которого ссылки считаются устаревшими.
         // Если с последнего момента обновления ссылки прошло более scanTime миллисекунд ссылка считается устаревшей

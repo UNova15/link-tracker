@@ -1,4 +1,3 @@
-/*
 package integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -6,10 +5,12 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.bot.domain.Notification;
+import backend.academy.linktracker.bot.domain.NotificationDto;
 import backend.academy.linktracker.bot.kafka.UpdatesListener;
 import backend.academy.linktracker.bot.service.UpdateService;
 import java.util.List;
+import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,13 +27,17 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.kafka.KafkaContainer;
 
+@Slf4j
 @SpringBootTest(
         classes = {UpdatesListener.class},
         properties = {
             "app.kafka.topic-name=test-topic",
             "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
-            "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
-            "spring.kafka.consumer.group-id=test-group",
+            "spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer",
+            "spring.kafka.consumer.value-deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer",
+            "spring.kafka.properties.schema.registry.url=mock://test-registry",
+            "spring.kafka.properties.specific.avro.reader=true",
+            "spring.kafka.consumer.group-id=test-group"
         })
 @ImportAutoConfiguration(KafkaAutoConfiguration.class)
 @Import(KafkaConfiguration.class)
@@ -61,21 +66,19 @@ public class KafkaTest {
     static void stopAll() {
         kafkaContainer.close();
     }
-
     @Test
     void Kafka_pollKafka_getMessage() {
-        LinkUpdateEvent linkUpdate = new LinkUpdateEvent(1L, "https://github.com", "New message", List.of(1L));
+        LinkUpdateEvent linkUpdate = new LinkUpdateEvent(UUID.randomUUID(),1L,"https://github.com","New message",List.of(1L));
 
         kafka.send("test-topic", linkUpdate);
 
-        ArgumentCaptor<Notification> captor = ArgumentCaptor.forClass(Notification.class);
+        ArgumentCaptor<NotificationDto> captor = ArgumentCaptor.forClass(NotificationDto.class);
         verify(updateService, timeout(5000).times(1)).sendUpdateMessage(captor.capture());
 
-        Notification value = captor.getValue();
-        assertThat(value.linkId()).isEqualTo(linkUpdate.getId());
+        NotificationDto value = captor.getValue();
+        assertThat(value.linkId()).isEqualTo(linkUpdate.getLinkId());
         assertThat(value.description()).isEqualTo(linkUpdate.getDescription());
         assertThat(value.url()).isEqualTo(linkUpdate.getUrl());
         assertThat(value.tgChatIds()).isEqualTo(linkUpdate.getTgChatIds());
     }
 }
-*/

@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.dto.linkdto;
+package backend.academy.linktracker.scrapper.dto.sender;
 
 import backend.academy.linktracker.scrapper.domain.Notification;
 

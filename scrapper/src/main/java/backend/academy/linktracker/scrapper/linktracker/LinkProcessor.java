@@ -4,7 +4,7 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceProcessor;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceHandler;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class LinkProcessor {
     private static final String ERROR_MESSAGE = "Ошибка проверки ссылки: %s";
 
     private final SubscriptionRepository subscriptionRepository;
-    private final Map<LinkType, ResourceProcessor> linkProcessors;
+    private final Map<LinkType, ResourceHandler> linkProcessors;
 
     private final ExecutorService executorService;
     private final int numberOfThreads;
@@ -59,7 +59,7 @@ public class LinkProcessor {
     }
 
     private Optional<Notification> checkLink(Link link) {
-        ResourceProcessor processor = linkProcessors.get(link.getType());
+        ResourceHandler processor = linkProcessors.get(link.getType());
 
         try {
             Optional<ProcessingResult> result = processor.process(link);

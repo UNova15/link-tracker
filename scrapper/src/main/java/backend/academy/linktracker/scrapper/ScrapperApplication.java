@@ -15,4 +15,3 @@ public class ScrapperApplication {
     }
 }
 
-// TODO переделать scrapper rest client с использованием дто

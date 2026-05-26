@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.service;
 
-import backend.academy.linktracker.bot.domain.Notification;
+import backend.academy.linktracker.bot.domain.NotificationDto;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.validation.Valid;
@@ -19,15 +19,15 @@ public class UpdateService {
     private final TelegramBot bot;
     private final Set<UUID> keyStorage;
 
-    public void sendUpdateMessage(@Valid Notification notification) {
+    public void sendUpdateMessage(@Valid NotificationDto notification) {
         // обработка повторного сообщения
-        if (!keyStorage.add(notification.getIdempotencyKey())) {
-            log.info("Дубликат сообщения :{} ключ: {}", notification.getUrl(), notification.getIdempotencyKey());
+        if (!keyStorage.add(notification.idempotencyKey())) {
+            log.info("Дубликат сообщения :{} ключ: {}", notification.url(), notification.idempotencyKey());
             return;
         }
 
-        for (long id : notification.getTgChatIds()) {
-            SendMessage message = new SendMessage(id, notification.getDescription() + ": " + notification.getUrl());
+        for (long id : notification.tgChatIds()) {
+            SendMessage message = new SendMessage(id, notification.description() + ": " + notification.url());
             bot.execute(message);
         }
     }

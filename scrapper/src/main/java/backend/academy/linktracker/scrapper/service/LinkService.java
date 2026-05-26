@@ -63,7 +63,7 @@ public class LinkService {
 
     @Transactional
     public void saveUpdatedLinksAndOutboxRecord(List<Link> checkedLinks, List<Notification> outboxEvents) {
-        // для orm реализации будет n+1 запрос из за merge jpa пофиксить не смог
+        // todo для orm реализации будет n+1 запрос из за merge jpa пофиксить не смог
         linkRepository.updateLastCheckAndLastUpdate(checkedLinks);
         if (!outboxEvents.isEmpty()) {
             notificationRepository.save(outboxEvents);

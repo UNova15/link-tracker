@@ -1,4 +1,3 @@
-/*
 package backend.academy.linktracker.scrapper.integration.external;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -302,4 +301,4 @@ public class GitHubAndStackOverflowApiTest {
                 .contains("Ошибка проверки ссылки: https://github.com/UNova15/my_project2");
     }
 }
-*/
+

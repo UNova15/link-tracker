@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.repository;
 
 import backend.academy.linktracker.scrapper.domain.Notification;
-import backend.academy.linktracker.scrapper.dto.linkdto.NotificationRecord;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import java.util.List;
 
 public interface NotificationRepository {

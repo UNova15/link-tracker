@@ -1,9 +1,11 @@
 package backend.academy.linktracker.scrapper.mapper;
 
+import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.repository.orm.entity.LinkEntity;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +48,14 @@ public class LinkMapper {
 
     public LinkResponse toLinkResponse(Link link, List<String> tags) {
         return new LinkResponse(link.getId(), link.getUrl(), tags);
+    }
+
+    public LinkUpdateEvent toLinkUpdateEvent(NotificationRecord notificationRecord){
+        return new LinkUpdateEvent(
+            notificationRecord.notification().getIdempotenceKey(),
+            notificationRecord.notification().getLinkId(),
+            notificationRecord.notification().getUrl(),
+            notificationRecord.notification().getDescription(),
+            notificationRecord.notification().getTgChatIds());
     }
 }

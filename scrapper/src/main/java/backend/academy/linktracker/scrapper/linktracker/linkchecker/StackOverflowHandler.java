@@ -16,13 +16,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowProcessor extends ResourceProcessor {
+public class StackOverflowHandler extends ResourceHandler {
     private final StackOverflowClient client;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
     private final RequesterUtil requesterUtil;
 
-    public StackOverflowProcessor(
+    public StackOverflowHandler(
             StackOverflowClient client, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
         super(LinkType.STACK_OVERFLOW);
         this.client = client;
