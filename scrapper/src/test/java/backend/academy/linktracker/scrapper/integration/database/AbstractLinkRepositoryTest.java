@@ -32,9 +32,6 @@ public abstract class AbstractLinkRepositoryTest {
     @MockitoBean
     protected LinkTracker linkTracker;
 
-    @MockitoBean
-    private KafkaClient kafkaClient;
-
     @Test
     protected void save_withValidLink_saveLink() {
         Link link = Link.createNew(LinkType.GIT_HUB, "https://github.com");

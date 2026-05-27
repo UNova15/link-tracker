@@ -1,10 +1,11 @@
-/*
 package backend.academy.linktracker.scrapper.integration.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.domain.Notification;
+import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
+import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.properties.KafkaConfiguration;
 import java.time.Duration;
@@ -29,7 +30,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.kafka.KafkaContainer;
 
 @SpringBootTest(
-        classes = {KafkaClient.class, KafkaConfiguration.class},
+        classes = {KafkaClient.class, KafkaConfiguration.class, LinkMapper.class},
         properties = {
             "app.db-provider=sql",
             "app.sender=mq",
@@ -65,8 +66,8 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        LinkUpdateEvent notification =
-                new LinkUpdateEvent(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
+        List<NotificationRecord> notification = List.of(
+                new NotificationRecord(1L, Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L))));
 
         KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -95,10 +96,9 @@ public class ScrapperKafkaIntegrationTest {
         ConsumerRecord<String, LinkUpdateEvent> record = records.iterator().next();
         LinkUpdateEvent value = record.value();
 
-        assertThat(value.getId()).isEqualTo(1);
+        assertThat(value.getLinkId()).isEqualTo(1);
         assertThat(value.getDescription()).isEqualTo("New Update");
         assertThat(value.getUrl()).isEqualTo("https:/guthub.com");
         assertThat(value.getTgChatIds()).isEqualTo(List.of(1L, 2L));
     }
 }
-*/

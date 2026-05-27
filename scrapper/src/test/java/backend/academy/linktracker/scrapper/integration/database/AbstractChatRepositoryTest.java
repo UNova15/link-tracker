@@ -25,9 +25,6 @@ public abstract class AbstractChatRepositoryTest {
     @MockitoBean
     protected LinkTracker linkTracker;
 
-    @MockitoBean
-    private KafkaClient kafkaClient;
-
     @Test
     protected void save_withValidChat_saveLink() {
         Chat chat = Chat.createNew(1);

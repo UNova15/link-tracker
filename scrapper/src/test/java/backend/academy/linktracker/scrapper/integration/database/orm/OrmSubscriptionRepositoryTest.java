@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "app.db-provider=sql")
+@TestPropertySource(properties = "app.db-provider=orm")
 public class OrmSubscriptionRepositoryTest extends AbstractSubscriptionRepositoryTest {
 
     @Autowired
