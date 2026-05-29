@@ -29,6 +29,11 @@ spring:
         batch_size: ${app.batch-size}
         order_inserts: true
         order_updates: true
+  data:
+    redis:
+      cluster:
+        nodes: ${CACHE_CLUSTER_NODES:localhost:6371,localhost:6372,localhost:6373}
+
 
 logging:
   file:
@@ -53,6 +58,7 @@ app:
   age-of-links: 6000
   batch-size: 100
   number-of-threads: 4
+  cache-ttl: 10
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}

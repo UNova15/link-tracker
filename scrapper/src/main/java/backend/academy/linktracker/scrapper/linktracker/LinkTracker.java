@@ -21,7 +21,7 @@ public class LinkTracker {
     private long ageOfLinks;
 
     @Value("${app.batch-size}")
-    private long batchSize;
+    private long linksLimit;
 
     @Scheduled(fixedDelayString = "${app.check-link-interval}")
     public void sendNotification() {
@@ -30,7 +30,7 @@ public class LinkTracker {
         long lastCheckId = 0;
 
         while (true) {
-            List<Link> activeLinks = linkService.findLinksFilteredByLastCheck(lastCheckId, batchSize, ageOfLinks);
+            List<Link> activeLinks = linkService.findLinksFilteredByLastCheck(lastCheckId, linksLimit, ageOfLinks);
 
             if (activeLinks.isEmpty()) {
                 break;

@@ -3,6 +3,53 @@ x-shared-env: &Kafka
   APP_TOPIC_NAME: link-updates
 
 services:
+
+  redis-insight:
+    image: redis/redisinsight:3.4.2
+    ports:
+      - "5540:5540"
+    depends_on:
+      valkey-cluster-init:
+        condition: service_completed_successfully
+
+  cache-1:
+    image: valkey/valkey:9.1.0-trixie
+    command: valkey-server --port 6379 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes
+    ports:
+      - "6371:6379"
+    volumes:
+      - cache-1:/data
+
+  cache-2:
+    image: valkey/valkey:9.1.0-trixie
+    command: valkey-server --port 6379 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes
+    ports:
+      - "6372:6379"
+    volumes:
+      - cache-2:/data
+
+  cache-3:
+    image: valkey/valkey:9.1.0-trixie
+    command: valkey-server --port 6379 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes
+    ports:
+      - "6373:6379"
+    volumes:
+      - cache-3:/data
+
+  valkey-cluster-init:
+    image: valkey/valkey:9.1.0-trixie
+    depends_on:
+      - cache-1
+      - cache-2
+      - cache-3
+    command: >
+      bash -c "echo 'yes' | valkey-cli --cluster create
+      $$(getent hosts cache-1 | awk '{ print $$1 }'):6379
+      $$(getent hosts cache-2 | awk '{ print $$1 }'):6379
+      $$(getent hosts cache-3 | awk '{ print $$1 }'):6379
+      --cluster-replicas 0"
+
+
   schema-registry:
     image: confluentinc/cp-schema-registry:7.5.14
     ports:
@@ -126,6 +173,8 @@ services:
       REPLICA_FACTOR: 3
       PARTITION_FACTOR: 3
 
+      CACHE_CLUSTER_NODES: cache-1:6379,cache-2:6379,cache-3:6379
+
       APP_TELEGRAM_BOT_BASE_URL: https://bot:8080
       SCHEMA_REGISTRY_URL: http://schema-registry:8081
 
@@ -202,4 +251,7 @@ volumes:
   kafka-data-1:
   kafka-data-2:
   kafka-data-3:
+  cache-1:
+  cache-2:
+  cache-3:
 
