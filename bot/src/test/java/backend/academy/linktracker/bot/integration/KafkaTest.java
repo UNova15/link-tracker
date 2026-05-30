@@ -5,7 +5,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.bot.domain.NotificationDto;
+import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +24,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.kafka.KafkaContainer;
 
-//тест из-за полной загрузки контекста будет работать только с включенным vpn
+// тест из-за полной загрузки контекста будет работать только с включенным vpn
 @Slf4j
 @SpringBootTest(
         properties = {
@@ -63,9 +63,11 @@ public class KafkaTest {
     static void stopAll() {
         kafkaContainer.close();
     }
+
     @Test
     void Kafka_pollKafka_getMessage() {
-        LinkUpdateEvent linkUpdate = new LinkUpdateEvent(UUID.randomUUID(),1L,"https://github.com","New message",List.of(1L));
+        LinkUpdateEvent linkUpdate =
+                new LinkUpdateEvent(UUID.randomUUID(), 1L, "https://github.com", "New message", List.of(1L));
 
         kafka.send("test-topic", linkUpdate);
 

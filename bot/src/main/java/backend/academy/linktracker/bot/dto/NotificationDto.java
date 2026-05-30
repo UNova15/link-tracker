@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.domain;
+package backend.academy.linktracker.bot.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,4 +18,3 @@ public record NotificationDto(
         @NotBlank String description,
 
         @NotEmpty List<Long> tgChatIds) {}
-;

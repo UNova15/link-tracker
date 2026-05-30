@@ -5,6 +5,7 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.NotificationRepository;
+import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionService;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import java.time.Instant;
 import java.util.List;

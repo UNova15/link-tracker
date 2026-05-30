@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.service;
+package backend.academy.linktracker.scrapper.service.subscriptionservice;
 
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.Subscription;
@@ -12,18 +12,14 @@ import backend.academy.linktracker.scrapper.exception.LinkNotFoundException;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
+import backend.academy.linktracker.scrapper.service.LinkService;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@CacheConfig(cacheNames = {"getLinks"})
 @AllArgsConstructor
-public class SubscriptionService {
+public class SubscriptionServiceImpl implements SubscriptionService {
     private final LinkService linkService;
 
     private final ChatRepository chatRepository;
@@ -31,8 +27,7 @@ public class SubscriptionService {
 
     private final LinkMapper linkMapper;
 
-    @Transactional(readOnly = true)
-    @Cacheable(key = "#chatId")
+    @Override
     public ListLinksResponse findSubscriptionsWithLinks(long chatId) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -44,8 +39,7 @@ public class SubscriptionService {
         return linkMapper.toListLinkResponse(subscriptions, links);
     }
 
-    @Transactional
-    @CacheEvict(key = "#chatId")
+    @Override
     public LinkResponse createSubscription(long chatId, AddLinkRequest request) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -63,8 +57,7 @@ public class SubscriptionService {
         return linkMapper.toLinkResponse(link, subscription.getTags());
     }
 
-    @Transactional
-    @CacheEvict(key = "#chatId")
+    @Override
     public LinkResponse removeSubscription(long chatId, RemoveLinkRequest request) {
         if (!chatRepository.existById(chatId)) {
             throw new ChatNotFoundException(chatId);
@@ -78,6 +71,7 @@ public class SubscriptionService {
         return linkMapper.toLinkResponse(link, subscription.getTags());
     }
 
+    @Override
     public boolean isExistsSubscriptionsToLink(long linkId) {
         return !subscriptionRepository.findChatsIdByLinkId(linkId).isEmpty();
     }

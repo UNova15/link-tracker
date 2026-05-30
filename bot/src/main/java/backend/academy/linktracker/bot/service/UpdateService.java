@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.service;
 
-import backend.academy.linktracker.bot.domain.NotificationDto;
+import backend.academy.linktracker.bot.dto.NotificationDto;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.validation.Valid;

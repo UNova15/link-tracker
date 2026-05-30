@@ -50,12 +50,12 @@ public class LinkMapper {
         return new LinkResponse(link.getId(), link.getUrl(), tags);
     }
 
-    public LinkUpdateEvent toLinkUpdateEvent(NotificationRecord notificationRecord){
+    public LinkUpdateEvent toLinkUpdateEvent(NotificationRecord notificationRecord) {
         return new LinkUpdateEvent(
-            notificationRecord.notification().getIdempotenceKey(),
-            notificationRecord.notification().getLinkId(),
-            notificationRecord.notification().getUrl(),
-            notificationRecord.notification().getDescription(),
-            notificationRecord.notification().getTgChatIds());
+                notificationRecord.notification().getIdempotenceKey(),
+                notificationRecord.notification().getLinkId(),
+                notificationRecord.notification().getUrl(),
+                notificationRecord.notification().getDescription(),
+                notificationRecord.notification().getTgChatIds());
     }
 }

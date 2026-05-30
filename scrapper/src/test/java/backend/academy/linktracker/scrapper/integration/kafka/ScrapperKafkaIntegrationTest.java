@@ -8,11 +8,11 @@ import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.properties.KafkaConfiguration;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -66,8 +66,8 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        List<NotificationRecord> notification = List.of(
-                new NotificationRecord(1L, Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L))));
+        List<NotificationRecord> notification = List.of(new NotificationRecord(
+                1L, Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L))));
 
         KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,

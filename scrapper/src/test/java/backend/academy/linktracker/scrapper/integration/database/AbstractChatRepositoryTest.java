@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import backend.academy.linktracker.scrapper.domain.Chat;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkTracker;
-import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import jakarta.validation.ConstraintViolationException;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;

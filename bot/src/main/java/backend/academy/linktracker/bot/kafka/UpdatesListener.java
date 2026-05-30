@@ -1,7 +1,7 @@
 package backend.academy.linktracker.bot.kafka;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.bot.domain.NotificationDto;
+import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

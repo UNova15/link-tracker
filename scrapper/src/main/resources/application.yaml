@@ -58,7 +58,8 @@ app:
   age-of-links: 6000
   batch-size: 100
   number-of-threads: 4
-  cache-ttl: 10
+  cache-ttl: 36000
+  max-size-local-cache: 10000
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}

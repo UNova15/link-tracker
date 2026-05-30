@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.controller;
 
-import backend.academy.linktracker.bot.domain.NotificationDto;
+import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

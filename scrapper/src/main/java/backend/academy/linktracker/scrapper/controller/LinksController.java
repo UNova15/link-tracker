@@ -4,7 +4,7 @@ import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.RemoveLinkRequest;
-import backend.academy.linktracker.scrapper.service.SubscriptionService;
+import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

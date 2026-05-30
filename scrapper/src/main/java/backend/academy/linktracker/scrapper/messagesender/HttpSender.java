@@ -2,12 +2,12 @@ package backend.academy.linktracker.scrapper.messagesender;
 
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.exception.TelegramBotException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "http")

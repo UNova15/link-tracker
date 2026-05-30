@@ -1,9 +1,9 @@
 package backend.academy.linktracker.bot.integration;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import java.util.HashMap;
 import java.util.Map;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
