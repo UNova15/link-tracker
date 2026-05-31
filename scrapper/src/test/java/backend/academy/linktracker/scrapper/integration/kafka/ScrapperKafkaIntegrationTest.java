@@ -27,6 +27,7 @@ import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.kafka.KafkaContainer;
 
 @SpringBootTest(
@@ -47,6 +48,7 @@ public class ScrapperKafkaIntegrationTest {
     @Autowired
     private KafkaClient kafkaClient;
 
+    @Container
     static KafkaContainer kafka = new KafkaContainer("apache/kafka:4.3.0");
 
     @DynamicPropertySource

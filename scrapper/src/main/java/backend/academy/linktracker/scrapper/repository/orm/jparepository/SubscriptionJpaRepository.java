@@ -5,6 +5,7 @@ import backend.academy.linktracker.scrapper.repository.orm.entity.SubscriptionId
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
 public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionEntity, SubscriptionId> {
     List<SubscriptionEntity> findAllChatIdByLinkId(long linkId);
 

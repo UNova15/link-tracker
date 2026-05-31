@@ -47,9 +47,9 @@ app:
   db-provider: orm
 
   kafka:
-    topic-name: ${APP_TOPIC_NAME}
-    replicas: ${REPLICA_FACTOR}
-    partitions: ${PARTITION_FACTOR}
+    topic-name: ${APP_TOPIC_NAME:link-updates}
+    replicas: ${REPLICA_FACTOR:1}
+    partitions: ${PARTITION_FACTOR:1}
   http:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
 
