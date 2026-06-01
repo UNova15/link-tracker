@@ -6,7 +6,7 @@ import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowResponse;
-import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
+import backend.academy.linktracker.scrapper.linksclient.StackOverflowService;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.RequesterUtil;
 import backend.academy.linktracker.scrapper.util.ResponseFormatter;
@@ -17,15 +17,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StackOverflowHandler extends ResourceHandler {
-    private final StackOverflowClient client;
+    private final StackOverflowService stackOverflow;
     private final ResponseFormatter formatter;
     private final LinkParser parser;
     private final RequesterUtil requesterUtil;
 
     public StackOverflowHandler(
-            StackOverflowClient client, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
+            StackOverflowService stackOverflow,
+            LinkParser parser,
+            ResponseFormatter formatter,
+            RequesterUtil requesterUtil) {
         super(LinkType.STACK_OVERFLOW);
-        this.client = client;
+        this.stackOverflow = stackOverflow;
         this.parser = parser;
         this.formatter = formatter;
         this.requesterUtil = requesterUtil;
@@ -35,8 +38,8 @@ public class StackOverflowHandler extends ResourceHandler {
     public Optional<ProcessingResult> process(Link link) {
         long questionId = parser.parseStackOverflowLink(link.getUrl());
 
-        StackOverflowResponse response =
-                client.sendURequestForUpdates(questionId, link.getLastUpdate().getEpochSecond());
+        StackOverflowResponse response = stackOverflow.sendURequestForUpdates(
+                questionId, link.getLastUpdate().getEpochSecond());
 
         if (response == null || response.items() == null || response.items().isEmpty()) {
             return Optional.empty();

@@ -44,6 +44,7 @@ logging:
 
 app:
   db-provider: orm
+  retryable-statuses: 500,502,503,504
 
   kafka:
     topic-name: ${APP_TOPIC_NAME:link-updates}
@@ -80,3 +81,28 @@ app:
     base-url: https://api.github.com
     connection-timeout: 300
     response-timeout: 200
+
+
+resilience4j:
+  retry:
+    instances:
+      github:
+        max-attempts: 2
+        wait-duration: 1s
+
+      stackoverflow:
+        max-attempts: 2
+        wait-duration: 1s
+
+      bot:
+        max-attempts: 2
+        wait-duration: 1s
+  ratelimiter:
+    configs:
+      ip-limit:
+        limit-for-period: 10
+        limit-refresh-period: 1m
+        timeout-duration: 0s
+
+
+

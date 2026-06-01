@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "http")
 @AllArgsConstructor
 @Slf4j
-public class HttpSender implements MessageSender {
-    private final TelegramBotClient client;
+public class BotSender implements MessageSender {
+    private final TelegramBotService bot;
 
     @Override
     public List<Long> send(List<NotificationRecord> records) {
@@ -22,7 +22,7 @@ public class HttpSender implements MessageSender {
 
         for (var record : records) {
             try {
-                client.send(record.notification());
+                bot.send(record.notification());
                 updatedIds.add(record.notification().getLinkId());
             } catch (TelegramBotException exception) {
                 log.error(

@@ -1,10 +1,9 @@
 package backend.academy.linktracker.scrapper.configuration;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
 import backend.academy.linktracker.scrapper.properties.CacheProperties;
 import backend.academy.linktracker.scrapper.util.ClusterClientSideCacheFactory;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

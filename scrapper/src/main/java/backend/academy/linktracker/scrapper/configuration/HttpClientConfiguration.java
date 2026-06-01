@@ -4,11 +4,10 @@ import backend.academy.linktracker.scrapper.exception.handler.TelegramBotExcepti
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
 import backend.academy.linktracker.scrapper.messagesender.TelegramBotClient;
-import java.net.URI;
-
 import backend.academy.linktracker.scrapper.properties.GithubProperties;
 import backend.academy.linktracker.scrapper.properties.StackoverflowProperties;
 import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
+import java.net.URI;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

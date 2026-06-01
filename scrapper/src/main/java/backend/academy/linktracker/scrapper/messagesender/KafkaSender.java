@@ -3,11 +3,11 @@ package backend.academy.linktracker.scrapper.messagesender;
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
+import backend.academy.linktracker.scrapper.properties.KafkaProperties;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import backend.academy.linktracker.scrapper.properties.KafkaProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "mq", matchIfMissing = true)
 @Slf4j
 @RequiredArgsConstructor
-public class KafkaClient implements MessageSender {
+public class KafkaSender implements MessageSender {
     private final KafkaTemplate<String, LinkUpdateEvent> kafka;
     private final KafkaProperties properties;
     private final LinkMapper linkMapper;
