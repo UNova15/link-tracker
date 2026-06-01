@@ -4,6 +4,7 @@ import backend.academy.linktracker.bot.dto.AddLinkRequest;
 import backend.academy.linktracker.bot.dto.LinkResponse;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
 import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.service.annotation.DeleteExchange;

@@ -1,11 +1,16 @@
 package backend.academy.linktracker.scrapper.integration.valkey;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
 import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
 import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionService;
 import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionServiceImpl;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +24,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
-
 @SpringBootTest
 @Testcontainers
 @Import({TestContainersConfiguration.class, ValkeyClusterTestConfig.class})
@@ -32,8 +31,8 @@ class SubscriptionServiceCacheTest {
 
     @Container
     static GenericContainer<?> valkey = new GenericContainer<>("valkey/valkey:8.0")
-        .withExposedPorts(6379)
-        .withCommand("valkey-server", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000");
+            .withExposedPorts(6379)
+            .withCommand("valkey-server", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000");
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) throws Exception {
@@ -81,7 +80,6 @@ class SubscriptionServiceCacheTest {
         subscriptionServiceProxy.findSubscriptionsWithLinks(chatId);
 
         verify(actualDbService, times(1)).findSubscriptionsWithLinks(chatId);
-
     }
 
     @Test

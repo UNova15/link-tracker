@@ -43,29 +43,40 @@ logging:
       file: ecs
 
 app:
-  sender: mq
   db-provider: orm
 
   kafka:
     topic-name: ${APP_TOPIC_NAME:link-updates}
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
-  http:
-    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
+    dlq-topic-name: ${DLQ_TOPIC_NAME:link-updates-dlq}
 
-  check-link-interval: 3000
-  check-outbox-interval: 1000
-  age-of-links: 6000
-  batch-size: 100
-  number-of-threads: 4
-  cache-ttl: 36000
-  max-size-local-cache: 10000
+  scrapper-settings:
+    check-link-interval: 3000
+    check-outbox-interval: 1000
+    age-of-links: 6000
+    number-of-threads: 4
+    batch-size: 100
+
+  cache:
+    ttl: 36000
+    max-size-local-cache: 10000
+
+
+  bot:
+    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
+    connection-timeout: 100
+    response-timeout: 50
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
+    connection-timeout: 300
+    response-timeout: 200
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
+    connection-timeout: 300
+    response-timeout: 200

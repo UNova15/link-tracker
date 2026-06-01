@@ -2,6 +2,9 @@ package backend.academy.linktracker.scrapper.configuration;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+
+import backend.academy.linktracker.scrapper.properties.CacheProperties;
+import backend.academy.linktracker.scrapper.util.ClusterClientSideCacheFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +37,9 @@ public class CacheConfiguration {
 
     @Bean
     public ClusterClientSideCache clusterClientSideCache(
-            RedisConnectionFactory redisConnectionFactory, ClusterClientSideCacheFactory factory) {
-        return factory.create(redisConnectionFactory);
+            RedisConnectionFactory redisConnectionFactory,
+            ClusterClientSideCacheFactory factory,
+            CacheProperties properties) {
+        return factory.create(redisConnectionFactory, properties);
     }
 }

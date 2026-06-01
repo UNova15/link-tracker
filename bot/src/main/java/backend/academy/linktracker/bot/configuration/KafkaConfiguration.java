@@ -1,6 +1,7 @@
 package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.bot.properties.KafkaProperties;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Set;
 import java.util.UUID;
@@ -19,12 +20,6 @@ import org.springframework.util.backoff.FixedBackOff;
 @Configuration
 public class KafkaConfiguration {
 
-    @Value("${app.kafka.max-retries}")
-    long numberOfAttempts;
-
-    @Value("${app.kafka.time-out}")
-    long timeOut;
-
     @Bean
     DeadLetterPublishingRecoverer deadLetterPublishingRecoverer(KafkaTemplate<String, LinkUpdateEvent> kafkaTemplate) {
         return new DeadLetterPublishingRecoverer(
@@ -32,8 +27,9 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    DefaultErrorHandler defaultErrorHandler(DeadLetterPublishingRecoverer recoverer) {
-        var defaultErrorHandler = new DefaultErrorHandler(recoverer, new FixedBackOff(timeOut, numberOfAttempts));
+    DefaultErrorHandler defaultErrorHandler(KafkaProperties properties, DeadLetterPublishingRecoverer recoverer) {
+        var defaultErrorHandler =
+                new DefaultErrorHandler(recoverer, new FixedBackOff(properties.getTimeout(), properties.getRetries()));
         defaultErrorHandler.addNotRetryableExceptions(
                 MethodArgumentNotValidException.class,
                 ConstraintViolationException.class,

@@ -32,8 +32,8 @@ logging:
 app:
   kafka:
     topic-name: ${APP_TOPIC_NAME:link-updates}
-    max-retries: 3
-    time-out: 6000
+    retries: 3
+    timeout: 6000
 
   telegram:
     url: https://api.telegram.org/bot
@@ -43,3 +43,5 @@ app:
 
   scrapper:
     base-url: ${APP_SCRAPPER_BASE_URL:https://scrapper:8081}
+    connection-timeout: 100
+    response-timeout: 50

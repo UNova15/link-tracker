@@ -1,7 +1,6 @@
-package backend.academy.linktracker.scrapper.properties;
+package backend.academy.linktracker.bot.properties;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,10 +9,20 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-@ConfigurationProperties(prefix = "app.github")
+@ConfigurationProperties(prefix = "app.kafka")
 @Validated
-public record GithubProperties(
-        @NotBlank String token,
-        @NotBlank String baseUrl,
-        @PositiveOrZero int connectionTimeout,
-        @PositiveOrZero int responseTimeout) {}
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+public class KafkaProperties {
+
+    @NotBlank
+    String topicName;
+
+    @PositiveOrZero
+    int timeout;
+
+    @PositiveOrZero
+    int retries;
+}

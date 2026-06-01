@@ -1,4 +1,4 @@
-package backend.academy.linktracker.bot.configuration;
+package backend.academy.linktracker.bot.properties;
 
 import jakarta.validation.constraints.NotEmpty;
 import java.time.Duration;

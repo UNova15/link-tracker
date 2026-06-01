@@ -1,16 +1,21 @@
-package backend.academy.linktracker.scrapper.properties;
+package backend.academy.linktracker.scrapper.configuration;
 
 import backend.academy.linktracker.scrapper.exception.handler.TelegramBotExceptionHandler;
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
 import backend.academy.linktracker.scrapper.messagesender.TelegramBotClient;
 import java.net.URI;
+
+import backend.academy.linktracker.scrapper.properties.GithubProperties;
+import backend.academy.linktracker.scrapper.properties.StackoverflowProperties;
+import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
@@ -22,6 +27,7 @@ public class HttpClientConfiguration {
 
     @Bean
     public GitHubClient gitHubHttpClient(GithubProperties properties) {
+
         ClientHttpRequestInterceptor defaultParamsInterceptor = (request, body, execution) -> {
             URI newUri = UriComponentsBuilder.fromUri(request.getURI())
                     .queryParam("sort", "created")
@@ -39,11 +45,16 @@ public class HttpClientConfiguration {
             return execution.execute(newRequest, body);
         };
 
+        SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
+        httpRequestFactory.setConnectTimeout(properties.connectionTimeout());
+        httpRequestFactory.setReadTimeout(properties.responseTimeout());
+
         RestClient client = RestClient.builder()
-                .baseUrl(properties.getBaseUrl())
+                .baseUrl(properties.baseUrl())
                 .requestInterceptor(defaultParamsInterceptor)
+                .requestFactory(httpRequestFactory)
                 .defaultHeader("Accept", "application/vnd.github+json")
-                .defaultHeader("Authorization", "Bearer " + properties.getToken())
+                .defaultHeader("Authorization", "Bearer " + properties.token())
                 .build();
 
         RestClientAdapter adapter = RestClientAdapter.create(client);
@@ -59,7 +70,7 @@ public class HttpClientConfiguration {
             URI newUri = UriComponentsBuilder.fromUri(request.getURI())
                     .queryParam("site", "stackoverflow")
                     .queryParam("filter", "!nKzQUR3E_f")
-                    .queryParam("key", properties.getKey())
+                    .queryParam("key", properties.key())
                     .build()
                     .toUri();
 
@@ -72,8 +83,13 @@ public class HttpClientConfiguration {
             return execution.execute(newRequest, body);
         };
 
+        SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
+        httpRequestFactory.setConnectTimeout(properties.connectionTimeout());
+        httpRequestFactory.setReadTimeout(properties.responseTimeout());
+
         RestClient client = RestClient.builder()
-                .baseUrl(properties.getBaseUrl())
+                .baseUrl(properties.baseUrl())
+                .requestFactory(httpRequestFactory)
                 .requestInterceptor(defaultParamsInterceptor)
                 .build();
 
@@ -87,8 +103,14 @@ public class HttpClientConfiguration {
     @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "http")
     public TelegramBotClient telegramBotHttpClient(
             TelegramBotProperties properties, TelegramBotExceptionHandler handler) {
+
+        SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
+        httpRequestFactory.setConnectTimeout(properties.connectionTimeout());
+        httpRequestFactory.setReadTimeout(properties.responseTimeout());
+
         RestClient client = RestClient.builder()
-                .baseUrl(properties.getBaseUrl())
+                .baseUrl(properties.baseUrl())
+                .requestFactory(httpRequestFactory)
                 .defaultStatusHandler(HttpStatusCode::is5xxServerError, handler::handleTelegramError)
                 .defaultStatusHandler(HttpStatusCode::is4xxClientError, handler::handleTelegramError)
                 .build();

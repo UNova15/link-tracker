@@ -1,6 +1,8 @@
-package backend.academy.linktracker.scrapper.configuration;
+package backend.academy.linktracker.scrapper.util;
 
+import backend.academy.linktracker.scrapper.configuration.ClusterClientSideCache;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
+import backend.academy.linktracker.scrapper.properties.CacheProperties;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.lettuce.core.TrackingArgs;
@@ -22,17 +24,10 @@ import tools.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class ClusterClientSideCacheFactory {
     private static final String INVALIDATE_COMMAND = "invalidate";
-
     private final ObjectMapper mapper;
 
-    @Value("${app.cache-ttl}")
-    private long ttl;
-
-    @Value("${app.max-size-local-cache}")
-    private long maxSize;
-
-    public ClusterClientSideCache create(RedisConnectionFactory redisConnectionFactory) {
-        Cache<String, ListLinksResponse> localCache = createLocalCache();
+    public ClusterClientSideCache create(RedisConnectionFactory redisConnectionFactory, CacheProperties properties) {
+        Cache<String, ListLinksResponse> localCache = createLocalCache(properties);
 
         LettuceConnectionFactory factory = (LettuceConnectionFactory) redisConnectionFactory;
         RedisClusterClient client = (RedisClusterClient) factory.getNativeClient();
@@ -64,10 +59,10 @@ public class ClusterClientSideCacheFactory {
         return new ClusterClientSideCache(localCache, connection, mapper);
     }
 
-    public Cache<String, ListLinksResponse> createLocalCache() {
+    public Cache<String, ListLinksResponse> createLocalCache(CacheProperties properties) {
         return Caffeine.newBuilder()
-                .maximumSize(maxSize)
-                .expireAfterWrite(Duration.of(ttl, ChronoUnit.SECONDS))
+                .maximumSize(properties.maxSizeLocalCache())
+                .expireAfterWrite(Duration.of(properties.ttl(), ChronoUnit.SECONDS))
                 .build();
     }
 }

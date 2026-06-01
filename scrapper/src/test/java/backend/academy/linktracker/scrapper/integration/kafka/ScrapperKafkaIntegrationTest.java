@@ -7,7 +7,7 @@ import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.KafkaClient;
-import backend.academy.linktracker.scrapper.properties.KafkaConfiguration;
+import backend.academy.linktracker.scrapper.configuration.KafkaConfiguration;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import java.time.Duration;
 import java.util.List;

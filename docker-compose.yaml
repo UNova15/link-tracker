@@ -1,6 +1,7 @@
 x-shared-env: &Kafka
   KAFKA_BOOTSTRAP_SERVERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
   APP_TOPIC_NAME: link-updates
+  DLQ_TOPIC_NAME: link-updates-dlq
 
 services:
 

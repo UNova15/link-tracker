@@ -1,12 +1,14 @@
 package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
+import backend.academy.linktracker.bot.properties.ScrapperProperties;
 import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
 import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -16,10 +18,15 @@ public class ScrapperClientConfiguration {
 
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(
-            @Value("${app.scrapper.base-url}") String baseUrl, ScrapperErrorHandler errorHandler) {
+            ScrapperProperties properties, ScrapperErrorHandler errorHandler) {
+
+        SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
+        httpRequestFactory.setConnectTimeout(properties.getConnectionTimeout());
+        httpRequestFactory.setReadTimeout(properties.getResponseTimeout());
 
         RestClient restClient = RestClient.builder()
-                .baseUrl(baseUrl)
+                .baseUrl(properties.getBaseUrl())
+                .requestFactory(httpRequestFactory)
                 .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
                 .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperServerError)
                 .build();

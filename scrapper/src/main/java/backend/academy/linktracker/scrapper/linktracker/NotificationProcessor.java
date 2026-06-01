@@ -2,6 +2,7 @@ package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.messagesender.MessageSender;
+import backend.academy.linktracker.scrapper.properties.ScrapperProperties;
 import backend.academy.linktracker.scrapper.repository.NotificationRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,15 @@ import org.springframework.stereotype.Service;
 public class NotificationProcessor {
     private final MessageSender sender;
     private final NotificationRepository notificationRepository;
+    private final ScrapperProperties properties;
 
-    @Value("${app.batch-size}")
-    private long linksLimit;
-
-    @Scheduled(fixedDelayString = "${app.check-outbox-interval}")
+    @Scheduled(fixedDelayString = "${app.scrapper-settings.check-outbox-interval}")
     public void processNotification() {
         long lastCheckId = 0;
 
         while (true) {
             List<NotificationRecord> notificationRecords =
-                    notificationRepository.findBatchById(lastCheckId, linksLimit);
+                    notificationRepository.findBatchById(lastCheckId, properties.batchSize());
 
             if (notificationRecords.isEmpty()) {
                 break;
