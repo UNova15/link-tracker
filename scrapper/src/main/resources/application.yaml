@@ -60,27 +60,32 @@ app:
     batch-size: 100
 
   cache:
-    ttl: 36000
-    max-size-local-cache: 10000
+    valkey:
+      ttl: 10
+      max-size: 10000
+    rate-limiter:
+      ttl: 1
+      max-size: 10000
+
 
 
   bot:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
-    connection-timeout: 100
-    response-timeout: 50
+    connection-timeout: 500
+    response-timeout: 100
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
-    connection-timeout: 300
-    response-timeout: 200
+    connection-timeout: 500
+    response-timeout: 100
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
-    connection-timeout: 300
-    response-timeout: 200
+    connection-timeout: 500
+    response-timeout: 100
 
 
 resilience4j:
@@ -97,12 +102,20 @@ resilience4j:
       bot:
         max-attempts: 2
         wait-duration: 1s
-  ratelimiter:
-    configs:
-      ip-limit:
-        limit-for-period: 10
-        limit-refresh-period: 1m
-        timeout-duration: 0s
 
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      filter-method: servlet
+      filter-order: -1
+      url: .*
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 50
+              time: 10
+              unit: seconds
+      http-response-body: "{ \"error\": \"Too many requests\" }"
 
 

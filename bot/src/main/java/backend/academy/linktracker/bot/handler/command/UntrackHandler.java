@@ -4,8 +4,8 @@ import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
+import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +19,12 @@ public class UntrackHandler extends CommandHandler {
     private static final String ERROR_MESSAGE = "Ошибка удаления ссылки";
     private static final String MISSING_LINK_TO_RESOURCE = "Отсутствует ссылка на удаляемый ресурс";
 
-    private final ScrapperLinkClient scrapperClient;
+    private final ScrapperService scrapper;
     private final RequestArgsParser parser;
 
-    public UntrackHandler(@Lazy AwaitCommandState newState, ScrapperLinkClient client, RequestArgsParser parser) {
+    public UntrackHandler(@Lazy AwaitCommandState newState, ScrapperService scrapper, RequestArgsParser parser) {
         super(new Command("/untrack", "Прекращение отслеживания ссылки"), newState);
-        this.scrapperClient = client;
+        this.scrapper = scrapper;
         this.parser = parser;
     }
 
@@ -34,10 +34,10 @@ public class UntrackHandler extends CommandHandler {
                 .map(link -> {
                     RemoveLinkRequest request = new RemoveLinkRequest(link);
                     try {
-                        scrapperClient.removeLink(message.id(), request);
+                        scrapper.removeLink(message.id(), request);
                         changeState(session);
                         return SUCCESS_MESSAGE;
-                    } catch (ScrapperClientException exception) {
+                    } catch (ScrapperApiException exception) {
                         log.error(
                                 "Ошибка удаления ссылки {} пользователя {}. {}",
                                 message.text(),

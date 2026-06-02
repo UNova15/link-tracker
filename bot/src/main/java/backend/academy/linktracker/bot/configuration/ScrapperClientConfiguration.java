@@ -2,8 +2,8 @@ package backend.academy.linktracker.bot.configuration;
 
 import backend.academy.linktracker.bot.exception.ScrapperErrorHandler;
 import backend.academy.linktracker.bot.properties.ScrapperProperties;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
+import backend.academy.linktracker.bot.client.ScrapperChatClient;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
@@ -26,8 +26,8 @@ public class ScrapperClientConfiguration {
         RestClient restClient = RestClient.builder()
                 .baseUrl(properties.getBaseUrl())
                 .requestFactory(httpRequestFactory)
-                .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperClientError)
-                .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperServerError)
+                .defaultStatusHandler(HttpStatusCode::is4xxClientError, errorHandler::handleScrapperError)
+                .defaultStatusHandler(HttpStatusCode::is5xxServerError, errorHandler::handleScrapperError)
                 .build();
 
         RestClientAdapter adapter = RestClientAdapter.create(restClient);

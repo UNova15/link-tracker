@@ -1,4 +1,4 @@
-package backend.academy.linktracker.scrapper.properties;
+package backend.academy.linktracker.bot.properties;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -10,9 +10,10 @@ import java.time.temporal.ChronoUnit;
 
 @ConfigurationProperties(prefix = "app.cache")
 @Validated
-public record CacheProperties(CacheConfigProperty valkey, CacheConfigProperty rateLimiter) {
+public record CacheProperties(
+        @NotNull CacheConfigProperties rateLimiter, @NotNull CacheConfigProperties idempotencyKey) {
 
-    public record CacheConfigProperty(
-            @NotNull @DurationUnit(ChronoUnit.HOURS) Duration ttl,
-            @Positive int maxSize) {}
+    public record CacheConfigProperties(
+            @Positive long maxSize,
+            @Positive @DurationUnit(ChronoUnit.HOURS) Duration ttl) {}
 }

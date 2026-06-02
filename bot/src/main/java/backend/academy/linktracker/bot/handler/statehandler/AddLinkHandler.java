@@ -3,9 +3,9 @@ package backend.academy.linktracker.bot.handler.statehandler;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.handler.StateChanger;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
+import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import java.util.List;
@@ -19,15 +19,13 @@ public class AddLinkHandler extends StateChanger {
     private static final String SUCCESS_MESSAGE = "Ссылка успешно сохранена";
     private static final String ERROR_MESSAGE = "Ошибка сохранения ссылки";
 
-    private final ScrapperLinkClient scrapperLinkClient;
+    private final ScrapperService scrapper;
     private final RequestArgsParser parser;
 
     public AddLinkHandler(
-            ScrapperLinkClient scrapperLinkClient,
-            RequestArgsParser parser,
-            @Lazy AwaitCommandState awaitCommandState) {
+            ScrapperService scrapper, RequestArgsParser parser, @Lazy AwaitCommandState awaitCommandState) {
         super(awaitCommandState);
-        this.scrapperLinkClient = scrapperLinkClient;
+        this.scrapper = scrapper;
         this.parser = parser;
     }
 
@@ -45,11 +43,11 @@ public class AddLinkHandler extends StateChanger {
 
             session.setTags(tags);
             AddLinkRequest request = new AddLinkRequest(session.getLink(), session.getTags());
-            scrapperLinkClient.addLink(message.id(), request);
+            scrapper.addLink(message.id(), request);
 
             changeState(session);
             return SUCCESS_MESSAGE;
-        } catch (ScrapperClientException exception) {
+        } catch (ScrapperApiException exception) {
             log.error(
                     "Ошибка отправки ссылки пользователя {}, {}. {}",
                     message.id(),

@@ -3,9 +3,6 @@ package backend.academy.linktracker.bot.configuration;
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.bot.properties.KafkaProperties;
 import jakarta.validation.ConstraintViolationException;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +33,4 @@ public class KafkaConfiguration {
         return defaultErrorHandler;
     }
 
-    // TODO заменить на нормальный кеш
-    @Bean
-    Set<UUID> idempotenceKeyStorage() {
-        return ConcurrentHashMap.newKeySet();
-    }
 }

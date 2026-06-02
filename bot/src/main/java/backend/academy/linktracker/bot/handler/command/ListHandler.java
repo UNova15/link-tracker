@@ -4,8 +4,8 @@ import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperLinkClient;
+import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.ListCommandHelper;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
@@ -20,17 +20,17 @@ import org.springframework.stereotype.Component;
 public class ListHandler extends CommandHandler {
     private static final String ERROR_MESSAGE = "Ошибка при поиске ссылок. Повторите попытке позже";
 
-    private final ScrapperLinkClient scrapperLinkClient;
+    private final ScrapperService scrapper;
     private final ListCommandHelper listCommandHelper;
     private final RequestArgsParser parser;
 
     public ListHandler(
             @Lazy AwaitCommandState state,
-            ScrapperLinkClient scrapperLinkClient,
+            ScrapperService scrapper,
             RequestArgsParser parser,
             ListCommandHelper listCommandHelper) {
         super(new Command("/list", "Вывод списка всех отслеживаемых ссылок"), state);
-        this.scrapperLinkClient = scrapperLinkClient;
+        this.scrapper = scrapper;
         this.listCommandHelper = listCommandHelper;
         this.parser = parser;
     }
@@ -40,13 +40,13 @@ public class ListHandler extends CommandHandler {
         try {
             Optional<String> tag = parser.parseFirstCommandArgument(message.text());
 
-            ListLinkResponse response = scrapperLinkClient.getLinks(message.id());
+            ListLinkResponse response = scrapper.getLinks(message.id());
 
             List<String> links = listCommandHelper.filterLinksByTag(response, tag);
 
             changeState(session);
             return listCommandHelper.formateResponse(links);
-        } catch (ScrapperClientException exception) {
+        } catch (ScrapperApiException exception) {
             log.error(
                     "Ошибка при поиске ссылок пользователя {}. {}",
                     message.id(),

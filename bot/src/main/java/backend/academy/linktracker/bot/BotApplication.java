@@ -12,3 +12,6 @@ public class BotApplication {
         SpringApplication.run(BotApplication.class, args);
     }
 }
+
+//TODO исправить кеш для idempotent key
+//TODO исправить ratelimiting на решение от bucket4j

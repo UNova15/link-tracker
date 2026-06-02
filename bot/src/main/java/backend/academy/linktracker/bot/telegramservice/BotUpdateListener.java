@@ -1,29 +1,37 @@
 package backend.academy.linktracker.bot.telegramservice;
 
-import com.pengrad.telegrambot.TelegramBot;
+import backend.academy.linktracker.bot.client.TelegramService;
+import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BotUpdateListener implements UpdatesListener {
-    private final TelegramBot bot;
+    private final TelegramService telegram;
     private final StateProcessor processor;
 
     @Override
     public int process(List<Update> updates) {
         for (Update update : updates) {
-            if (update.message() != null && update.message().text() != null) {
-                long id = update.message().chat().id();
-                String message = update.message().text();
 
-                String response = processor.process(id, message);
+            if (update.message() == null
+                    || update.message().text() == null
+                    || update.message().text().isBlank()) continue;
 
-                bot.execute(new SendMessage(id, response));
+            long id = update.message().chat().id();
+            String message = update.message().text();
+            String response = processor.process(id, message);
+
+            try {
+                telegram.sendResponse(id, response);
+            } catch (TelegramApiException exception) {
+                log.error("Ошибка при отправки ответа: {} пользователь: {} ", response, id);
             }
         }
         return CONFIRMED_UPDATES_ALL;

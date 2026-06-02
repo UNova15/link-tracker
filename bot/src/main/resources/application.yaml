@@ -30,6 +30,16 @@ logging:
       file: ecs
 
 app:
+  cache:
+    rate-limiter:
+      max-size: 10000
+      ttl: 1
+    idempotency-key:
+      max-size: 10000
+      ttl: 24
+
+  retryable-statuses: 500, 501, 502, 503, 504
+
   kafka:
     topic-name: ${APP_TOPIC_NAME:link-updates}
     retries: 3
@@ -39,9 +49,38 @@ app:
     url: https://api.telegram.org/bot
     token: ${TELEGRAM_BOT_TOKEN}
     update-listener-sleep: 1s
+    connection-timeout: 5000
+    write-timeout: 75
+    read-timeout: 75
     debug: false
 
   scrapper:
     base-url: ${APP_SCRAPPER_BASE_URL:https://scrapper:8081}
-    connection-timeout: 100
-    response-timeout: 50
+    connection-timeout: 500
+    response-timeout: 2000
+
+resilience4j:
+  retry:
+    instances:
+      scrapper:
+        max-attempts: 2
+        wait-duration: 1s
+
+      telegram:
+        max-attempts: 2
+        wait-duration: 1s
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      filter-method: servlet
+      filter-order: -1
+      url: .*
+      rate-limits:
+        - cache-key: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 50
+              time: 10
+              unit: seconds
+      http-response-body: "{ \"error\": \"Too many requests\" }"

@@ -3,8 +3,8 @@ package backend.academy.linktracker.bot.handler.command;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
-import backend.academy.linktracker.bot.scrapperclient.ScrapperChatClient;
+import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -17,20 +17,20 @@ public class StartHandler extends CommandHandler {
             "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
     private static final String ERROR_MESSAGE = "Ошибка сохранения пользователя. Попробуйте позже";
 
-    private final ScrapperChatClient scrapperChatClient;
+    private final ScrapperService scrapper;
 
-    public StartHandler(ScrapperChatClient scrapperChatClient, @Lazy AwaitCommandState awaitCommand) {
+    public StartHandler(ScrapperService scrapper, @Lazy AwaitCommandState awaitCommand) {
         super(new Command("/start", "Запуск бота"), awaitCommand);
-        this.scrapperChatClient = scrapperChatClient;
+        this.scrapper = scrapper;
     }
 
     @Override
     public String handle(UserMessage message, SessionData session) {
         try {
-            scrapperChatClient.registrationChat(message.id());
+            scrapper.registrationChat(message.id());
             changeState(session);
             return SUCCESS_MESSAGE;
-        } catch (ScrapperClientException exception) {
+        } catch (ScrapperApiException exception) {
             log.error(
                     "Ошибка сохранения пользователя {}. {}",
                     message.id(),

@@ -10,8 +10,6 @@ import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -60,8 +58,8 @@ public class ClusterClientSideCacheFactory {
 
     public Cache<String, ListLinksResponse> createLocalCache(CacheProperties properties) {
         return Caffeine.newBuilder()
-                .maximumSize(properties.maxSizeLocalCache())
-                .expireAfterWrite(Duration.of(properties.ttl(), ChronoUnit.SECONDS))
+                .maximumSize(properties.valkey().maxSize())
+                .expireAfterWrite(properties.valkey().ttl())
                 .build();
     }
 }
