@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.configuration.KafkaConfiguration;
 import backend.academy.linktracker.scrapper.domain.Notification;
-import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;

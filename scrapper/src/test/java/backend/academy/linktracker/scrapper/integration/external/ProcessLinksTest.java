@@ -52,7 +52,6 @@ public class ProcessLinksTest {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-
     @MockitoBean
     private ExecutorService executorService;
 
