@@ -20,7 +20,7 @@ public class TelegramBotService {
         telegramBotClient.send(notification);
     }
 
-    private void sendToBroker(Notification notification, Throwable exception) {
+    void sendToBroker(Notification notification, Throwable exception) {
         log.warn(
                 "Ошибка при отправке уведомления по HTTP. Отправка в очередь сообщений: {}, {}",
                 notification.getUrl(),
