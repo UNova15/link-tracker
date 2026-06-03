@@ -52,7 +52,7 @@ public class LinkMapper {
 
     public LinkUpdateEvent toLinkUpdateEvent(Notification notificationRecord) {
         return new LinkUpdateEvent(
-                notificationRecord.getIdempotenceKey(),
+                notificationRecord.getIdempotencyKey(),
                 notificationRecord.getLinkId(),
                 notificationRecord.getUrl(),
                 notificationRecord.getDescription(),

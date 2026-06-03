@@ -68,8 +68,8 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        List<NotificationRecord> notification = List.of(new NotificationRecord(
-                1L, Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L))));
+        Notification notification =
+                Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
 
         KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,

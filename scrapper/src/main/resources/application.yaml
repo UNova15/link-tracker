@@ -69,22 +69,22 @@ app:
       max-size: 10000
 
   bot:
-    base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
+    base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
     connection-timeout: 500
-    response-timeout: 100
+    response-timeout: 200
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
     connection-timeout: 1000
-    response-timeout: 500
+    response-timeout: 1000
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
     connection-timeout: 1000
-    response-timeout: 500
+    response-timeout: 1000
 
 
 resilience4j:

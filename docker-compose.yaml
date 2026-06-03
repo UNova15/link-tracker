@@ -176,7 +176,7 @@ services:
 
       CACHE_CLUSTER_NODES: cache-1:6379,cache-2:6379,cache-3:6379
 
-      APP_TELEGRAM_BOT_BASE_URL: https://bot:8080
+      APP_TELEGRAM_BOT_BASE_URL: http://bot:8080
       SCHEMA_REGISTRY_URL: http://schema-registry:8081
 
       STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}

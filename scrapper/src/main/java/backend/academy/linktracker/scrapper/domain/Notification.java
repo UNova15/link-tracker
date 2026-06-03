@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class Notification {
-    private final UUID idempotenceKey;
+    private final UUID idempotencyKey;
     private final long linkId;
     private final String url;
     private final String description;
@@ -32,13 +32,13 @@ public class Notification {
 
     @JsonCreator
     private Notification(
-            @JsonProperty("idempotenceKey") UUID idempotenceKey,
+            @JsonProperty("idempotencyKey") UUID idempotencyKey,
             @JsonProperty("linkId") long linkId,
             @JsonProperty("url") String url,
             @JsonProperty("description") String description,
             @JsonProperty("tgChatIds") List<Long> tgChatIds) {
 
-        this.idempotenceKey = idempotenceKey;
+        this.idempotencyKey = idempotencyKey;
         this.linkId = linkId;
         this.url = url;
         this.description = description;

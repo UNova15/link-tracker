@@ -13,7 +13,6 @@ import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
 import backend.academy.linktracker.scrapper.linktracker.LinkProcessor;
-import backend.academy.linktracker.scrapper.messagesender.MessageSender;
 import backend.academy.linktracker.scrapper.repository.ChatRepository;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
@@ -53,8 +52,6 @@ public class ProcessLinksTest {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    @MockitoBean
-    private MessageSender messageSender;
 
     @MockitoBean
     private ExecutorService executorService;
