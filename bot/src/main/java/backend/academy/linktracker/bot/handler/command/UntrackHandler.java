@@ -1,11 +1,11 @@
 package backend.academy.linktracker.bot.handler.command;
 
+import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
 import backend.academy.linktracker.bot.exception.ScrapperApiException;
-import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import lombok.extern.slf4j.Slf4j;

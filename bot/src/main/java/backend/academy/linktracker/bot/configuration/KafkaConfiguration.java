@@ -32,5 +32,4 @@ public class KafkaConfiguration {
                 DeserializationException.class);
         return defaultErrorHandler;
     }
-
 }

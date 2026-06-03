@@ -8,13 +8,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.handler.command.ListHandler;
-import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.state.NewState;
 import backend.academy.linktracker.bot.util.ListCommandHelper;
@@ -26,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
 
 @ExtendWith(MockitoExtension.class)
 public class ListHandlerTest {
@@ -83,7 +84,7 @@ public class ListHandlerTest {
         SessionData sessionData = new SessionData(newState);
 
         when(parser.parseFirstCommandArgument(message.text())).thenReturn(Optional.empty());
-        doThrow(new ScrapperClientException(mock(ApiErrorResponse.class)))
+        doThrow(new ScrapperApiException(mock(ApiErrorResponse.class), HttpStatusCode.valueOf(504)))
                 .when(scrapperLinkClient)
                 .getLinks(message.id());
 

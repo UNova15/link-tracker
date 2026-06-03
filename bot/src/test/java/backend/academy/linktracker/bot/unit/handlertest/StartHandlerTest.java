@@ -6,12 +6,12 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import backend.academy.linktracker.bot.client.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
-import backend.academy.linktracker.bot.exception.ScrapperClientException;
+import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.handler.command.StartHandler;
-import backend.academy.linktracker.bot.client.ScrapperChatClient;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.state.NewState;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
 
 @ExtendWith(MockitoExtension.class)
 public class StartHandlerTest {
@@ -57,7 +58,7 @@ public class StartHandlerTest {
         UserMessage message = new UserMessage(userId, "text");
         SessionData sessionData = new SessionData(null);
 
-        doThrow(new ScrapperClientException(mock(ApiErrorResponse.class)))
+        doThrow(new ScrapperApiException(mock(ApiErrorResponse.class), HttpStatusCode.valueOf(504)))
                 .when(client)
                 .registrationChat(userId);
 

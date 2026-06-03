@@ -1,13 +1,13 @@
 package backend.academy.linktracker.scrapper.configuration;
 
 import io.github.resilience4j.common.retry.configuration.RetryConfigCustomizer;
+import java.util.List;
+import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
-import java.util.List;
-import java.util.function.Predicate;
 
 @Configuration
 public class RetryRequestConfig {

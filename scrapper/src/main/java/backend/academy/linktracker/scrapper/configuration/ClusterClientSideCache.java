@@ -3,6 +3,7 @@ package backend.academy.linktracker.scrapper.configuration;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
 import com.github.benmanes.caffeine.cache.Cache;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
+import java.time.Duration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -35,9 +36,9 @@ public class ClusterClientSideCache implements DisposableBean {
         return remoteValue;
     }
 
-    public void put(String key, ListLinksResponse value, long ttl) {
+    public void put(String key, ListLinksResponse value, Duration ttl) {
         String mappedValue = mapper.writeValueAsString(value);
-        connection.sync().setex(key, ttl, mappedValue);
+        connection.sync().setex(key, ttl.getSeconds(), mappedValue);
     }
 
     @Override

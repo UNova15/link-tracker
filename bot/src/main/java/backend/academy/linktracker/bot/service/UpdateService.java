@@ -5,11 +5,11 @@ import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import java.util.UUID;
 
 @Service
 @Validated

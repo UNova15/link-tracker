@@ -5,9 +5,12 @@ import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.RemoveLinkRequest;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.convert.DurationUnit;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Primary;
@@ -22,8 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscriptionServiceProxy implements SubscriptionService {
     private static final String CACHE_NAME = "getLinks::%d";
 
-    @Value("${app.cache-ttl}")
-    private long ttl;
+    @Value("${app.cache.valkey.ttl}")
+    @DurationUnit(ChronoUnit.HOURS)
+    private Duration ttl;
 
     private final SubscriptionServiceImpl service;
     private final ClusterClientSideCache clusterCache;

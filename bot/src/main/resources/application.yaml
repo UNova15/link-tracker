@@ -69,18 +69,9 @@ resilience4j:
       telegram:
         max-attempts: 2
         wait-duration: 1s
-
-bucket4j:
-  enabled: true
-  filters:
-    - cache-name: buckets
-      filter-method: servlet
-      filter-order: -1
-      url: .*
-      rate-limits:
-        - cache-key: "getRemoteAddr()"
-          bandwidths:
-            - capacity: 50
-              time: 10
-              unit: seconds
-      http-response-body: "{ \"error\": \"Too many requests\" }"
+  ratelimiter:
+    configs:
+      ip-limit:
+        limit-for-period: 5
+        limit-refresh-period: 10s
+        timeout-duration: 0

@@ -78,14 +78,14 @@ app:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
-    connection-timeout: 500
-    response-timeout: 100
+    connection-timeout: 1000
+    response-timeout: 500
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
-    connection-timeout: 500
-    response-timeout: 100
+    connection-timeout: 1000
+    response-timeout: 500
 
 
 resilience4j:
@@ -102,20 +102,10 @@ resilience4j:
       bot:
         max-attempts: 2
         wait-duration: 1s
-
-bucket4j:
-  enabled: true
-  filters:
-    - cache-name: buckets
-      filter-method: servlet
-      filter-order: -1
-      url: .*
-      rate-limits:
-        - cache-key: "getRemoteAddr()"
-          bandwidths:
-            - capacity: 50
-              time: 10
-              unit: seconds
-      http-response-body: "{ \"error\": \"Too many requests\" }"
-
+  ratelimiter:
+    configs:
+      ip-limit:
+        limit-for-period: 5
+        limit-refresh-period: 10s
+        timeout-duration: 0
 

@@ -3,12 +3,12 @@ package backend.academy.linktracker.bot.configuration;
 import backend.academy.linktracker.bot.properties.CacheProperties;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import java.util.UUID;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.util.UUID;
 
 @Configuration
 @EnableCaching

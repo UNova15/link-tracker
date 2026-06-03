@@ -3,10 +3,12 @@ package backend.academy.linktracker.scrapper.messagesender;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "http")
 public class TelegramBotService {
     private final TelegramBotClient telegramBotClient;
 

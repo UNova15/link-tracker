@@ -3,13 +3,13 @@ package backend.academy.linktracker.bot.configuration;
 import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.exception.TelegramApiException;
 import io.github.resilience4j.common.retry.configuration.RetryConfigCustomizer;
+import java.net.SocketException;
+import java.util.List;
+import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.ResourceAccessException;
-import java.net.SocketException;
-import java.util.List;
-import java.util.function.Predicate;
 
 @Configuration
 public class RetryRequestConfig {

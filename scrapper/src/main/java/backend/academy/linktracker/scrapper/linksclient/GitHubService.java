@@ -2,12 +2,12 @@ package backend.academy.linktracker.scrapper.linksclient;
 
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import io.github.resilience4j.retry.annotation.Retry;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

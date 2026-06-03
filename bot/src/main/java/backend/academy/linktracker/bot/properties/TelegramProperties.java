@@ -3,7 +3,6 @@ package backend.academy.linktracker.bot.properties;
 import jakarta.validation.constraints.NotEmpty;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,7 @@ public class TelegramProperties {
     @DurationUnit(ChronoUnit.MILLIS)
     private Duration connectionTimeout;
 
-    //Время для чтения/записи ответов тг при long pooling
+    // Время для чтения/записи ответов тг при long pooling
     @DurationUnit(ChronoUnit.SECONDS)
     private Duration writeTimeout;
 

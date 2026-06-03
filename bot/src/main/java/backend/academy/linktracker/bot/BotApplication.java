@@ -13,5 +13,5 @@ public class BotApplication {
     }
 }
 
-//TODO исправить кеш для idempotent key
-//TODO исправить ratelimiting на решение от bucket4j
+// TODO исправить кеш для idempotent key
+// TODO исправить ratelimiting на решение от bucket4j
