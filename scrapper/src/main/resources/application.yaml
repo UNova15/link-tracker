@@ -51,6 +51,7 @@ app:
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
     dlq-topic-name: ${DLQ_TOPIC_NAME:link-updates-dlq}
+    timeout: 5
 
   scrapper-settings:
     check-link-interval: 3000
@@ -66,8 +67,6 @@ app:
     rate-limiter:
       ttl: 1
       max-size: 10000
-
-
 
   bot:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:https://bot:8080}
@@ -108,4 +107,32 @@ resilience4j:
         limit-for-period: 5
         limit-refresh-period: 10s
         timeout-duration: 0
+
+  circuitbreaker:
+    instances:
+      github:
+        sliding-window-type: count_based
+        sliding-window-size: 20
+        failure-rate-threshold: 50
+        permitted-number-of-calls-in-half-open-state: 3
+        minimum-number-of-calls: 10
+        wait-duration-in-open-state: 10s
+
+      stackoverflow:
+        sliding-window-type: count_based
+        sliding-window-size: 20
+        failure-rate-threshold: 50
+        permitted-number-of-calls-in-half-open-state: 3
+        minimum-number-of-calls: 10
+        wait-duration-in-open-state: 10s
+
+
+      bot:
+        sliding-window-type: count_based
+        sliding-window-size: 20
+        failure-rate-threshold: 50
+        permitted-number-of-calls-in-half-open-state: 3
+        minimum-number-of-calls: 10
+        wait-duration-in-open-state: 10s
+
 

@@ -1,7 +1,6 @@
 package backend.academy.linktracker.bot.telegramservice;
 
 import backend.academy.linktracker.bot.client.TelegramService;
-import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import java.util.List;
@@ -30,7 +29,7 @@ public class BotUpdateListener implements UpdatesListener {
 
             try {
                 telegram.sendResponse(id, response);
-            } catch (TelegramApiException exception) {
+            } catch (Exception exception) {
                 log.error("Ошибка при отправки ответа: {} пользователь: {} ", response, id);
             }
         }

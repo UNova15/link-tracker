@@ -5,7 +5,6 @@ import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.RemoveLinkRequest;
-import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,12 @@ public class UntrackHandler extends CommandHandler {
                         scrapper.removeLink(message.id(), request);
                         changeState(session);
                         return SUCCESS_MESSAGE;
-                    } catch (ScrapperApiException exception) {
+                    } catch (Exception exception) {
                         log.error(
                                 "Ошибка удаления ссылки {} пользователя {}. {}",
                                 message.text(),
                                 message.id(),
-                                exception.getErrorResponse().stackTrace());
+                                exception.getMessage());
                         return ERROR_MESSAGE;
                     }
                 })

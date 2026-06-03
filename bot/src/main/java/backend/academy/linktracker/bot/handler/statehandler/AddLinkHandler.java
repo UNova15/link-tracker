@@ -4,7 +4,6 @@ import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
-import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.handler.StateChanger;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
@@ -47,12 +46,8 @@ public class AddLinkHandler extends StateChanger {
 
             changeState(session);
             return SUCCESS_MESSAGE;
-        } catch (ScrapperApiException exception) {
-            log.error(
-                    "Ошибка отправки ссылки пользователя {}, {}. {}",
-                    message.id(),
-                    exception.getErrorResponse().description(),
-                    exception.getErrorResponse().stackTrace());
+        } catch (Exception exception) {
+            log.error("Ошибка отправки ссылки пользователя {}, {}", message.id(), exception.getMessage());
             changeState(session);
             return ERROR_MESSAGE;
         }

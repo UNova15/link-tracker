@@ -11,4 +11,5 @@ public record KafkaProperties(
         @NotBlank String topicName,
         @NotBlank String dlqTopicName,
         @Positive int replicas,
-        @Positive int partitions) {}
+        @Positive int partitions,
+        @Positive long timeout) {}

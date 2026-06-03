@@ -1,7 +1,7 @@
 package backend.academy.linktracker.scrapper.linktracker;
 
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
-import backend.academy.linktracker.scrapper.messagesender.MessageSender;
+import backend.academy.linktracker.scrapper.messagesender.BotSender;
 import backend.academy.linktracker.scrapper.properties.ScrapperProperties;
 import backend.academy.linktracker.scrapper.repository.NotificationRepository;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationProcessor {
-    private final MessageSender sender;
+    private final BotSender sender;
     private final NotificationRepository notificationRepository;
     private final ScrapperProperties properties;
 

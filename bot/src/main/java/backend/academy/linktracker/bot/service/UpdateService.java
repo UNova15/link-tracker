@@ -2,7 +2,6 @@ package backend.academy.linktracker.bot.service;
 
 import backend.academy.linktracker.bot.client.TelegramService;
 import backend.academy.linktracker.bot.dto.NotificationDto;
-import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -30,7 +29,7 @@ public class UpdateService {
         for (long id : notification.tgChatIds()) {
             try {
                 telegram.sendNotification(id, notification.description(), notification.url());
-            } catch (TelegramApiException exception) {
+            } catch (Exception exception) {
                 log.error("Ошибка отправки уведомления: {}, пользователь: {} ", notification.description(), id);
             }
         }

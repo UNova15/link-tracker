@@ -8,7 +8,6 @@ import backend.academy.linktracker.scrapper.properties.GithubProperties;
 import backend.academy.linktracker.scrapper.properties.StackoverflowProperties;
 import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
 import java.net.URI;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpRequest;
@@ -99,7 +98,6 @@ public class HttpClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "app", name = "sender", havingValue = "http")
     public TelegramBotClient telegramBotHttpClient(
             TelegramBotProperties properties, TelegramBotExceptionHandler handler) {
 

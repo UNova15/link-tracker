@@ -4,7 +4,6 @@ import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
-import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -30,11 +29,8 @@ public class StartHandler extends CommandHandler {
             scrapper.registrationChat(message.id());
             changeState(session);
             return SUCCESS_MESSAGE;
-        } catch (ScrapperApiException exception) {
-            log.error(
-                    "Ошибка сохранения пользователя {}. {}",
-                    message.id(),
-                    exception.getErrorResponse().stackTrace());
+        } catch (Exception exception) {
+            log.error("Ошибка сохранения пользователя {}. {}", message.id(), exception.getMessage());
             return ERROR_MESSAGE;
         }
     }

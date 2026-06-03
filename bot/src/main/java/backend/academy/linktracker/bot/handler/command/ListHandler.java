@@ -5,7 +5,6 @@ import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ListLinkResponse;
-import backend.academy.linktracker.bot.exception.ScrapperApiException;
 import backend.academy.linktracker.bot.state.AwaitCommandState;
 import backend.academy.linktracker.bot.util.ListCommandHelper;
 import backend.academy.linktracker.bot.util.RequestArgsParser;
@@ -46,11 +45,8 @@ public class ListHandler extends CommandHandler {
 
             changeState(session);
             return listCommandHelper.formateResponse(links);
-        } catch (ScrapperApiException exception) {
-            log.error(
-                    "Ошибка при поиске ссылок пользователя {}. {}",
-                    message.id(),
-                    exception.getErrorResponse().stackTrace());
+        } catch (Exception exception) {
+            log.error("Ошибка при поиске ссылок пользователя {}. {}", message.id(), exception.getMessage());
             changeState(session);
             return ERROR_MESSAGE;
         }

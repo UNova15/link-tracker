@@ -4,6 +4,7 @@ import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,14 @@ public class TelegramService {
     private final TelegramBot bot;
 
     @Retry(name = "telegram")
+    @CircuitBreaker(name = "telegram")
     public void sendNotification(long id, String description, String url) {
         SendMessage message = new SendMessage(id, NOTIFICATION_TEMPLATE.formatted(description, url));
         execute(message);
     }
 
     @Retry(name = "telegram")
+    @CircuitBreaker(name = "telegram")
     public void sendResponse(long id, String response) {
         SendMessage message = new SendMessage(id, response);
         execute(message);

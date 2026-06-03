@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import backend.academy.linktracker.scrapper.dto.linkdto.AddLinkRequest;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
 import backend.academy.linktracker.scrapper.integration.TestContainersConfiguration;
-import backend.academy.linktracker.scrapper.messagesender.KafkaSender;
+import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
 import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionService;
 import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionServiceImpl;
 import java.util.List;
@@ -54,7 +54,7 @@ class SubscriptionServiceCacheTest {
     private StringRedisTemplate redisTemplate;
 
     @MockitoBean
-    private KafkaSender kafkaSender;
+    private MessageBrokerClient messageBrokerClient;
 
     @MockitoBean
     private KafkaAdmin kafkaAdmin;

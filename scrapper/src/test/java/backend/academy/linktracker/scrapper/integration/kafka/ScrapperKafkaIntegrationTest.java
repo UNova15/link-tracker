@@ -7,7 +7,7 @@ import backend.academy.linktracker.scrapper.configuration.KafkaConfiguration;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
-import backend.academy.linktracker.scrapper.messagesender.KafkaSender;
+import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import java.time.Duration;
 import java.util.List;
@@ -31,7 +31,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.kafka.KafkaContainer;
 
 @SpringBootTest(
-        classes = {KafkaSender.class, KafkaConfiguration.class, LinkMapper.class},
+        classes = {MessageBrokerClient.class, KafkaConfiguration.class, LinkMapper.class},
         properties = {
             "app.db-provider=sql",
             "app.sender=mq",
@@ -46,7 +46,7 @@ import org.testcontainers.kafka.KafkaContainer;
 public class ScrapperKafkaIntegrationTest {
 
     @Autowired
-    private KafkaSender kafkaSender;
+    private MessageBrokerClient messageBrokerClient;
 
     @Container
     static KafkaContainer kafka = new KafkaContainer("apache/kafka:4.3.0");
@@ -89,7 +89,7 @@ public class ScrapperKafkaIntegrationTest {
 
         consumer.subscribe(List.of("test-link-updates"));
 
-        kafkaSender.send(notification);
+        messageBrokerClient.send(notification);
 
         ConsumerRecords<String, LinkUpdateEvent> records = consumer.poll(Duration.ofSeconds(10));
 
