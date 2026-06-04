@@ -8,7 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.ScrapperLinkClient;
+import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
@@ -31,7 +31,7 @@ import org.springframework.http.HttpStatusCode;
 @ExtendWith(MockitoExtension.class)
 public class ListHandlerTest {
     @Mock
-    private ScrapperLinkClient scrapperLinkClient;
+    private ScrapperService scrapper;
 
     @Mock
     private ListCommandHelper listCommandHelper;
@@ -56,7 +56,7 @@ public class ListHandlerTest {
         SessionData sessionData = new SessionData(newState);
 
         when(parser.parseFirstCommandArgument(message.text())).thenReturn(Optional.empty());
-        when(scrapperLinkClient.getLinks(message.id())).thenReturn(response);
+        when(scrapper.getLinks(message.id())).thenReturn(response);
         when(listCommandHelper.filterLinksByTag(response, Optional.empty())).thenReturn(List.of(link));
         when(listCommandHelper.formateResponse(List.of(link))).thenReturn(expectedMessage);
 
@@ -64,7 +64,7 @@ public class ListHandlerTest {
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseFirstCommandArgument(message.text());
-        verify(scrapperLinkClient).getLinks(message.id());
+        verify(scrapper).getLinks(message.id());
         verify(listCommandHelper).filterLinksByTag(response, Optional.empty());
         verify(listCommandHelper).formateResponse(List.of(link));
 
@@ -85,14 +85,14 @@ public class ListHandlerTest {
 
         when(parser.parseFirstCommandArgument(message.text())).thenReturn(Optional.empty());
         doThrow(new ScrapperApiException(mock(ApiErrorResponse.class), HttpStatusCode.valueOf(504)))
-                .when(scrapperLinkClient)
+                .when(scrapper)
                 .getLinks(message.id());
 
         String actualMessage = listHandler.handle(message, sessionData);
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseFirstCommandArgument(message.text());
-        verify(scrapperLinkClient).getLinks(message.id());
+        verify(scrapper).getLinks(message.id());
         verify(listCommandHelper, never()).filterLinksByTag(response, Optional.empty());
         verify(listCommandHelper, never()).formateResponse(List.of(link));
 
@@ -113,7 +113,7 @@ public class ListHandlerTest {
         SessionData sessionData = new SessionData(newState);
 
         when(parser.parseFirstCommandArgument(message.text())).thenReturn(Optional.of(tag));
-        when(scrapperLinkClient.getLinks(message.id())).thenReturn(response);
+        when(scrapper.getLinks(message.id())).thenReturn(response);
         when(listCommandHelper.filterLinksByTag(response, Optional.of(tag))).thenReturn(List.of(link));
         when(listCommandHelper.formateResponse(List.of(link))).thenReturn(expectedMessage);
 
@@ -121,7 +121,7 @@ public class ListHandlerTest {
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseFirstCommandArgument(message.text());
-        verify(scrapperLinkClient).getLinks(message.id());
+        verify(scrapper).getLinks(message.id());
         verify(listCommandHelper).filterLinksByTag(response, Optional.of(tag));
         verify(listCommandHelper).formateResponse(List.of(link));
 

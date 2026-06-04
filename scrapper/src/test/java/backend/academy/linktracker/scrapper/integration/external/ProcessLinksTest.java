@@ -27,6 +27,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -34,7 +35,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 // Тестирование логики обработки ссылок и формирования пользовательского сообщения
-@SpringBootTest({"spring.main.lazy-initialization=true", "app.sender=http", "app.db-provider=sql"})
+@SpringBootTest({"spring.main.lazy-initialization=true", "app.db-provider=sql"})
 @Import(TestContainersConfiguration.class)
 @Transactional
 @ActiveProfiles("test")
@@ -54,6 +55,9 @@ public class ProcessLinksTest {
 
     @MockitoBean
     private ExecutorService executorService;
+
+    @MockitoBean
+    private KafkaAdmin kafkaAdmin;
 
     @RegisterExtension
     static WireMockExtension github = WireMockExtension.newInstance()

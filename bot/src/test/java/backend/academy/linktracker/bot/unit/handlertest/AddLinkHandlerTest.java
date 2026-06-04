@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.ScrapperLinkClient;
+import backend.academy.linktracker.bot.client.ScrapperService;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatusCode;
 public class AddLinkHandlerTest {
 
     @Mock
-    private ScrapperLinkClient scrapperLinkClient;
+    private ScrapperService scrapper;
 
     @Mock
     private RequestArgsParser parser;
@@ -59,7 +59,7 @@ public class AddLinkHandlerTest {
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseTags(messageText);
-        verify(scrapperLinkClient).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
+        verify(scrapper).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
 
         assertEquals(awaitCommandState, session.getState());
         assertNull(session.getTags());
@@ -84,7 +84,7 @@ public class AddLinkHandlerTest {
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseTags(messageText);
-        verify(scrapperLinkClient).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
+        verify(scrapper).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
 
         assertEquals(awaitCommandState, session.getState());
         assertNull(session.getTags());
@@ -106,14 +106,14 @@ public class AddLinkHandlerTest {
 
         when(parser.parseTags(messageText)).thenReturn(tags);
         doThrow(new ScrapperApiException(mock(ApiErrorResponse.class), HttpStatusCode.valueOf(504)))
-                .when(scrapperLinkClient)
+                .when(scrapper)
                 .addLink(chatId, request);
 
         String actualMessage = addLinkHandler.handle(message, session);
 
         assertEquals(expectedMessage, actualMessage);
         verify(parser).parseTags(messageText);
-        verify(scrapperLinkClient).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
+        verify(scrapper).addLink(eq(chatId), eq(new AddLinkRequest(link, tags)));
 
         assertEquals(awaitCommandState, session.getState());
         assertNull(session.getTags());

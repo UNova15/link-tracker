@@ -8,12 +8,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import backend.academy.linktracker.bot.client.TelegramService;
 import backend.academy.linktracker.bot.telegramservice.BotUpdateListener;
 import backend.academy.linktracker.bot.telegramservice.StateProcessor;
 import com.google.gson.Gson;
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class BotUpdateListenerTest {
     private final Gson gson = new Gson();
 
     @Mock
-    private TelegramBot bot;
+    private TelegramService bot;
 
     @Mock
     private StateProcessor processor;
@@ -69,12 +68,15 @@ public class BotUpdateListenerTest {
         assertEquals(CONFIRMED_UPDATES_ALL, actualStatusCode);
         verify(processor, times(updates.size())).process(chatId, userMessage);
 
-        ArgumentCaptor<SendMessage> captor = ArgumentCaptor.forClass(SendMessage.class);
-        verify(bot, times(updates.size())).execute(captor.capture());
+        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Long> intCaptor = ArgumentCaptor.forClass(Long.class);
 
-        SendMessage message = captor.getValue();
-        assertEquals(chatId, message.getChatId());
-        assertEquals(response, message.getText());
+        verify(bot, times(updates.size())).sendResponse(intCaptor.capture(), stringCaptor.capture());
+
+        String message = stringCaptor.getValue();
+        long id = intCaptor.getValue();
+        assertEquals(chatId, id);
+        assertEquals(response, message);
     }
 
     @Test
@@ -96,13 +98,16 @@ public class BotUpdateListenerTest {
         assertEquals(CONFIRMED_UPDATES_ALL, actualStatusCode);
         verify(processor, times(updates.size())).process(any(Long.class), eq(userMessage));
 
-        ArgumentCaptor<SendMessage> captor = ArgumentCaptor.forClass(SendMessage.class);
-        verify(bot, times(updates.size())).execute(captor.capture());
+        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Long> intCapture = ArgumentCaptor.forClass(Long.class);
 
-        List<SendMessage> messages = captor.getAllValues();
+        verify(bot, times(updates.size())).sendResponse(intCapture.capture(), stringCaptor.capture());
+
+        List<String> messages = stringCaptor.getAllValues();
+        List<Long> id = intCapture.getAllValues();
         for (int i = 0; i < size; i++) {
-            assertEquals(i, messages.get(i).getChatId());
-            assertEquals(response, messages.get(i).getText());
+            assertEquals(i, id.get(i));
+            assertEquals(response, messages.get(i));
         }
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataAccessException;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,9 @@ public abstract class AbstractSubscriptionRepositoryTest {
 
     @MockitoBean
     protected LinkTracker linkTracker;
+
+    @MockitoBean
+    protected KafkaAdmin kafkaAdmin;
 
     protected Subscription createAndSaveExampleOfSubscription(
             long chatId, LinkType type, String url, List<String> tags) {

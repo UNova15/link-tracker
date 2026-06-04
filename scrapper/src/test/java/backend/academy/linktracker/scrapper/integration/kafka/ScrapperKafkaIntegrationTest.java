@@ -7,6 +7,7 @@ import backend.academy.linktracker.scrapper.configuration.KafkaConfiguration;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
+import backend.academy.linktracker.scrapper.properties.KafkaProperties;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import java.time.Duration;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -33,15 +35,17 @@ import org.testcontainers.kafka.KafkaContainer;
         classes = {MessageBrokerClient.class, KafkaConfiguration.class, LinkMapper.class},
         properties = {
             "app.db-provider=sql",
-            "app.sender=mq",
             "app.kafka.topic-name=test-link-updates",
+            "app.kafka.dlq-topic-name=dlq-message",
             "app.kafka.replicas=1",
             "app.kafka.partitions=1",
+            "app.kafka.timeout=500",
             "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
             "spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer",
             "spring.kafka.producer.properties.schema.registry.url=mock://test-registry"
         })
 @ImportAutoConfiguration(KafkaAutoConfiguration.class)
+@EnableConfigurationProperties(KafkaProperties.class)
 public class ScrapperKafkaIntegrationTest {
 
     @Autowired
