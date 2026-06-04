@@ -1,8 +1,6 @@
 package backend.academy.linktracker.scrapper.mapper;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
 import backend.academy.linktracker.scrapper.domain.Link;
-import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.domain.Subscription;
 import backend.academy.linktracker.scrapper.dto.linkdto.LinkResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ListLinksResponse;
@@ -48,14 +46,5 @@ public class LinkMapper {
 
     public LinkResponse toLinkResponse(Link link, List<String> tags) {
         return new LinkResponse(link.getId(), link.getUrl(), tags);
-    }
-
-    public LinkUpdateEvent toLinkUpdateEvent(Notification notificationRecord) {
-        return new LinkUpdateEvent(
-                notificationRecord.getIdempotencyKey(),
-                notificationRecord.getLinkId(),
-                notificationRecord.getUrl(),
-                notificationRecord.getDescription(),
-                notificationRecord.getTgChatIds());
     }
 }

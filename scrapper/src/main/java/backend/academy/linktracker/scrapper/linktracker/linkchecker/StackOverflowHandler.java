@@ -3,35 +3,36 @@ package backend.academy.linktracker.scrapper.linktracker.linkchecker;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
+import backend.academy.linktracker.scrapper.dto.linkdto.Update;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowResponse;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowService;
+import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.util.LinkParser;
-import backend.academy.linktracker.scrapper.util.RequesterUtil;
-import backend.academy.linktracker.scrapper.util.ResponseFormatter;
+import backend.academy.linktracker.scrapper.util.UpdateHandlerUtil;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowHandler extends ResourceHandler {
+public class StackOverflowHandler extends UpdateHandler {
     private final StackOverflowService stackOverflow;
-    private final ResponseFormatter formatter;
+    private final NotificationMapper mapper;
     private final LinkParser parser;
-    private final RequesterUtil requesterUtil;
+    private final UpdateHandlerUtil updateHandlerUtil;
 
     public StackOverflowHandler(
             StackOverflowService stackOverflow,
+            NotificationMapper mapper,
             LinkParser parser,
-            ResponseFormatter formatter,
-            RequesterUtil requesterUtil) {
+            UpdateHandlerUtil updateHandlerUtil) {
         super(LinkType.STACK_OVERFLOW);
         this.stackOverflow = stackOverflow;
+        this.mapper = mapper;
         this.parser = parser;
-        this.formatter = formatter;
-        this.requesterUtil = requesterUtil;
+        this.updateHandlerUtil = updateHandlerUtil;
     }
 
     @Override
@@ -46,20 +47,16 @@ public class StackOverflowHandler extends ResourceHandler {
         }
         StackOverflowQuestion question = response.items().getFirst();
 
-        // фильтрация по новым обновлениям
-        List<StackOverflowContent> updatedComments =
-                requesterUtil.filterStackOverflowContentByCreationDate(question.comments(), link.getLastUpdate());
-        List<StackOverflowContent> updatedAnswers =
-                requesterUtil.filterStackOverflowContentByCreationDate(question.answers(), link.getLastUpdate());
+        List<StackOverflowContent> content = updateHandlerUtil.filterStackOverflowContentByCreationDate(
+                question.comments(), question.answers(), link.getLastUpdate());
 
-        if (updatedAnswers.isEmpty() && updatedComments.isEmpty()) {
+        if (content.isEmpty()) {
             return Optional.empty();
         }
+        Instant maxInstant = updateHandlerUtil.findStackOverflowMaxUpdateTime(content);
 
-        String text = formatter.formatStackOverflowResponse(question.title(), updatedAnswers, updatedComments);
+        List<Update> updates = mapper.fromStackOverflowContentToUpdate(content);
 
-        Instant maxInstant = requesterUtil.findStackOverflowMaxUpdatedTime(updatedComments, updatedAnswers);
-
-        return Optional.of(new ProcessingResult(text, maxInstant));
+        return Optional.of(new ProcessingResult(updates, maxInstant));
     }
 }

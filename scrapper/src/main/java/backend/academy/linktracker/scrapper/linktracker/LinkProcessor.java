@@ -4,7 +4,8 @@ import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceHandler;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.UpdateHandler;
+import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,10 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class LinkProcessor {
-    private static final String ERROR_MESSAGE = "Ошибка проверки ссылки: %s";
-
     private final SubscriptionRepository subscriptionRepository;
-    private final Map<LinkType, ResourceHandler> linkProcessors;
+    private final Map<LinkType, UpdateHandler> linkProcessors;
+    private final NotificationMapper mapper;
 
     private final ExecutorService executorService;
     private final int numberOfThreads;
@@ -42,11 +42,11 @@ public class LinkProcessor {
 
             futures.add(CompletableFuture.supplyAsync(
                     () -> {
-                        List<Notification> updates = new ArrayList<>();
+                        List<Notification> notifications = new ArrayList<>();
                         for (Link link : chunk) {
-                            checkLink(link).ifPresent(updates::add);
+                            notifications.addAll(checkLink(link));
                         }
-                        return updates;
+                        return notifications;
                     },
                     executorService));
         }
@@ -58,8 +58,8 @@ public class LinkProcessor {
                 .toList();
     }
 
-    private Optional<Notification> checkLink(Link link) {
-        ResourceHandler processor = linkProcessors.get(link.getType());
+    private List<Notification> checkLink(Link link) {
+        UpdateHandler processor = linkProcessors.get(link.getType());
 
         try {
             Optional<ProcessingResult> result = processor.process(link);
@@ -68,14 +68,14 @@ public class LinkProcessor {
             link.markCheckedNow();
 
             List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
+
             return result.map(
-                    res -> Notification.createNew(UUID.randomUUID(), link.getId(), link.getUrl(), res.text(), chatsId));
+                            res -> mapper.toNotification(res, UUID.randomUUID(), link.getId(), link.getUrl(), chatsId))
+                    .orElse(List.of());
+
         } catch (Exception exception) {
             log.error("Ошибка при проверке ссылки {}:", link.getUrl(), exception);
-
-            List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
-            return Optional.of(Notification.createNew(
-                    UUID.randomUUID(), link.getId(), link.getUrl(), ERROR_MESSAGE.formatted(link.getUrl()), chatsId));
+            return List.of();
         }
     }
 }

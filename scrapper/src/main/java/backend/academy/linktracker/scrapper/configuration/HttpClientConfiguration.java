@@ -3,7 +3,7 @@ package backend.academy.linktracker.scrapper.configuration;
 import backend.academy.linktracker.scrapper.exception.handler.TelegramBotExceptionHandler;
 import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
-import backend.academy.linktracker.scrapper.messagesender.TelegramBotClient;
+import backend.academy.linktracker.scrapper.messagesender.BotClient;
 import backend.academy.linktracker.scrapper.properties.GithubProperties;
 import backend.academy.linktracker.scrapper.properties.StackoverflowProperties;
 import backend.academy.linktracker.scrapper.properties.TelegramBotProperties;
@@ -98,7 +98,7 @@ public class HttpClientConfiguration {
     }
 
     @Bean
-    public TelegramBotClient telegramBotHttpClient(
+    public BotClient telegramBotHttpClient(
             TelegramBotProperties properties, TelegramBotExceptionHandler handler) {
 
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
@@ -115,6 +115,6 @@ public class HttpClientConfiguration {
         RestClientAdapter adapter = RestClientAdapter.create(client);
         HttpServiceProxyFactory factory =
                 HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(TelegramBotClient.class);
+        return factory.createClient(BotClient.class);
     }
 }

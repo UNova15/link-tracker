@@ -7,10 +7,10 @@ import java.util.Optional;
 import lombok.Getter;
 
 @Getter
-public abstract class ResourceHandler {
+public abstract class UpdateHandler {
     private final LinkType linkType;
 
-    public ResourceHandler(LinkType linkType) {
+    public UpdateHandler(LinkType linkType) {
         this.linkType = linkType;
     }
 

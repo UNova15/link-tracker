@@ -5,29 +5,30 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.github.IssueCredential;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
+import backend.academy.linktracker.scrapper.dto.linkdto.Update;
 import backend.academy.linktracker.scrapper.linksclient.GitHubService;
+import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.util.LinkParser;
-import backend.academy.linktracker.scrapper.util.RequesterUtil;
-import backend.academy.linktracker.scrapper.util.ResponseFormatter;
+import backend.academy.linktracker.scrapper.util.UpdateHandlerUtil;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GitHubHandler extends ResourceHandler {
+public class GitHubHandler extends UpdateHandler {
     private final GitHubService gitHub;
-    private final ResponseFormatter formatter;
+    private final NotificationMapper mapper;
     private final LinkParser parser;
-    private final RequesterUtil requesterUtil;
+    private final UpdateHandlerUtil requestUtil;
 
     public GitHubHandler(
-            GitHubService gitHub, LinkParser parser, ResponseFormatter formatter, RequesterUtil requesterUtil) {
+            GitHubService gitHub, LinkParser parser, UpdateHandlerUtil requestUtil, NotificationMapper mapper) {
         super(LinkType.GIT_HUB);
         this.parser = parser;
         this.gitHub = gitHub;
-        this.formatter = formatter;
-        this.requesterUtil = requesterUtil;
+        this.mapper = mapper;
+        this.requestUtil = requestUtil;
     }
 
     @Override
@@ -41,17 +42,15 @@ public class GitHubHandler extends ResourceHandler {
             return Optional.empty();
         }
 
-        // фильтрация по новым обновлениям
         List<GitHubResponse> filteredChanges =
-                requesterUtil.filterGitContentByCreationDate(response, link.getLastUpdate());
+                requestUtil.filterGitHubContentByCreationDate(response, link.getLastUpdate());
 
         if (filteredChanges.isEmpty()) {
             return Optional.empty();
         }
+        Instant maxUpdateTime = requestUtil.findGitHubMaxUpdateTime(filteredChanges);
+        List<Update> updates = mapper.fromGitHubContentToUpdate(filteredChanges);
 
-        String formattedResponse = formatter.formatGitHubResponse(filteredChanges);
-        Instant maxUpdateTime = requesterUtil.findGitHubMaxUpdatedTime(filteredChanges);
-
-        return Optional.of(new ProcessingResult(formattedResponse, maxUpdateTime));
+        return Optional.of(new ProcessingResult(updates, maxUpdateTime));
     }
 }

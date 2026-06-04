@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.dto.linkdto;
 
 import java.time.Instant;
+import java.util.List;
 
-public record ProcessingResult(String text, Instant newUpdateTime) {}
+public record ProcessingResult(List<Update> updates, Instant newUpdateTime) {}

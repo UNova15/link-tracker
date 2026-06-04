@@ -1,3 +1,4 @@
+/*
 package backend.academy.linktracker.scrapper.util;
 
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
@@ -72,3 +73,4 @@ public class ResponseFormatter {
                 : description;
     }
 }
+*/

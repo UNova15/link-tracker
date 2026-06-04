@@ -11,11 +11,12 @@ public class Notification {
     private final UUID idempotencyKey;
     private final long linkId;
     private final String url;
+    private final String author;
     private final String description;
     private final List<Long> tgChatIds;
 
     public static Notification createNew(
-            UUID idempotenceKey, long linkId, String url, String description, List<Long> tgChatIds) {
+            UUID idempotenceKey, long linkId, String url, String author, String description, List<Long> tgChatIds) {
         if (idempotenceKey != null
                 && linkId >= 0
                 && url != null
@@ -24,7 +25,7 @@ public class Notification {
                 && !description.isBlank()
                 && !tgChatIds.isEmpty()) {
 
-            return new Notification(idempotenceKey, linkId, url, description, tgChatIds);
+            return new Notification(idempotenceKey, linkId, url, author, description, tgChatIds);
         } else {
             throw new IllegalArgumentException("Invalid data to create notification");
         }
@@ -35,12 +36,14 @@ public class Notification {
             @JsonProperty("idempotencyKey") UUID idempotencyKey,
             @JsonProperty("linkId") long linkId,
             @JsonProperty("url") String url,
+            @JsonProperty("author") String author,
             @JsonProperty("description") String description,
             @JsonProperty("tgChatIds") List<Long> tgChatIds) {
 
         this.idempotencyKey = idempotencyKey;
         this.linkId = linkId;
         this.url = url;
+        this.author = author;
         this.description = description;
         this.tgChatIds = tgChatIds;
     }

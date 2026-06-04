@@ -1,32 +1,30 @@
 package backend.academy.linktracker.scrapper.messagesender;
 
-import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
-import java.util.ArrayList;
-import java.util.List;
+import backend.academy.linktracker.scrapper.domain.Notification;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @AllArgsConstructor
 @Slf4j
 public class BotSender {
-    private final TelegramBotService bot;
+    private final BotClient botClient;
+    private final MessageBrokerClient messageBrokerClient;
 
-    public List<Long> send(List<NotificationRecord> records) {
-        List<Long> updatedIds = new ArrayList<>();
+    @Retry(name = "bot")
+    @CircuitBreaker(name = "bot", fallbackMethod = "sendToBroker")
+    public void send(Notification notification) {
+        botClient.send(notification);
+    }
 
-        for (var record : records) {
-            try {
-                bot.send(record.notification());
-                updatedIds.add(record.id());
-            } catch (Exception exception) {
-                log.error(
-                        "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
-                        record.notification().getUrl(),
-                        exception.getMessage());
-            }
-        }
-        return updatedIds;
+    void sendToBroker(Notification notification, Throwable exception) {
+        log.warn(
+                "Ошибка при отправке уведомления по HTTP. Отправка в очередь сообщений: {}, {}",
+                notification.getUrl(),
+                exception.getMessage());
+        messageBrokerClient.send(notification);
     }
 }

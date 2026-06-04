@@ -2,7 +2,7 @@ package backend.academy.linktracker.scrapper.configuration;
 
 import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.linktracker.LinkProcessor;
-import backend.academy.linktracker.scrapper.linktracker.linkchecker.ResourceHandler;
+import backend.academy.linktracker.scrapper.linktracker.linkchecker.UpdateHandler;
 import backend.academy.linktracker.scrapper.properties.ScrapperProperties;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
 import java.util.List;
@@ -18,12 +18,12 @@ import org.springframework.context.annotation.Configuration;
 public class LinkProcessorConfiguration {
     @Bean
     public LinkProcessor linkProcessor(
-            List<ResourceHandler> allCheckers,
+            List<UpdateHandler> allCheckers,
             SubscriptionRepository subscriptionRepository,
             ExecutorService executorService,
             ScrapperProperties properties) {
-        Map<LinkType, ResourceHandler> checkers =
-                allCheckers.stream().collect(Collectors.toMap(ResourceHandler::getLinkType, Function.identity()));
+        Map<LinkType, UpdateHandler> checkers =
+                allCheckers.stream().collect(Collectors.toMap(UpdateHandler::getLinkType, Function.identity()));
 
         return new LinkProcessor(subscriptionRepository, checkers, executorService, properties.numberOfThreads());
     }
