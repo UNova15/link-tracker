@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import com.pengrad.telegrambot.TelegramBot;
@@ -50,7 +50,7 @@ public class KafkaTest {
     private TelegramBot bot;
 
     @Autowired
-    private KafkaTemplate<String, LinkUpdateEvent> kafka;
+    private KafkaTemplate<String, ProcessedLinkUpdate> kafka;
 
     @DynamicPropertySource
     static void settingProperties(DynamicPropertyRegistry registry) {
@@ -69,8 +69,8 @@ public class KafkaTest {
 
     @Test
     void Kafka_pollKafka_getMessage() {
-        LinkUpdateEvent linkUpdate =
-                new LinkUpdateEvent(UUID.randomUUID(), 1L, "https://github.com", "New message", List.of(1L));
+        ProcessedLinkUpdate linkUpdate =
+                new ProcessedLinkUpdate(UUID.randomUUID(), 1L, "New message", List.of(1L));
 
         kafka.send("test-topic", linkUpdate);
 
@@ -80,7 +80,6 @@ public class KafkaTest {
         NotificationDto value = captor.getValue();
         assertThat(value.linkId()).isEqualTo(linkUpdate.getLinkId());
         assertThat(value.description()).isEqualTo(linkUpdate.getDescription());
-        assertThat(value.url()).isEqualTo(linkUpdate.getUrl());
         assertThat(value.tgChatIds()).isEqualTo(linkUpdate.getTgChatIds());
     }
 }

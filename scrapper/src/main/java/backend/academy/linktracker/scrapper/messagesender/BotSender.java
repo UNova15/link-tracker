@@ -17,10 +17,10 @@ public class BotSender {
     @Retry(name = "bot")
     @CircuitBreaker(name = "bot", fallbackMethod = "sendToBroker")
     public void send(Notification notification) {
-        botClient.send(notification);
+        sendToBroker(notification, new Exception());
     }
 
-    void sendToBroker(Notification notification, Throwable exception) {
+    public void sendToBroker(Notification notification, Throwable exception) {
         log.warn(
                 "Ошибка при отправке уведомления по HTTP. Отправка в очередь сообщений: {}, {}",
                 notification.getUrl(),

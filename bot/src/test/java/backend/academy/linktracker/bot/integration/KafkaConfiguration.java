@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.integration;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    ProducerFactory<String, LinkUpdateEvent> producerFactory(
+    ProducerFactory<String, ProcessedLinkUpdate> producerFactory(
             @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
             @Value("${spring.kafka.consumer.properties.schema.registry.url}") String schemaRegistry) {
         Map<String, Object> configProps = new HashMap<>();
@@ -37,7 +37,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    KafkaTemplate<String, LinkUpdateEvent> kafkaTemplate(ProducerFactory<String, LinkUpdateEvent> producerFactory) {
+    KafkaTemplate<String, ProcessedLinkUpdate> kafkaTemplate(ProducerFactory<String, ProcessedLinkUpdate> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }
