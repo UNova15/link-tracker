@@ -1,6 +1,7 @@
 x-shared-env: &Kafka
   KAFKA_BOOTSTRAP_SERVERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
-  APP_TOPIC_NAME: link-updates
+  RAW_UPDATES_TOPIC_NAME: raw-updates
+  PROCESSED_UPDATES_TOPIC_NAME: processed-updates
   DLQ_TOPIC_NAME: link-updates-dlq
 
 services:
@@ -161,6 +162,16 @@ services:
       scrapper:
         condition: service_healthy
 
+  ai-agent:
+    build:
+      context: .
+      dockerfile: ai-agent/Dockerfile
+    environment:
+      <<: *Kafka
+      SERVER_PORT: 8082
+      REPLICA_FACTOR: 3
+      PARTITION_FACTOR: 3
+      AI_TOKEN: ${AI_TOKEN}
 
   scrapper:
     build:

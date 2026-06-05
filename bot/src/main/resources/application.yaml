@@ -41,7 +41,8 @@ app:
   retryable-statuses: 500, 501, 502, 503, 504
 
   kafka:
-    topic-name: ${APP_TOPIC_NAME:link-updates}
+    topic-name: ${PROCESSED_UPDATES_TOPIC_NAME:link-updates}
+    dlq-topic-name: ${DLQ_TOPIC_NAME:dlq-link-updates}
     retries: 3
     timeout: 6000
 

@@ -21,14 +21,14 @@ public class UpdateService {
     public void sendUpdateMessage(@Valid NotificationDto notification) {
         // обработка повторного сообщения
         if (idempotencyCache.getIfPresent(notification.idempotencyKey()) != null) {
-            log.info("Дубликат сообщения :{} ключ: {}", notification.url(), notification.idempotencyKey());
+            log.info("Дубликат сообщения :{} ключ: {}", notification.description(), notification.idempotencyKey());
             return;
         }
         idempotencyCache.put(notification.idempotencyKey(), Boolean.TRUE);
 
         for (long id : notification.tgChatIds()) {
             try {
-                telegram.sendNotification(id, notification.description(), notification.url());
+                telegram.sendNotification(id, notification.description());
             } catch (Exception exception) {
                 log.error("Ошибка отправки уведомления: {}, пользователь: {} ", notification.description(), id);
             }

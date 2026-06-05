@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.configuration;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.avro.RawLinkUpdate;
 import backend.academy.linktracker.bot.properties.KafkaProperties;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.kafka.common.TopicPartition;
@@ -17,9 +17,11 @@ import org.springframework.util.backoff.FixedBackOff;
 public class KafkaConfiguration {
 
     @Bean
-    DeadLetterPublishingRecoverer deadLetterPublishingRecoverer(KafkaTemplate<String, LinkUpdateEvent> kafkaTemplate) {
+    DeadLetterPublishingRecoverer deadLetterPublishingRecoverer(
+            KafkaTemplate<String, RawLinkUpdate> kafkaTemplate, KafkaProperties properties) {
         return new DeadLetterPublishingRecoverer(
-                kafkaTemplate, (record, exception) -> new TopicPartition(record.topic() + "-dlq", record.partition()));
+                kafkaTemplate,
+                (record, exception) -> new TopicPartition(properties.getDlqTopicName(), record.partition()));
     }
 
     @Bean

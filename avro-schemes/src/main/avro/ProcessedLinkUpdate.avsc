@@ -1,6 +1,6 @@
 {
     "type": "record",
-    "name": "LinkUpdateEvent",
+    "name": "ProcessedLinkUpdate",
     "namespace": "backend.academy.linktracker.avro",
     "fields": [
         {
@@ -15,11 +15,6 @@
             "name": "link_id",
             "type": "long",
             "doc": "ID ссылки"
-        },
-        {
-            "name": "url",
-            "type": "string",
-            "doc": "Ссылка"
         },
         {
             "name": "description",

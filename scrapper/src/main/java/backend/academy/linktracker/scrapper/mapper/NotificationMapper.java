@@ -1,6 +1,6 @@
 package backend.academy.linktracker.scrapper.mapper;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.avro.RawLinkUpdate;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
@@ -25,13 +25,14 @@ public class NotificationMapper {
                 .toList();
     }
 
-    public LinkUpdateEvent toLinkUpdateEvent(Notification notificationRecord) {
-        return new LinkUpdateEvent(
-                notificationRecord.getIdempotencyKey(),
-                notificationRecord.getLinkId(),
-                notificationRecord.getUrl(),
-                notificationRecord.getDescription(),
-                notificationRecord.getTgChatIds());
+    public RawLinkUpdate toLinkUpdateEvent(Notification notification) {
+        return new RawLinkUpdate(
+                notification.getIdempotencyKey(),
+                notification.getLinkId(),
+                notification.getUrl(),
+                notification.getAuthor(),
+                notification.getDescription(),
+                notification.getTgChatIds());
     }
 
     public List<Notification> toNotification(

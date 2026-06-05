@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class TelegramService {
-    private static final String NOTIFICATION_TEMPLATE = "%s:%s";
     private final TelegramBot bot;
 
     @Retry(name = "telegram")
     @CircuitBreaker(name = "telegram")
-    public void sendNotification(long id, String description, String url) {
-        SendMessage message = new SendMessage(id, NOTIFICATION_TEMPLATE.formatted(description, url));
+    public void sendNotification(long id, String description) {
+        SendMessage message = new SendMessage(id, description);
         execute(message);
     }
 

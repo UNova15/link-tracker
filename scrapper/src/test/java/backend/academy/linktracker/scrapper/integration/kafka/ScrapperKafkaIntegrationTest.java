@@ -3,7 +3,7 @@ package backend.academy.linktracker.scrapper.integration.kafka;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import backend.academy.linktracker.avro.LinkUpdateEvent;
-import backend.academy.linktracker.scrapper.configuration.KafkaConfiguration;
+import backend.academy.linktracker.scrapper.configuration.TopicConfiguration;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
@@ -32,7 +32,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.kafka.KafkaContainer;
 
 @SpringBootTest(
-        classes = {MessageBrokerClient.class, KafkaConfiguration.class, LinkMapper.class},
+        classes = {MessageBrokerClient.class, TopicConfiguration.class, LinkMapper.class},
         properties = {
             "app.db-provider=sql",
             "app.kafka.topic-name=test-link-updates",
@@ -71,8 +71,8 @@ public class ScrapperKafkaIntegrationTest {
 
     @Test
     public void Kafka_sendValidMessage_saveMessageInKafka() {
-        Notification notification =
-                Notification.createNew(UUID.randomUUID(), 1L, "https:/guthub.com", "New Update", List.of(1L, 2L));
+        Notification notification = Notification.createNew(
+                UUID.randomUUID(), 1L, "https:/guthub.com", "Bob", "New Update", List.of(1L, 2L));
 
         KafkaConsumer<String, LinkUpdateEvent> consumer = new KafkaConsumer<>(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,

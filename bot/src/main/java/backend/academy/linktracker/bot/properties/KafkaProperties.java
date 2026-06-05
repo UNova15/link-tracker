@@ -20,6 +20,9 @@ public class KafkaProperties {
     @NotBlank
     String topicName;
 
+    @NotBlank
+    String dlqTopicName;
+
     @PositiveOrZero
     int timeout;
 

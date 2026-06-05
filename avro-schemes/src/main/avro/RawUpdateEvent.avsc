@@ -1,0 +1,43 @@
+{
+    "type": "record",
+    "name": "RawLinkUpdate",
+    "namespace": "backend.academy.linktracker.avro",
+    "fields": [
+        {
+            "name": "idempotence_key",
+            "type": {
+                "type": "string",
+                "logicalType": "uuid"
+            },
+            "doc": "Ключ идемпотентности для bot service"
+        },
+        {
+            "name": "link_id",
+            "type": "long",
+            "doc": "ID ссылки"
+        },
+        {
+            "name": "url",
+            "type": "string",
+            "doc": "Ссылка"
+        },
+        {
+            "name": "author",
+            "type": "string",
+            "doc": "Имя автора изменения"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "doc": "Описание изменений"
+        },
+        {
+            "name": "tgChatIds",
+            "type": {
+                "type": "array",
+                "items": "long"
+            },
+            "doc": "ID чатов"
+        }
+    ]
+}

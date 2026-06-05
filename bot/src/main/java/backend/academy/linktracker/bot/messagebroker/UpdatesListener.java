@@ -1,6 +1,6 @@
-package backend.academy.linktracker.bot.kafka;
+package backend.academy.linktracker.bot.messagebroker;
 
-import backend.academy.linktracker.avro.LinkUpdateEvent;
+import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import lombok.AllArgsConstructor;
@@ -14,11 +14,10 @@ public class UpdatesListener {
     private final UpdateService updateService;
 
     @KafkaListener(topics = "${app.kafka.topic-name}", groupId = "telegram-bot-group")
-    public void listen(@Payload LinkUpdateEvent linkUpdateEvent) {
+    public void listen(@Payload ProcessedLinkUpdate linkUpdateEvent) {
         NotificationDto notification = new NotificationDto(
                 linkUpdateEvent.getIdempotenceKey(),
                 linkUpdateEvent.getLinkId(),
-                linkUpdateEvent.getUrl(),
                 linkUpdateEvent.getDescription(),
                 linkUpdateEvent.getTgChatIds());
 
