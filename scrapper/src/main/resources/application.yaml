@@ -47,7 +47,7 @@ app:
   retryable-statuses: 500,502,503,504
 
   kafka:
-    topic-name: ${APP_TOPIC_NAME:link-updates}
+    topic-name: ${RAW_UPDATES_TOPIC_NAME:link-updates}
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
     dlq-topic-name: ${DLQ_TOPIC_NAME:link-updates-dlq}
@@ -78,13 +78,13 @@ app:
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
     connection-timeout: 1000
-    response-timeout: 1000
+    response-timeout: 2000
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
     connection-timeout: 1000
-    response-timeout: 1000
+    response-timeout: 2000
 
 
 resilience4j:

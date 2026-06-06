@@ -63,7 +63,6 @@ public class LinkProcessor {
 
         try {
             Optional<ProcessingResult> result = processor.process(link);
-
             result.ifPresent(processingResult -> link.updateLastUpdateTime(processingResult.newUpdateTime()));
             link.markCheckedNow();
 

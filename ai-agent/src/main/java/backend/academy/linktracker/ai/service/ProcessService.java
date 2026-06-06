@@ -7,6 +7,7 @@ import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Service
 @Validated
 @AllArgsConstructor
+@Slf4j
 public class ProcessService {
     private final MessageFilter filter;
     private final AIService aiService;
@@ -32,6 +34,7 @@ public class ProcessService {
 
         ProcessedLinkUpdate update =
                 mapper.toProcessedLinkUpdate(notification, UUID.randomUUID(), formattedText);
+        IO.println("СООБЩЕНИЕ ГОТОВО К ОТПРАВКЕ: {}" + update.getDescription());
         sender.sendNotification(update);
     }
 }

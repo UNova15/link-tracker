@@ -23,7 +23,8 @@ public class Link {
         }
 
         Instant createdAt = Instant.now().truncatedTo(ChronoUnit.MICROS);
-        return new Link(null, type, url, createdAt, createdAt);
+        Instant lastUpdate = Instant.EPOCH;
+        return new Link(null, type, url, createdAt, lastUpdate);
     }
 
     public static Link restore(long id, LinkType type, String url, Instant lastCheck, Instant lastUpdate) {

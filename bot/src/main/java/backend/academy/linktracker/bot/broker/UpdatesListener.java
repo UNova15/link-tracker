@@ -1,15 +1,17 @@
-package backend.academy.linktracker.bot.messagebroker;
+package backend.academy.linktracker.bot.broker;
 
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class UpdatesListener {
     private final UpdateService updateService;
 
@@ -20,7 +22,7 @@ public class UpdatesListener {
                 linkUpdateEvent.getLinkId(),
                 linkUpdateEvent.getDescription(),
                 linkUpdateEvent.getTgChatIds());
-
+        IO.println("ПОЛУЧЕНО СООБЩЕНИЕ: {}" + linkUpdateEvent.getDescription());
         updateService.sendUpdateMessage(notification);
     }
 }

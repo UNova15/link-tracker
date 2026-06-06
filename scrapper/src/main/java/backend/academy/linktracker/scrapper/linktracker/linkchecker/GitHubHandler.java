@@ -37,7 +37,6 @@ public class GitHubHandler extends UpdateHandler {
 
         List<GitHubResponse> response =
                 gitHub.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastUpdate());
-
         if (response == null || response.isEmpty()) {
             return Optional.empty();
         }

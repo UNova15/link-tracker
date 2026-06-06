@@ -6,13 +6,23 @@ x-shared-env: &Kafka
 
 services:
 
-  redis-insight:
-    image: redis/redisinsight:3.4.2
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
     ports:
-      - "5540:5540"
-    depends_on:
-      valkey-cluster-init:
-        condition: service_completed_successfully
+      - "9091:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka-1:9092,kafka-2:9092,kafka-3:9092"
+
+
+#  redis-insight:
+#    image: redis/redisinsight:3.4.2
+#    ports:
+#      - "5540:5540"
+#    depends_on:
+#      valkey-cluster-init:
+#        condition: service_completed_successfully
 
   cache-1:
     image: valkey/valkey:9.1.0-trixie

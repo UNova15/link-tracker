@@ -21,6 +21,7 @@ public class BrokerSender {
 
         try {
             kafka.send(topicName, key, update);
+            IO.println("СООБЩЕНИЕ ОТПРАВЛЕНО В BOT");
         } catch (Exception exception) {
             log.error("Ошибка отправки сообщения в очередь сообщений");
         }

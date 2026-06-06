@@ -20,7 +20,6 @@ public class GitHubService {
     @CircuitBreaker(name = "github")
     public List<GitHubResponse> sendURequestForUpdates(String owner, String repo, Instant lastUpdate) {
         String sinceTime = lastUpdate.truncatedTo(ChronoUnit.SECONDS).toString();
-
         return gitHubClient.sendURequestForUpdates(owner, repo, sinceTime);
     }
 }
