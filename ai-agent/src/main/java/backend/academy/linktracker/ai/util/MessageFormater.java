@@ -13,6 +13,6 @@ public class MessageFormater {
         """;
 
     public String formate(String description, String url, String author) {
-        return TEMPLATE.formatted(url,author,description);
+        return TEMPLATE.formatted(url, author, description);
     }
 }
