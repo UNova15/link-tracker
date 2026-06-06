@@ -3,6 +3,7 @@ x-shared-env: &Kafka
   RAW_UPDATES_TOPIC_NAME: raw-updates
   PROCESSED_UPDATES_TOPIC_NAME: processed-updates
   DLQ_TOPIC_NAME: link-updates-dlq
+  SCHEMA_REGISTRY_URL: http://schema-registry:8081
 
 services:
 
@@ -16,13 +17,13 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka-1:9092,kafka-2:9092,kafka-3:9092"
 
 
-#  redis-insight:
-#    image: redis/redisinsight:3.4.2
-#    ports:
-#      - "5540:5540"
-#    depends_on:
-#      valkey-cluster-init:
-#        condition: service_completed_successfully
+  #  redis-insight:
+  #    image: redis/redisinsight:3.4.2
+  #    ports:
+  #      - "5540:5540"
+  #    depends_on:
+  #      valkey-cluster-init:
+  #        condition: service_completed_successfully
 
   cache-1:
     image: valkey/valkey:9.1.0-trixie
@@ -164,7 +165,6 @@ services:
       <<: *Kafka
       SERVER_PORT: 8080
       APP_SCRAPPER_BASE_URL: http://scrapper:8081
-      SCHEMA_REGISTRY_URL: http://schema-registry:8081
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
     ports:
       - "8080:8080"
@@ -182,6 +182,9 @@ services:
       REPLICA_FACTOR: 3
       PARTITION_FACTOR: 3
       AI_TOKEN: ${AI_TOKEN}
+    depends_on:
+      scrapper:
+        condition: service_healthy
 
   scrapper:
     build:
@@ -196,9 +199,7 @@ services:
       PARTITION_FACTOR: 3
 
       CACHE_CLUSTER_NODES: cache-1:6379,cache-2:6379,cache-3:6379
-
       APP_TELEGRAM_BOT_BASE_URL: http://bot:8080
-      SCHEMA_REGISTRY_URL: http://schema-registry:8081
 
       STACKOVERFLOW_KEY: ${STACKOVERFLOW_KEY}
       STACKOVERFLOW_ACCESS_KEY: ${STACKOVERFLOW_ACCESS_KEY}

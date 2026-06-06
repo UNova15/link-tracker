@@ -98,8 +98,7 @@ public class HttpClientConfiguration {
     }
 
     @Bean
-    public BotClient telegramBotHttpClient(
-            TelegramBotProperties properties, TelegramBotExceptionHandler handler) {
+    public BotClient telegramBotHttpClient(TelegramBotProperties properties, TelegramBotExceptionHandler handler) {
 
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(properties.connectionTimeout());

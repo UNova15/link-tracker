@@ -1,4 +1,4 @@
-package backend.academy.linktracker.ai.util;
+package backend.academy.linktracker.ai.service;
 
 import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.properties.FilterProperties;

@@ -6,9 +6,9 @@ import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.dto.linkdto.Update;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Component
 public class NotificationMapper {

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @AllArgsConstructor
 @Slf4j
@@ -17,16 +16,16 @@ public class BotService {
     public List<Long> send(List<NotificationRecord> records) {
         List<Long> updatedIds = new ArrayList<>();
 
-        //TODO исправить это
+        // TODO исправить это
         for (var record : records) {
             try {
                 bot.send(record.notification());
                 updatedIds.add(record.id());
             } catch (Exception exception) {
                 log.error(
-                    "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
-                    record.notification().getUrl(),
-                    exception.getMessage());
+                        "Ошибка в уведомлении пользователей об изменениях по ссылке: {}. {}",
+                        record.notification().getUrl(),
+                        exception.getMessage());
             }
         }
         return updatedIds;

@@ -18,8 +18,8 @@ spring:
 
     producer:
       acks: -1
-      key-serializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
         schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
 

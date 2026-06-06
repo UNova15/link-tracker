@@ -37,7 +37,8 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    KafkaTemplate<String, ProcessedLinkUpdate> kafkaTemplate(ProducerFactory<String, ProcessedLinkUpdate> producerFactory) {
+    KafkaTemplate<String, ProcessedLinkUpdate> kafkaTemplate(
+            ProducerFactory<String, ProcessedLinkUpdate> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }

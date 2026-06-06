@@ -3,8 +3,8 @@ package backend.academy.linktracker.ai.mapper;
 import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import backend.academy.linktracker.avro.RawLinkUpdate;
-import org.springframework.stereotype.Component;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Component
 public class NotificationMapper {
@@ -19,8 +19,7 @@ public class NotificationMapper {
                 event.getTgChatIds());
     }
 
-    public ProcessedLinkUpdate toProcessedLinkUpdate(
-            NotificationDto notification, UUID idempotencyKey, String text) {
+    public ProcessedLinkUpdate toProcessedLinkUpdate(NotificationDto notification, UUID idempotencyKey, String text) {
         return new ProcessedLinkUpdate(idempotencyKey, notification.link_id(), text, notification.tgChatIds());
     }
 }

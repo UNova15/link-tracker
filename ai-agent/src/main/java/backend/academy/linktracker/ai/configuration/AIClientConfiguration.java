@@ -2,7 +2,6 @@ package backend.academy.linktracker.ai.configuration;
 
 import backend.academy.linktracker.ai.client.AIClient;
 import backend.academy.linktracker.ai.properties.AIProperties;
-import backend.academy.linktracker.ai.properties.FilterProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;

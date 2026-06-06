@@ -69,8 +69,7 @@ public class KafkaTest {
 
     @Test
     void Kafka_pollKafka_getMessage() {
-        ProcessedLinkUpdate linkUpdate =
-                new ProcessedLinkUpdate(UUID.randomUUID(), 1L, "New message", List.of(1L));
+        ProcessedLinkUpdate linkUpdate = new ProcessedLinkUpdate(UUID.randomUUID(), 1L, "New message", List.of(1L));
 
         kafka.send("test-topic", linkUpdate);
 

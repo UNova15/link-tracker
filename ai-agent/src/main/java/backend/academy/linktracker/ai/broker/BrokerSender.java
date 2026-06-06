@@ -20,10 +20,9 @@ public class BrokerSender {
         String key = String.valueOf(update.getLinkId());
 
         try {
-            kafka.send(topicName, key, update);
-            IO.println("СООБЩЕНИЕ ОТПРАВЛЕНО В BOT");
+            kafka.send(topicName, key, update).join();
         } catch (Exception exception) {
-            log.error("Ошибка отправки сообщения в очередь сообщений");
+            log.error("Ошибка отправки сообщения в очередь сообщений {}", exception.getMessage());
         }
     }
 }

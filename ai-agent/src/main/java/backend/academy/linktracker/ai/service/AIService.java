@@ -4,9 +4,9 @@ import backend.academy.linktracker.ai.client.AIClient;
 import backend.academy.linktracker.ai.dto.AIRequest;
 import backend.academy.linktracker.ai.dto.AIResponse;
 import backend.academy.linktracker.ai.properties.AIProperties;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @AllArgsConstructor

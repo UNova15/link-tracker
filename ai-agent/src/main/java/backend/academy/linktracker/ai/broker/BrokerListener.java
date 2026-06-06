@@ -19,7 +19,6 @@ public class BrokerListener {
 
     @KafkaListener(topics = "${app.kafka.raw-updates-topic}", id = "ai-agent-group")
     public void listen(@Payload RawLinkUpdate event) {
-        IO.println("Получено сообщение: {}" + event.getDescription());
         NotificationDto notification = mapper.toNotificationDto(event);
         service.process(notification);
     }

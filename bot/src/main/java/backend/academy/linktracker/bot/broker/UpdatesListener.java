@@ -22,7 +22,6 @@ public class UpdatesListener {
                 linkUpdateEvent.getLinkId(),
                 linkUpdateEvent.getDescription(),
                 linkUpdateEvent.getTgChatIds());
-        IO.println("ПОЛУЧЕНО СООБЩЕНИЕ: {}" + linkUpdateEvent.getDescription());
         updateService.sendUpdateMessage(notification);
     }
 }

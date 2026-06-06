@@ -23,7 +23,7 @@ public class UpdateHandlerUtil {
         long maxCommentUpdateTime = contents.stream()
                 .mapToLong(StackOverflowContent::creationDate)
                 .max()
-                .orElseThrow(()->new IllegalArgumentException("List of comments and answers is empty"));
+                .orElseThrow(() -> new IllegalArgumentException("List of comments and answers is empty"));
 
         return Instant.ofEpochSecond(maxCommentUpdateTime);
     }
@@ -44,7 +44,8 @@ public class UpdateHandlerUtil {
         return filteredComments;
     }
 
-    private List<StackOverflowContent> filterStackOverflowContentByCreationDate(List<StackOverflowContent> content, Instant lastCheck) {
+    private List<StackOverflowContent> filterStackOverflowContentByCreationDate(
+            List<StackOverflowContent> content, Instant lastCheck) {
         if (content == null) {
             return List.of();
         }
