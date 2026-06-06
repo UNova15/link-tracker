@@ -18,7 +18,7 @@ public class KafkaConfiguration {
 
     @Bean
     DeadLetterPublishingRecoverer deadLetterPublishingRecoverer(
-        KafkaTemplate<String, ProcessedLinkUpdate> kafkaTemplate, KafkaProperties properties) {
+            KafkaTemplate<String, ProcessedLinkUpdate> kafkaTemplate, KafkaProperties properties) {
         return new DeadLetterPublishingRecoverer(
                 kafkaTemplate,
                 (record, exception) -> new TopicPartition(properties.getDlqTopicName(), record.partition()));

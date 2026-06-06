@@ -228,7 +228,6 @@ public class ProcessLinksTest {
         assertThat(firstUpdate.getTgChatIds()).containsExactly(chat.getChatId());
 
         assertThat(firstUpdate.getAuthor()).isEqualTo("test_user");
-        assertThat(firstUpdate.getDescription())
-                .contains("This is a test description");
+        assertThat(firstUpdate.getDescription()).contains("This is a test description");
     }
 }
