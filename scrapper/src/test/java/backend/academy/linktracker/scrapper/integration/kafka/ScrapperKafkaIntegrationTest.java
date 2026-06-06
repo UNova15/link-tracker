@@ -1,4 +1,3 @@
-/*
 package backend.academy.linktracker.scrapper.integration.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +6,7 @@ import backend.academy.linktracker.avro.RawLinkUpdate;
 import backend.academy.linktracker.scrapper.configuration.TopicConfiguration;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
+import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.messagesender.MessageBrokerClient;
 import backend.academy.linktracker.scrapper.properties.KafkaProperties;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
@@ -33,7 +33,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.kafka.KafkaContainer;
 
 @SpringBootTest(
-        classes = {MessageBrokerClient.class, TopicConfiguration.class, LinkMapper.class},
+        classes = {MessageBrokerClient.class, TopicConfiguration.class, LinkMapper.class, NotificationMapper.class},
         properties = {
             "app.db-provider=sql",
             "app.kafka.topic-name=test-link-updates",
@@ -108,4 +108,3 @@ public class ScrapperKafkaIntegrationTest {
         assertThat(value.getTgChatIds()).isEqualTo(List.of(1L, 2L));
     }
 }
-*/

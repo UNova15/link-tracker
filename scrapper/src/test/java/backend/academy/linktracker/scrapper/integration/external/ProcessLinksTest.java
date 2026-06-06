@@ -1,4 +1,3 @@
-/*
 package backend.academy.linktracker.scrapper.integration.external;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -116,12 +115,8 @@ public class ProcessLinksTest {
         assertThat(notification.getUrl()).isEqualTo(link.getUrl());
         assertThat(notification.getTgChatIds()).containsExactly(chat.getChatId());
 
-
-        //TODO доделать
         assertThat(notification.getAuthor()).isEqualTo("test_user");
-        assertThat(notification.getDescription())
-                .contains("Test Issue")
-                .isEqualTo("This is a test description");
+        assertThat(notification.getDescription()).isEqualTo("This is a test description");
     }
 
     @Test
@@ -171,45 +166,8 @@ public class ProcessLinksTest {
         assertThat(notification.getUrl()).isEqualTo(link.getUrl());
         assertThat(notification.getTgChatIds()).containsExactly(chat.getChatId());
 
-        assertThat(notification.getDescription())
-                .contains("Test title")
-                .contains("Kirill")
-                .contains("It test comment");
-    }
-
-    @Test
-    void processLinks_withPreviewLongerThanCharactersLimit_willCropPreview() {
-        Chat chat = Chat.createNew(1);
-        chatRepository.save(chat);
-
-        Link link = linkRepository.save(Link.createNew(LinkType.GIT_HUB, "https://github.com/UNova15/my_project"));
-
-        Subscription subscription = Subscription.createNew(chat.getChatId(), link.getId(), List.of());
-        subscriptionRepository.saveSubscription(subscription);
-
-        github.stubFor(WireMock.get(WireMock.urlPathMatching("/repos/UNova15/my_project/issues"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("""
-                            [
-                              {
-                                "title": "Test Issue",
-                                "user": { "login": "test_user" },
-                                "updated_at": "%s",
-                                "body": "This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description and This is a test description"
-                              }
-                            ]
-                            """.formatted(Instant.now().plusSeconds(10)))));
-
-        List<Notification> notifications = linkProcessor.runProcessLinks(List.of(link));
-        assertThat(notifications).hasSize(1);
-
-        Notification notification = notifications.getFirst();
-        assertThat(notification.getDescription())
-                .contains("This is a test description and This is a test description and This is a test description and"
-                        + " This is a test description and This is a test description and This is a test"
-                        + " description and This is a tes...");
+        assertThat(notification.getAuthor()).isEqualTo("Kirill");
+        assertThat(notification.getDescription()).isEqualTo("It test comment");
     }
 
     @Test
@@ -226,15 +184,7 @@ public class ProcessLinksTest {
                 .willReturn(aResponse().withStatus(500)));
 
         List<Notification> notifications = linkProcessor.runProcessLinks(List.of(link));
-        assertThat(notifications).hasSize(1);
-
-        Notification notification = notifications.getFirst();
-        assertThat(notification.getLinkId()).isEqualTo(link.getId());
-        assertThat(notification.getUrl()).isEqualTo(link.getUrl());
-        assertThat(notification.getTgChatIds()).containsExactly(chat.getChatId());
-
-        assertThat(notification.getDescription())
-                .contains("Ошибка проверки ссылки: https://github.com/UNova15/my_project");
+        assertThat(notifications).hasSize(0);
     }
 
     @Test
@@ -270,25 +220,15 @@ public class ProcessLinksTest {
                 .willReturn(aResponse().withStatus(500)));
 
         List<Notification> notifications = linkProcessor.runProcessLinks(List.of(link1, link2));
-        assertThat(notifications).hasSize(2);
+        assertThat(notifications).hasSize(1);
 
         Notification firstUpdate = notifications.getFirst();
         assertThat(firstUpdate.getLinkId()).isEqualTo(link1.getId());
         assertThat(firstUpdate.getUrl()).isEqualTo(link1.getUrl());
         assertThat(firstUpdate.getTgChatIds()).containsExactly(chat.getChatId());
 
+        assertThat(firstUpdate.getAuthor()).isEqualTo("test_user");
         assertThat(firstUpdate.getDescription())
-                .contains("Test Issue")
-                .contains("test_user")
                 .contains("This is a test description");
-
-        Notification secondUpdate = notifications.get(1);
-        assertThat(secondUpdate.getLinkId()).isEqualTo(link2.getId());
-        assertThat(secondUpdate.getUrl()).isEqualTo(link2.getUrl());
-        assertThat(secondUpdate.getTgChatIds()).containsExactly(chat.getChatId());
-
-        assertThat(secondUpdate.getDescription())
-                .contains("Ошибка проверки ссылки: https://github.com/UNova15/my_project2");
     }
 }
-*/

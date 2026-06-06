@@ -4,6 +4,7 @@ import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,21 +38,12 @@ public class UpdateHandlerUtil {
 
     public List<StackOverflowContent> filterStackOverflowContentByCreationDate(
             List<StackOverflowContent> answers, List<StackOverflowContent> comments, Instant lastCheck) {
-        List<StackOverflowContent> filteredAnswers = filterStackOverflowContentByCreationDate(answers, lastCheck);
-        List<StackOverflowContent> filteredComments = filterStackOverflowContentByCreationDate(comments, lastCheck);
 
-        filteredComments.addAll(filteredAnswers);
-        return filteredComments;
-    }
+        List<StackOverflowContent> safeAnswers = answers == null ? List.of() : answers;
+        List<StackOverflowContent> safeComments = comments == null ? List.of() : comments;
 
-    private List<StackOverflowContent> filterStackOverflowContentByCreationDate(
-            List<StackOverflowContent> content, Instant lastCheck) {
-        if (content == null) {
-            return List.of();
-        }
-
-        return content.stream()
-                .filter(comment -> Instant.ofEpochSecond(comment.creationDate()).isAfter(lastCheck))
+        return Stream.concat(safeComments.stream(), safeAnswers.stream())
+                .filter(content -> Instant.ofEpochSecond(content.creationDate()).isAfter(lastCheck))
                 .toList();
     }
 }

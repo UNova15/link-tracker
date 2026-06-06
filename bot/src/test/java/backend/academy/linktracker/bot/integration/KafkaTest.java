@@ -9,6 +9,7 @@ import backend.academy.linktracker.bot.dto.NotificationDto;
 import backend.academy.linktracker.bot.service.UpdateService;
 import com.pengrad.telegrambot.TelegramBot;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
@@ -29,6 +30,9 @@ import org.testcontainers.kafka.KafkaContainer;
 @SpringBootTest(
         properties = {
             "app.kafka.topic-name=test-topic",
+            "app.kafka.timeout=6000",
+            "app.kafka.retries=3",
+            "app.kafka.dlq-topic-name=test-dlq",
             "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
             "spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer",
             "spring.kafka.consumer.value-deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer",
