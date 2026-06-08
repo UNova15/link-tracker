@@ -4,7 +4,7 @@
     "namespace": "backend.academy.linktracker.avro",
     "fields": [
         {
-            "name": "idempotence_key",
+            "name": "idempotenceKey",
             "type": {
                 "type": "string",
                 "logicalType": "uuid"
@@ -12,9 +12,12 @@
             "doc": "Ключ идемпотентности для bot service"
         },
         {
-            "name": "link_id",
-            "type": "long",
-            "doc": "ID ссылки"
+            "name": "linksIds",
+            "type": {
+                "type": "array",
+                "items": "long"
+            },
+            "doc": "ID ссылок"
         },
         {
             "name": "description",
@@ -22,12 +25,9 @@
             "doc": "Описание изменений"
         },
         {
-            "name": "tgChatIds",
-            "type": {
-                "type": "array",
-                "items": "long"
-            },
-            "doc": "ID чатов"
+            "name": "tgChatId",
+            "type": "long",
+            "doc": "ID чата"
         }
     ]
 }

@@ -8,9 +8,16 @@ import java.util.List;
 import java.util.UUID;
 
 public record NotificationDto(
-        @NotNull UUID idempotence_key,
-        @PositiveOrZero long link_id,
+        // TODO возможно нужно будет проверять уникальность ключей идемпотентности на этапе kafkastreams, а сами ключи
+        //  хранить в valkey
+        @NotNull UUID idempotenceKey,
+        @PositiveOrZero long linkId,
         @NotBlank String url,
         @NotBlank String author,
         @NotBlank String description,
-        @NotEmpty List<Long> tgChatIds) {}
+        @NotEmpty List<Long> tgChatIds) {
+
+    public NotificationDto withNewDescription(String description) {
+        return new NotificationDto(this.idempotenceKey, this.linkId, this.url, this.author, description, this.tgChatIds);
+    }
+}

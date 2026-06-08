@@ -16,13 +16,11 @@ public class BrokerSender {
 
     private final KafkaTemplate<String, ProcessedLinkUpdate> kafka;
 
+    //TODO fix it
     public void sendNotification(ProcessedLinkUpdate update) {
-        String key = String.valueOf(update.getLinkId());
-
-        try {
-            kafka.send(topicName, key, update).join();
-        } catch (Exception exception) {
+        kafka.send(topicName, update).exceptionally(exception -> {
             log.error("Ошибка отправки сообщения в очередь сообщений {}", exception.getMessage());
-        }
+            return null;
+        });
     }
 }

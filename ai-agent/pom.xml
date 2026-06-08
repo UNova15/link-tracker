@@ -188,14 +188,24 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>backend.academy.link-tracker</groupId>
+            <artifactId>avro-schemes</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
             <version>7.8.0</version>
         </dependency>
         <dependency>
-            <groupId>backend.academy.link-tracker</groupId>
-            <artifactId>avro-schemes</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-streams-avro-serde</artifactId>
+            <version>7.8.0</version>
         </dependency>
     </dependencies>
     <repositories>

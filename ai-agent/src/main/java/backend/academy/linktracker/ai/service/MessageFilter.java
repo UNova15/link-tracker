@@ -3,24 +3,24 @@ package backend.academy.linktracker.ai.service;
 import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.properties.FilterProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @AllArgsConstructor
 public class MessageFilter {
     private final FilterProperties properties;
 
-    public boolean filter(NotificationDto notification) {
-        if (notification.description().length() <= properties.minLength()) {
+    public boolean filter(NotificationDto notificationDto) {
+        if (notificationDto.description().length() <= properties.minLength()) {
             return false;
         }
 
-        String author = notification.author().toLowerCase();
+        String author = notificationDto.author().toLowerCase();
         if (properties.excludedAuthors().contains(author)) {
             return false;
         }
 
-        String description = notification.description().toLowerCase();
+        String description = notificationDto.description().toLowerCase();
         return !findStopWords(description);
     }
 

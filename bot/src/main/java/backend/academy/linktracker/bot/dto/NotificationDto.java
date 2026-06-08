@@ -10,8 +10,8 @@ import java.util.UUID;
 public record NotificationDto(
         @NotNull UUID idempotencyKey,
 
-        @PositiveOrZero long linkId,
+        @NotEmpty List<@PositiveOrZero Long> linksIds,
 
         @NotBlank String description,
 
-        @NotEmpty List<Long> tgChatIds) {}
+        @PositiveOrZero long tgChatId) {}

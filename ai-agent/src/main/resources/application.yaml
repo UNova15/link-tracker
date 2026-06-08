@@ -7,17 +7,22 @@ spring:
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+
+    streams:
+      application-id: ai-agent-stream
+
     consumer:
       group-id: ai-agent
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
       properties:
-        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
-        specific.avro.reader: true
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: backend.academy.linktracker.ai.dto.AggregatedNotification
 
     producer:
-      acks: -1
+      acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
@@ -26,7 +31,7 @@ spring:
 
 
 app:
-  filter-config:
+  filter:
     stop-words:
       - spam
       - ads
@@ -35,7 +40,7 @@ app:
       - bot-user
     min-length: 20
 
-  ai-config:
+  ai:
     url: ${AI_URL:https://router.huggingface.co/v1/chat/completions}
     token: ${AI_TOKEN:test_token}
     model: "deepseek-ai/DeepSeek-V4-Pro:novita"
@@ -44,9 +49,27 @@ app:
       prompt: "Summarize the following update in 2–3 sentences:\n\n"
       role: "user"
 
+  prioritization:
+
+    high-keywords:
+      - critical
+      - urgent
+      - breaking
+      - security
+    low-keywords:
+      - minor
+      - typo
+      - chore
+      - docs
+
+  grouping:
+    window-ms: 30000
+
   kafka:
     raw-updates-topic: ${RAW_UPDATES_TOPIC_NAME:raw-updates}
-    processed-updates-topic: ${PROCESSED_UPDATES_TOPIC_NAME:processed-updates }
+    processed-updates-topic: ${PROCESSED_UPDATES_TOPIC_NAME:processed-updates}
+    aggregated-updates-topic: ${AGGREGATED_UPDATES_TOPIC:aggregated-updates-topic}
+    schema-registry-url: ${SCHEMA_REGISTRY_URL:http://schema-registry:8081}
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
 

@@ -26,12 +26,14 @@ public class UpdateService {
         }
         idempotencyCache.put(notification.idempotencyKey(), Boolean.TRUE);
 
-        for (long id : notification.tgChatIds()) {
-            try {
-                telegram.sendNotification(id, notification.description());
-            } catch (Exception exception) {
-                log.error("Ошибка отправки уведомления: {}, пользователь: {} ", notification.description(), id);
-            }
+        try {
+            telegram.sendNotification(notification.tgChatId(), notification.description());
+        } catch (Exception exception) {
+            log.error(
+                    "Ошибка отправки уведомления: {}, пользователь: {}. Ошибка: {}",
+                    notification.description(),
+                    notification.tgChatId(),
+                    exception.getStackTrace());
         }
     }
 }

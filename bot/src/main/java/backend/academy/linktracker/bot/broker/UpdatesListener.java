@@ -19,9 +19,16 @@ public class UpdatesListener {
     public void listen(@Payload ProcessedLinkUpdate linkUpdateEvent) {
         NotificationDto notification = new NotificationDto(
                 linkUpdateEvent.getIdempotenceKey(),
-                linkUpdateEvent.getLinkId(),
+                linkUpdateEvent.getLinksIds(),
                 linkUpdateEvent.getDescription(),
-                linkUpdateEvent.getTgChatIds());
-        updateService.sendUpdateMessage(notification);
+                linkUpdateEvent.getTgChatId());
+
+        try {
+            updateService.sendUpdateMessage(notification);
+
+        } catch (Exception exception) {
+            log.error("Ошибка при попытке обработки сообщения: ", exception);
+            throw exception;
+        }
     }
 }
