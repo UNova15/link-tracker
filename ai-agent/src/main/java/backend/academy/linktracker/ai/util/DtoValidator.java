@@ -3,10 +3,10 @@ package backend.academy.linktracker.ai.util;
 import backend.academy.linktracker.ai.dto.NotificationDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import java.util.Set;
 
 @Component
 @AllArgsConstructor

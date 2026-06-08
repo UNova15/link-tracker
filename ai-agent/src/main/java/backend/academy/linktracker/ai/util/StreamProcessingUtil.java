@@ -1,8 +1,8 @@
 package backend.academy.linktracker.ai.util;
 
 import backend.academy.linktracker.ai.dto.NotificationDto;
-import org.springframework.stereotype.Component;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StreamProcessingUtil {
@@ -22,6 +22,4 @@ public class StreamProcessingUtil {
                         List.of(value)))
                 .toList();
     }
-
-
 }

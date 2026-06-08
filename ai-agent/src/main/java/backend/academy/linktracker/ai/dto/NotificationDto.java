@@ -18,6 +18,7 @@ public record NotificationDto(
         @NotEmpty List<Long> tgChatIds) {
 
     public NotificationDto withNewDescription(String description) {
-        return new NotificationDto(this.idempotenceKey, this.linkId, this.url, this.author, description, this.tgChatIds);
+        return new NotificationDto(
+                this.idempotenceKey, this.linkId, this.url, this.author, description, this.tgChatIds);
     }
 }

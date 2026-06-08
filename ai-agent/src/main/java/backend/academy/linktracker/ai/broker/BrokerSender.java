@@ -16,7 +16,7 @@ public class BrokerSender {
 
     private final KafkaTemplate<String, ProcessedLinkUpdate> kafka;
 
-    //TODO fix it
+    // TODO fix it
     public void sendNotification(ProcessedLinkUpdate update) {
         kafka.send(topicName, update).exceptionally(exception -> {
             log.error("Ошибка отправки сообщения в очередь сообщений {}", exception.getMessage());

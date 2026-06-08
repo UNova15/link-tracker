@@ -6,11 +6,11 @@ import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.mapper.NotificationMapper;
 import backend.academy.linktracker.ai.util.MessageFormater;
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
+import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor

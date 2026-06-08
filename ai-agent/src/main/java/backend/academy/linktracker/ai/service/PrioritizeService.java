@@ -13,13 +13,13 @@ public class PrioritizeService {
 
     public Priority prioritize(NotificationDto notification) {
         for (String highKeyWord : properties.highKeywords()) {
-            if(notification.description().contains(highKeyWord)){
+            if (notification.description().contains(highKeyWord)) {
                 return Priority.HIGH;
             }
         }
 
-        for(String lowKeyWords: properties.lowKeywords()){
-            if(notification.description().contains(lowKeyWords)){
+        for (String lowKeyWords : properties.lowKeywords()) {
+            if (notification.description().contains(lowKeyWords)) {
                 return Priority.LOW;
             }
         }

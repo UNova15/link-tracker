@@ -21,10 +21,11 @@ public class NotificationMapper {
     }
 
     public ProcessedLinkUpdate toProcessedLinkUpdate(
-        List<NotificationDto> notifications, UUID idempotencyKey, String text) {
+            List<NotificationDto> notifications, UUID idempotencyKey, String text) {
 
         long chatId = notifications.getFirst().tgChatIds().getFirst();
-        List<Long> linksIds = notifications.stream().map(NotificationDto::linkId).toList();
+        List<Long> linksIds =
+                notifications.stream().map(NotificationDto::linkId).toList();
         return new ProcessedLinkUpdate(idempotencyKey, linksIds, text, chatId);
     }
 }

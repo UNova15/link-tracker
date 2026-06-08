@@ -10,6 +10,10 @@ import backend.academy.linktracker.ai.util.DtoValidator;
 import backend.academy.linktracker.ai.util.StreamProcessingUtil;
 import backend.academy.linktracker.avro.RawLinkUpdate;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -27,10 +31,6 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Configuration
 @EnableKafkaStreams

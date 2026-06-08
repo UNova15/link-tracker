@@ -1,9 +1,9 @@
 package backend.academy.linktracker.ai.properties;
 
 import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
-import java.util.List;
 
 @ConfigurationProperties(prefix = "app.prioritization")
 @Validated

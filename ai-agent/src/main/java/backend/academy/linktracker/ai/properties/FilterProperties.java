@@ -1,8 +1,8 @@
 package backend.academy.linktracker.ai.properties;
 
-import java.util.List;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
