@@ -1,36 +1,26 @@
 package backend.academy.linktracker.ai.service;
 
-import backend.academy.linktracker.ai.dto.NotificationDto;
-import backend.academy.linktracker.ai.properties.FilterProperties;
+import backend.academy.linktracker.ai.domain.Notification;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import java.util.Set;
+import java.util.regex.Pattern;
 
-@Service
 @AllArgsConstructor
 public class MessageFilter {
-    private final FilterProperties properties;
+    private final long minLength;
+    private final Set<String> excludedAuthors;
+    private final Pattern pattern;
 
-    public boolean filter(NotificationDto notificationDto) {
-        if (notificationDto.description().length() <= properties.minLength()) {
+    public boolean filter(Notification notification) {
+        if (notification.description().length() <= minLength) {
             return false;
         }
 
-        String author = notificationDto.author().toLowerCase();
-        if (properties.excludedAuthors().contains(author)) {
+        String author = notification.author().toLowerCase();
+        if (excludedAuthors.contains(author)) {
             return false;
         }
 
-        String description = notificationDto.description().toLowerCase();
-        return !findStopWords(description);
-    }
-
-    private boolean findStopWords(String description) {
-
-        for (String stopWord : properties.stopWords()) {
-            if (description.contains(stopWord)) {
-                return true;
-            }
-        }
-        return false;
+        return !pattern.matcher(notification.description()).find();
     }
 }

@@ -15,10 +15,4 @@ public record NotificationDto(
         @NotBlank String url,
         @NotBlank String author,
         @NotBlank String description,
-        @NotEmpty List<Long> tgChatIds) {
-
-    public NotificationDto withNewDescription(String description) {
-        return new NotificationDto(
-                this.idempotenceKey, this.linkId, this.url, this.author, description, this.tgChatIds);
-    }
-}
+        @NotEmpty List<Long> tgChatIds) {}

@@ -1,6 +1,7 @@
 package backend.academy.linktracker.ai.service;
 
 import backend.academy.linktracker.ai.broker.BrokerSender;
+import backend.academy.linktracker.ai.domain.Notification;
 import backend.academy.linktracker.ai.dto.AggregatedNotification;
 import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.mapper.NotificationMapper;
@@ -22,16 +23,17 @@ public class ProcessService {
     private final NotificationMapper mapper;
 
     public void process(AggregatedNotification aggregatedNotification) {
-        List<NotificationDto> notificationDtos = aggregatedNotification.notificationDtos().stream()
+
+        List<Notification> notifications = aggregatedNotification.notifications().stream()
                 .map(notification -> {
                     String summarizing = aiService.summarizing(notification.description());
-                    return notification.withNewDescription(summarizing);
+                    return notification.withDescription(summarizing);
                 })
                 .toList();
 
-        String message = formater.formate(notificationDtos);
+        String message = formater.formate(notifications);
         UUID idempotencyKey = UUID.randomUUID();
-        ProcessedLinkUpdate update = mapper.toProcessedLinkUpdate(notificationDtos, idempotencyKey, message);
+        ProcessedLinkUpdate update = mapper.toProcessedLinkUpdate(notifications, idempotencyKey, message);
 
         sender.sendNotification(update);
     }

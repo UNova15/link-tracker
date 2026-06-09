@@ -24,7 +24,7 @@ public class NotificationDao {
 
     public void saveOutboxRecord(List<Notification> notification) {
         jdbcTemplate.batchUpdate(
-                "INSERT INTO notifications (link_update_event) VALUES (?::pg_catalog.jsonb)",
+                "INSERT INTO notificationDtos (link_update_event) VALUES (?::pg_catalog.jsonb)",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -42,7 +42,7 @@ public class NotificationDao {
     public List<NotificationRecord> findBatchById(long startId, long limit) {
         return jdbcClient
                 .sql("""
-                    SELECT * FROM notifications
+                    SELECT * FROM notificationDtos
                     WHERE id>:startId
                     ORDER BY id ASC
                     LIMIT :notificationLimit
@@ -58,7 +58,7 @@ public class NotificationDao {
             return;
         }
         jdbcClient
-                .sql("DELETE FROM notifications WHERE id IN (:ids)")
+                .sql("DELETE FROM notificationDtos WHERE id IN (:ids)")
                 .param("ids", ids)
                 .update();
     }

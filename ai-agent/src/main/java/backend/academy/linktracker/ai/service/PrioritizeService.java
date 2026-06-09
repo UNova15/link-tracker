@@ -1,29 +1,23 @@
 package backend.academy.linktracker.ai.service;
 
+import backend.academy.linktracker.ai.domain.Notification;
 import backend.academy.linktracker.ai.domain.Priority;
-import backend.academy.linktracker.ai.dto.NotificationDto;
-import backend.academy.linktracker.ai.properties.PrioritizationProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import java.util.regex.Pattern;
 
-@Service
 @AllArgsConstructor
 public class PrioritizeService {
-    private final PrioritizationProperties properties;
+    private final Pattern highKeyWords;
+    private final Pattern lowKeyWords;
 
-    public Priority prioritize(NotificationDto notification) {
-        for (String highKeyWord : properties.highKeywords()) {
-            if (notification.description().contains(highKeyWord)) {
-                return Priority.HIGH;
-            }
+    public Priority prioritize(Notification notificationDto) {
+        if (highKeyWords.matcher(notificationDto.description()).find()) {
+            return Priority.HIGH;
         }
 
-        for (String lowKeyWords : properties.lowKeywords()) {
-            if (notification.description().contains(lowKeyWords)) {
-                return Priority.LOW;
-            }
+        if (lowKeyWords.matcher(notificationDto.description()).find()) {
+            return Priority.LOW;
         }
-
         return Priority.MEDIUM;
     }
 }
