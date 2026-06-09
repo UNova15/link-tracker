@@ -1,4 +1,3 @@
-/*
 package backend.academy.linktracker.bot.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,7 +72,7 @@ public class KafkaTest {
 
     @Test
     void Kafka_pollKafka_getMessage() {
-        ProcessedLinkUpdate linkUpdate = new ProcessedLinkUpdate(UUID.randomUUID(), 1L, "New message", List.of(1L));
+        ProcessedLinkUpdate linkUpdate = new ProcessedLinkUpdate(UUID.randomUUID(), List.of(1L), "New message", 1L);
 
         kafka.send("test-topic", linkUpdate);
 
@@ -81,9 +80,8 @@ public class KafkaTest {
         verify(updateService, timeout(5000).times(1)).sendUpdateMessage(captor.capture());
 
         NotificationDto value = captor.getValue();
-        assertThat(value.linksIds()).isEqualTo(linkUpdate.getLinkId());
+        assertThat(value.linksIds()).isEqualTo(linkUpdate.getLinksIds());
         assertThat(value.description()).isEqualTo(linkUpdate.getDescription());
-        assertThat(value.tgChatId()).isEqualTo(linkUpdate.getTgChatIds());
+        assertThat(value.tgChatId()).isEqualTo(linkUpdate.getTgChatId());
     }
 }
-*/
