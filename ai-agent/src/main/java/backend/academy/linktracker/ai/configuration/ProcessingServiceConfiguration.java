@@ -5,10 +5,10 @@ import backend.academy.linktracker.ai.properties.PrioritizationProperties;
 import backend.academy.linktracker.ai.service.MessageFilter;
 import backend.academy.linktracker.ai.service.PrioritizeService;
 import backend.academy.linktracker.ai.util.PatternMatcher;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ProcessingServiceConfiguration {

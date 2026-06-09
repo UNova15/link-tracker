@@ -1,7 +1,6 @@
 package backend.academy.linktracker.ai.util;
 
 import backend.academy.linktracker.ai.domain.Notification;
-import backend.academy.linktracker.ai.dto.NotificationDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -2,8 +2,8 @@ package backend.academy.linktracker.ai.service;
 
 import backend.academy.linktracker.ai.domain.Notification;
 import backend.academy.linktracker.ai.domain.Priority;
-import lombok.AllArgsConstructor;
 import java.util.regex.Pattern;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class PrioritizeService {

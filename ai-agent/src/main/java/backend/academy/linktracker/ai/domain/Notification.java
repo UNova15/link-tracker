@@ -1,7 +1,7 @@
 package backend.academy.linktracker.ai.domain;
 
-import lombok.With;
 import java.util.UUID;
+import lombok.With;
 
 public record Notification(
         UUID idempotenceKey,
@@ -10,6 +10,4 @@ public record Notification(
         String author,
         long tgChatId,
         @With String description,
-        @With Priority priority) {
-
-}
+        @With Priority priority) {}

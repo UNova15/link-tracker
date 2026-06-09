@@ -7,7 +7,11 @@ import backend.academy.linktracker.ai.properties.GroupingProperties;
 import backend.academy.linktracker.ai.properties.KafkaProperties;
 import backend.academy.linktracker.ai.util.DtoValidator;
 import backend.academy.linktracker.avro.RawLinkUpdate;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -21,13 +25,11 @@ import org.apache.kafka.streams.kstream.TimeWindows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 @EnableKafkaStreams
 @AllArgsConstructor
+@Slf4j
 public class StreamProcessor {
     private final MessageFilter filter;
     private final NotificationMapper mapper;
@@ -37,7 +39,7 @@ public class StreamProcessor {
     private final PrioritizeService prioritizeService;
 
     @Bean
-    public KStream<String, AggregatedNotification> streamProcessor(
+    public KStream<String, AggregatedNotification> buildStreamProcessor(
             StreamsBuilder builder,
             Serde<RawLinkUpdate> rawAvroSerde,
             Serde<AggregatedNotification> processedNotificationSerde,
@@ -46,6 +48,8 @@ public class StreamProcessor {
 
         KStream<String, AggregatedNotification> stream = builder.stream(
                         kafkaProperties.rawUpdatesTopic(), Consumed.with(Serdes.String(), rawAvroSerde))
+                .peek((key, value) ->
+                        log.debug("Доставлено сообщение в ai-agent-service. Начало агрегирования {}", value))
                 .mapValues((key, value) -> mapper.toNotificationDto(value))
                 .filter((key, value) -> validator.isValid(value))
                 .flatMapValues((key, value) -> mapper.toNotificationList(value))

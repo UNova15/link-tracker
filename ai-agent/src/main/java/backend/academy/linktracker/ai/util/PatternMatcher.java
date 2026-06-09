@@ -1,8 +1,8 @@
 package backend.academy.linktracker.ai.util;
 
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PatternMatcher {

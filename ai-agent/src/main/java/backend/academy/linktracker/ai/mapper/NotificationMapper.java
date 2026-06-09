@@ -29,10 +29,9 @@ public class NotificationMapper {
         return new ProcessedLinkUpdate(idempotencyKey, linksIds, text, chatId);
     }
 
-    public List<backend.academy.linktracker.ai.domain.Notification> toNotificationList(
-            NotificationDto notificationDto) {
+    public List<Notification> toNotificationList(NotificationDto notificationDto) {
         return notificationDto.tgChatIds().stream()
-                .map(chatId -> new backend.academy.linktracker.ai.domain.Notification(
+                .map(chatId -> new Notification(
                         notificationDto.idempotenceKey(),
                         notificationDto.linkId(),
                         notificationDto.url(),

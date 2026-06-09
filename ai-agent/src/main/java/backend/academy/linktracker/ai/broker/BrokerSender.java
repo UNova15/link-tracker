@@ -18,6 +18,8 @@ public class BrokerSender {
 
     // TODO fix it
     public void sendNotification(ProcessedLinkUpdate update) {
+        log.debug("Сообщение обработано и готово к отправке {}", update);
+
         kafka.send(topicName, update).exceptionally(exception -> {
             log.error("Ошибка отправки сообщения в очередь сообщений {}", exception.getMessage());
             return null;

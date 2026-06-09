@@ -1,9 +1,9 @@
 package backend.academy.linktracker.ai.service;
 
 import backend.academy.linktracker.ai.domain.Notification;
-import lombok.AllArgsConstructor;
 import java.util.Set;
 import java.util.regex.Pattern;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class MessageFilter {

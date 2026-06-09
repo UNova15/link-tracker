@@ -16,6 +16,7 @@ public class BrokerListener {
 
     @KafkaListener(topics = "${app.kafka.aggregated-updates-topic}", id = "ai-agent-group")
     public void listen(@Payload AggregatedNotification aggregatedNotification) {
+        log.debug("Сообщение агрегированно и готово к последующей обработке {}", aggregatedNotification);
         service.process(aggregatedNotification);
     }
 }

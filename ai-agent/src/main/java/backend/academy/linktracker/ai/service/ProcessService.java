@@ -3,7 +3,6 @@ package backend.academy.linktracker.ai.service;
 import backend.academy.linktracker.ai.broker.BrokerSender;
 import backend.academy.linktracker.ai.domain.Notification;
 import backend.academy.linktracker.ai.dto.AggregatedNotification;
-import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.mapper.NotificationMapper;
 import backend.academy.linktracker.ai.util.MessageFormater;
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;

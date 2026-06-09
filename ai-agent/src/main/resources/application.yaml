@@ -29,6 +29,9 @@ spring:
         schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
 
 
+logging:
+  level:
+    backend.academy.linktracker.ai: DEBUG
 
 app:
   filter:

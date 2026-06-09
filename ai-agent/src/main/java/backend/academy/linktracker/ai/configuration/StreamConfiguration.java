@@ -2,7 +2,6 @@ package backend.academy.linktracker.ai.configuration;
 
 import backend.academy.linktracker.ai.domain.Notification;
 import backend.academy.linktracker.ai.dto.AggregatedNotification;
-import backend.academy.linktracker.ai.dto.NotificationDto;
 import backend.academy.linktracker.ai.properties.KafkaProperties;
 import backend.academy.linktracker.avro.RawLinkUpdate;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
