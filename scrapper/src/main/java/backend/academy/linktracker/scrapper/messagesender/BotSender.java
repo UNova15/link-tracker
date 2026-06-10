@@ -14,17 +14,18 @@ public class BotSender {
     private final BotClient botClient;
     private final MessageBrokerClient messageBrokerClient;
 
-    @Retry(name = "bot")
-    @CircuitBreaker(name = "bot", fallbackMethod = "sendToBroker")
+    @Retry(name = "broker")
+    @CircuitBreaker(name = "broker", fallbackMethod = "sendToHttpClient")
     public void send(Notification notification) {
-        sendToBroker(notification, new Exception());
+        messageBrokerClient.send(notification);
     }
 
-    public void sendToBroker(Notification notification, Throwable exception) {
-        log.warn(
-                "Ошибка при отправке уведомления по HTTP. Отправка в очередь сообщений: {}, {}",
-                notification.getUrl(),
-                exception.getMessage());
-        messageBrokerClient.send(notification);
+    @Retry(name = "bot")
+    @CircuitBreaker(name = "bot")
+    void sendToHttpClient(Notification notification, Throwable throwable) {
+        log.error(
+                "Ошибка отправки сообщения через Kafka. Отправка с помощью http client {}",
+                throwable.getLocalizedMessage());
+        botClient.send(notification);
     }
 }

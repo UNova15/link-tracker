@@ -16,7 +16,6 @@ public class BotService {
     public List<Long> send(List<NotificationRecord> records) {
         List<Long> updatedIds = new ArrayList<>();
 
-        // TODO исправить это
         for (var record : records) {
             try {
                 bot.send(record.notification());

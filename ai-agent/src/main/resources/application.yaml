@@ -75,4 +75,11 @@ app:
     schema-registry-url: ${SCHEMA_REGISTRY_URL:http://schema-registry:8081}
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
+    timeout: 5
 
+resilience4j:
+  retry:
+    instances:
+      broker:
+        max-attempts: 3
+        wait-duration: 1s

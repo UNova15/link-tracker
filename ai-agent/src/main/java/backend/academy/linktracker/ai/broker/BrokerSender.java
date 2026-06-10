@@ -1,9 +1,12 @@
 package backend.academy.linktracker.ai.broker;
 
+import backend.academy.linktracker.ai.properties.KafkaProperties;
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
+import io.github.resilience4j.retry.annotation.Retry;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,18 +14,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class BrokerSender {
-    @Value("${app.kafka.processed-updates-topic}")
-    private String topicName;
-
+    private final KafkaProperties properties;
     private final KafkaTemplate<String, ProcessedLinkUpdate> kafka;
 
-    // TODO fix it
+    @Retry(name = "broker")
     public void sendNotification(ProcessedLinkUpdate update) {
         log.debug("Сообщение обработано и готово к отправке {}", update);
 
-        kafka.send(topicName, update).exceptionally(exception -> {
-            log.error("Ошибка отправки сообщения в очередь сообщений {}", exception.getMessage());
-            return null;
-        });
+        try {
+            kafka.send(properties.processedUpdatesTopic(), update).get(properties.timeOut(), TimeUnit.SECONDS);
+        } catch (Exception exception) {
+            log.error("Ошибка отправки сообщения в kafka {}", update);
+            throw new KafkaException(exception.getMessage());
+        }
     }
 }
