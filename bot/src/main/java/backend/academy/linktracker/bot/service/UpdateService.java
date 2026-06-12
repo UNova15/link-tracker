@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.service;
 
-import backend.academy.linktracker.bot.client.TelegramService;
+import backend.academy.linktracker.bot.client.BotClient;
 import backend.academy.linktracker.bot.dto.NotificationDto;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.validation.Valid;
@@ -15,7 +15,7 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @Slf4j
 public class UpdateService {
-    TelegramService telegram;
+    BotClient telegram;
     Cache<UUID, Boolean> idempotencyCache;
 
     public void sendUpdateMessage(@Valid NotificationDto notification) {
@@ -27,7 +27,7 @@ public class UpdateService {
         idempotencyCache.put(notification.idempotencyKey(), Boolean.TRUE);
 
         try {
-            telegram.sendNotification(notification.tgChatId(), notification.description());
+            telegram.sendMessage(notification.tgChatId(), notification.description());
         } catch (Exception exception) {
             log.error(
                     "Ошибка отправки уведомления: {}, пользователь: {}. Ошибка: {}",

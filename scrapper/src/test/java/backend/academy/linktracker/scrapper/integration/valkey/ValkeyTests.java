@@ -21,6 +21,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -32,7 +33,8 @@ class SubscriptionServiceCacheTest {
     @Container
     static GenericContainer<?> valkey = new GenericContainer<>("valkey/valkey:8.0")
             .withExposedPorts(6379)
-            .withCommand("valkey-server", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000");
+            .withCommand("valkey-server", "--cluster-enabled", "yes", "--cluster-node-timeout", "5000")
+            .waitingFor(Wait.forLogMessage(".*Ready to accept connections.*\\n", 1));
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) throws Exception {
@@ -40,7 +42,7 @@ class SubscriptionServiceCacheTest {
 
         String valkeyAddress = valkey.getHost() + ":" + valkey.getFirstMappedPort();
         registry.add("spring.data.redis.cluster.nodes", () -> valkeyAddress);
-        registry.add("app.cache-ttl", () -> "1");
+        registry.add("app.cache-ttl", () -> "1h");
         registry.add("app.max-size-local-cache", () -> "100");
     }
 

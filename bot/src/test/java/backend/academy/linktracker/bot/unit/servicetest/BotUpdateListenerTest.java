@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.TelegramService;
+import backend.academy.linktracker.bot.client.BotClient;
 import backend.academy.linktracker.bot.telegramservice.BotUpdateListener;
 import backend.academy.linktracker.bot.telegramservice.StateProcessor;
 import com.google.gson.Gson;
@@ -28,7 +28,7 @@ public class BotUpdateListenerTest {
     private final Gson gson = new Gson();
 
     @Mock
-    private TelegramService bot;
+    private BotClient bot;
 
     @Mock
     private StateProcessor processor;
@@ -71,7 +71,7 @@ public class BotUpdateListenerTest {
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Long> intCaptor = ArgumentCaptor.forClass(Long.class);
 
-        verify(bot, times(updates.size())).sendResponse(intCaptor.capture(), stringCaptor.capture());
+        verify(bot, times(updates.size())).sendMessage(intCaptor.capture(), stringCaptor.capture());
 
         String message = stringCaptor.getValue();
         long id = intCaptor.getValue();
@@ -101,7 +101,7 @@ public class BotUpdateListenerTest {
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Long> intCapture = ArgumentCaptor.forClass(Long.class);
 
-        verify(bot, times(updates.size())).sendResponse(intCapture.capture(), stringCaptor.capture());
+        verify(bot, times(updates.size())).sendMessage(intCapture.capture(), stringCaptor.capture());
 
         List<String> messages = stringCaptor.getAllValues();
         List<Long> id = intCapture.getAllValues();

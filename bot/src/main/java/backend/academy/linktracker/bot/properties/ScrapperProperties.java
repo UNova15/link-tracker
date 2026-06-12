@@ -1,7 +1,8 @@
 package backend.academy.linktracker.bot.properties;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,9 @@ public class ScrapperProperties {
     @URL
     String baseUrl;
 
-    @PositiveOrZero
-    int connectionTimeout;
+    @NotNull
+    Duration connectionTimeout;
 
-    @PositiveOrZero
-    int responseTimeout;
+    @NotNull
+    Duration responseTimeout;
 }

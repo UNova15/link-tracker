@@ -5,12 +5,11 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.NotificationRepository;
-import backend.academy.linktracker.scrapper.service.subscriptionservice.SubscriptionService;
 import backend.academy.linktracker.scrapper.util.LinkParser;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,17 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class LinkService {
     private final LinkRepository linkRepository;
     private final NotificationRepository notificationRepository;
-    private final SubscriptionService subscriptionService;
     private final LinkParser parser;
 
     public LinkService(
-            LinkRepository linkRepository,
-            NotificationRepository notificationRepository,
-            @Lazy SubscriptionService subscriptionService,
-            LinkParser parser) {
+            LinkRepository linkRepository, NotificationRepository notificationRepository, LinkParser parser) {
         this.linkRepository = linkRepository;
         this.notificationRepository = notificationRepository;
-        this.subscriptionService = subscriptionService;
         this.parser = parser;
     }
 
@@ -56,23 +50,24 @@ public class LinkService {
     }
 
     @Transactional
-    public void removeUntraceableLinks(long linkId, String link) {
-        if (!subscriptionService.isExistsSubscriptionsToLink(linkId)) {
-            deleteLink(link);
+    public void saveUpdatedLinksAndOutboxRecord(List<Link> checkedLinks, List<Notification> notifications) {
+        linkRepository.updateAndMarkAsIdle(checkedLinks);
+        if (!notifications.isEmpty()) {
+            notificationRepository.save(notifications);
         }
     }
 
+    // реализация двух-шаговой блокировки чтобы не делать сетевые вызовы в рамках транзакции и предотвратить состояние
+    // гонки при нескольких потоках/интсансах приложения
     @Transactional
-    public void saveUpdatedLinksAndOutboxRecord(List<Link> checkedLinks, List<Notification> outboxEvents) {
-        // todo для orm реализации будет n+1 запрос из за merge jpa пофиксить не смог
-        linkRepository.updateLastCheckAndLastUpdate(checkedLinks);
-        if (!outboxEvents.isEmpty()) {
-            notificationRepository.save(outboxEvents);
-        }
-    }
+    public List<Link> findLinksFilteredByLastCheck(long lastCheckId, long batchSize, Duration ageOfLinks) {
+        // время после которого ссылка считается устаревшей. lastUpdate < delay ( delay = now - ageLink)
+        Instant delayTime = Instant.now().minus(ageOfLinks);
 
-    public List<Link> findLinksFilteredByLastCheck(long lastCheckId, long batchSize, long ageOfLinks) {
-        Instant delayTime = Instant.now().minusMillis(ageOfLinks);
-        return linkRepository.findLinksFilteredByLastCheck(lastCheckId, batchSize, delayTime);
+        List<Link> links = linkRepository.findLinksFilteredByLastCheck(lastCheckId, batchSize, delayTime);
+
+        List<Long> ids = links.stream().map(Link::getId).toList();
+        linkRepository.markAsProcessing(ids);
+        return links;
     }
 }

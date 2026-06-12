@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.statehandler;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
@@ -18,11 +18,11 @@ public class AddLinkHandler extends StateChanger {
     private static final String SUCCESS_MESSAGE = "Ссылка успешно сохранена";
     private static final String ERROR_MESSAGE = "Ошибка сохранения ссылки";
 
-    private final ScrapperService scrapper;
+    private final ScrapperLinkClient scrapper;
     private final RequestArgsParser parser;
 
     public AddLinkHandler(
-            ScrapperService scrapper, RequestArgsParser parser, @Lazy AwaitCommandState awaitCommandState) {
+            ScrapperLinkClient scrapper, RequestArgsParser parser, @Lazy AwaitCommandState awaitCommandState) {
         super(awaitCommandState);
         this.scrapper = scrapper;
         this.parser = parser;

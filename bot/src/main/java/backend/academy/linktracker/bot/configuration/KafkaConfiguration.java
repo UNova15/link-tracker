@@ -26,8 +26,8 @@ public class KafkaConfiguration {
 
     @Bean
     DefaultErrorHandler defaultErrorHandler(KafkaProperties properties, DeadLetterPublishingRecoverer recoverer) {
-        var defaultErrorHandler =
-                new DefaultErrorHandler(recoverer, new FixedBackOff(properties.getTimeout(), properties.getRetries()));
+        var defaultErrorHandler = new DefaultErrorHandler(
+                recoverer, new FixedBackOff(properties.getTimeoutMs(), properties.getRetries()));
         defaultErrorHandler.addNotRetryableExceptions(
                 MethodArgumentNotValidException.class,
                 ConstraintViolationException.class,

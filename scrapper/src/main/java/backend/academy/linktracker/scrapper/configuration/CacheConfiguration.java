@@ -24,7 +24,7 @@ public class CacheConfiguration {
                 .build();
 
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(properties.valkey().ttl())
+                .entryTtl(properties.ttl())
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer))
                 .disableCachingNullValues();
 

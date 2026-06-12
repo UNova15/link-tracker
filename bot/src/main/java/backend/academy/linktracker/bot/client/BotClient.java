@@ -1,5 +1,7 @@
 package backend.academy.linktracker.bot.client;
 
+import static backend.academy.linktracker.bot.configuration.TelegramBotConfiguration.TELEGRAM_CONFIG_NAME;
+
 import backend.academy.linktracker.bot.exception.TelegramApiException;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -10,27 +12,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Retry(name = TELEGRAM_CONFIG_NAME)
+@CircuitBreaker(name = TELEGRAM_CONFIG_NAME)
 @AllArgsConstructor
-public class TelegramService {
+public class BotClient {
     private final TelegramBot bot;
 
-    @Retry(name = "telegram")
-    @CircuitBreaker(name = "telegram")
-    public void sendNotification(long id, String description) {
+    public void sendMessage(long id, String description) {
         SendMessage message = new SendMessage(id, description);
-        execute(message);
-    }
 
-    @Retry(name = "telegram")
-    @CircuitBreaker(name = "telegram")
-    public void sendResponse(long id, String response) {
-        SendMessage message = new SendMessage(id, response);
-        execute(message);
-    }
-
-    private void execute(SendMessage message) {
         SendResponse response = bot.execute(message);
-
         if (!response.isOk()) {
             throw new TelegramApiException(response.errorCode(), response.description());
         }

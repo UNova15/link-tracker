@@ -55,11 +55,11 @@ public class OrmLinkRepositoryTest extends AbstractLinkRepositoryTest {
         Statistics statistics = sessionFactory.getStatistics();
         statistics.clear();
 
-        linkRepository.updateLastCheckAndLastUpdate(links);
+        linkRepository.updateAndMarkAsIdle(links);
 
         entityManager.flush();
 
-        assertThat(statistics.getPrepareStatementCount()).isEqualTo(1);
+        assertThat(statistics.getPrepareStatementCount()).isEqualTo(2);
         assertThat(statistics.getEntityUpdateCount()).isEqualTo(countOfLinks);
     }
 

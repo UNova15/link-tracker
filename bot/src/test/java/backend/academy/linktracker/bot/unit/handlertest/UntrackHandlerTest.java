@@ -11,7 +11,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
@@ -36,7 +36,7 @@ public class UntrackHandlerTest {
     private AwaitCommandState awaitCommandState;
 
     @Mock
-    private ScrapperService client;
+    private ScrapperLinkClient client;
 
     @Mock
     private RequestArgsParser parser;

@@ -14,6 +14,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class ScrapperClientConfiguration {
+    public static final String SCRAPPER_CONFIG_NAME = "scrapper";
 
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(

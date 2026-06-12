@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.repository.sql.dao;
 
+import backend.academy.linktracker.scrapper.domain.DBRecordStatus;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.repository.sql.mapper.LinkRowMapper;
 import java.sql.PreparedStatement;
@@ -26,12 +27,14 @@ public class LinkDao {
     public List<Link> findLinksFilteredByLastCheck(long lastCheckId, long linksLimit, Instant lastCheck) {
         return jdbcClient
                 .sql("""
-                SELECT * FROM links
-                WHERE id >:lastCheckId
-                AND last_check <= :lastCheck
-                ORDER BY id
-                LIMIT :linksLimit
-                """)
+                    SELECT * FROM links
+                    WHERE status = 'IDLE'
+                    AND id >:lastCheckId
+                    AND last_check <= :lastCheck
+                    ORDER BY id
+                    LIMIT :linksLimit
+                    FOR UPDATE SKIP LOCKED
+                    """)
                 .param("lastCheckId", lastCheckId)
                 .param("linksLimit", linksLimit)
                 .param("lastCheck", Timestamp.from(lastCheck))
@@ -43,12 +46,13 @@ public class LinkDao {
         Timestamp lastUpdate = Timestamp.from(link.getLastUpdate());
 
         return jdbcClient
-                .sql(
-                        "INSERT INTO links (type,url,last_check,last_update) VALUES (:type,:url,:lastCheck,:lastUpdate) RETURNING *")
+                .sql("INSERT INTO links (type,url,last_check,last_update,status) VALUES"
+                        + " (:type,:url,:lastCheck,:lastUpdate,:status) RETURNING *")
                 .param("type", link.getType().toString())
                 .param("url", link.getUrl())
                 .param("lastCheck", Timestamp.from(link.getLastCheck()))
                 .param("lastUpdate", lastUpdate)
+                .param("status", DBRecordStatus.IDLE.toString())
                 .query(mapper)
                 .single();
     }
@@ -63,7 +67,8 @@ public class LinkDao {
 
     public void updateLastCheckAndLastUpdate(List<Link> links) {
         template.batchUpdate(
-                "UPDATE links SET last_check = ?,last_update = ? WHERE id = ?", new BatchPreparedStatementSetter() {
+                "UPDATE links SET last_check = ?,last_update = ?,status = 'IDLE' WHERE id = ?",
+                new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         Link link = links.get(i);
@@ -90,5 +95,13 @@ public class LinkDao {
                 .param("url", url)
                 .query(mapper)
                 .optional();
+    }
+
+    public void updateStatus(List<Long> ids, DBRecordStatus status) {
+        jdbcClient
+                .sql("UPDATE links SET status =:status  WHERE id IN (:ids)")
+                .param("ids", ids)
+                .param("status", status.toString())
+                .update();
     }
 }

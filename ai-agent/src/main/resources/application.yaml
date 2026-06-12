@@ -48,12 +48,13 @@ app:
     token: ${AI_TOKEN:test_token}
     model: "deepseek-ai/DeepSeek-V4-Pro:novita"
     threshold: 200
+    connection-timeout: 2s
+    read-timeout: 10s
     query:
       prompt: "Summarize the following update in 2–3 sentences:\n\n"
       role: "user"
 
   prioritization:
-
     high-keywords:
       - critical
       - urgent
@@ -66,7 +67,7 @@ app:
       - docs
 
   grouping:
-    window-ms: 30000
+    window-ms: 30s
 
   kafka:
     raw-updates-topic: ${RAW_UPDATES_TOPIC_NAME:raw-updates}
@@ -75,7 +76,7 @@ app:
     schema-registry-url: ${SCHEMA_REGISTRY_URL:http://schema-registry:8081}
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
-    timeout: 5
+    timeout-seconds: 5
 
 resilience4j:
   retry:
@@ -83,3 +84,15 @@ resilience4j:
       broker:
         max-attempts: 3
         wait-duration: 1s
+      ai-agent:
+        max-attempts: 3
+        wait-duration: 1s
+  circuitbreaker:
+    instances:
+      ai-agent:
+        sliding-window-type: count_based
+        sliding-window-size: 20
+        failure-rate-threshold: 50
+        permitted-number-of-calls-in-half-open-state: 3
+        minimum-number-of-calls: 10
+        wait-duration-in-open-state: 10s

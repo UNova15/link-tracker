@@ -22,6 +22,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration
 public class HttpClientConfiguration {
+    public static final String GIT_HUB_CONFIG_NAME = "github";
+    public static final String STACK_OVERLOW_CONFIG_NAME = "stackoverflow";
+    public static final String BOT_CONFIG_NAME = "bot";
 
     @Bean
     public GitHubClient gitHubHttpClient(GithubProperties properties) {

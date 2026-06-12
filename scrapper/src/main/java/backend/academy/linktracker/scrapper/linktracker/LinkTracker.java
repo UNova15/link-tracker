@@ -20,8 +20,6 @@ public class LinkTracker {
 
     @Scheduled(fixedDelayString = "${app.scrapper-settings.check-link-interval}")
     public void sendNotification() {
-        // Время, позже которого ссылки считаются устаревшими.
-        // Если с последнего момента обновления ссылки прошло более scanTime миллисекунд ссылка считается устаревшей
         long lastCheckId = 0;
 
         while (true) {

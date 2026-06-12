@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.repository.sql;
 
+import backend.academy.linktracker.scrapper.domain.DBRecordStatus;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.sender.NotificationRecord;
 import backend.academy.linktracker.scrapper.repository.NotificationRepository;
@@ -26,5 +27,10 @@ public class SqlNotificationRepository implements NotificationRepository {
     @Override
     public void delete(List<Long> notificationIds) {
         notificationDao.remove(notificationIds);
+    }
+
+    @Override
+    public void updateStatus(List<Long> ids, DBRecordStatus status) {
+        notificationDao.updateStatus(status, ids);
     }
 }

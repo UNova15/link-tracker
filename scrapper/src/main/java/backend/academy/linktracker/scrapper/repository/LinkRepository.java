@@ -13,9 +13,11 @@ public interface LinkRepository {
 
     List<Link> findAllByIdIn(List<Long> linksId);
 
-    void updateLastCheckAndLastUpdate(List<Link> link);
+    void updateAndMarkAsIdle(List<Link> link);
 
     void removeByUrl(String url);
 
     Optional<Link> findByUrl(String url);
+
+    void markAsProcessing(List<Long> links);
 }

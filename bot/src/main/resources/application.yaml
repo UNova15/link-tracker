@@ -30,35 +30,35 @@ logging:
       file: ecs
 
 app:
+  retryable-statuses: 500, 501, 502, 503, 504
+
   cache:
     rate-limiter:
       max-size: 10000
-      ttl: 1
+      ttl: 1h
     idempotency-key:
       max-size: 10000
-      ttl: 24
-
-  retryable-statuses: 500, 501, 502, 503, 504
+      ttl: 24h
 
   kafka:
     topic-name: ${PROCESSED_UPDATES_TOPIC_NAME:link-updates}
     dlq-topic-name: ${DLQ_TOPIC_NAME:dlq-link-updates}
     retries: 3
-    timeout: 6000
+    timeout-ms: 6000
 
   telegram:
     url: https://api.telegram.org/bot
     token: ${TELEGRAM_BOT_TOKEN}
     update-listener-sleep: 1s
-    connection-timeout: 5000
-    write-timeout: 75
-    read-timeout: 75
+    connection-timeout: 5s
+    write-timeout: 75s
+    read-timeout: 75s
     debug: false
 
   scrapper:
     base-url: ${APP_SCRAPPER_BASE_URL:https://scrapper:8081}
-    connection-timeout: 500
-    response-timeout: 2000
+    connection-timeout: 1s
+    response-timeout: 2s
 
 resilience4j:
   retry:

@@ -58,8 +58,8 @@ public class ClusterClientSideCacheFactory {
 
     public Cache<String, ListLinksResponse> createLocalCache(CacheProperties properties) {
         return Caffeine.newBuilder()
-                .maximumSize(properties.valkey().maxSize())
-                .expireAfterWrite(properties.valkey().ttl())
+                .maximumSize(properties.maxSize())
+                .expireAfterWrite(properties.ttl())
                 .build();
     }
 }

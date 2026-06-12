@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import backend.academy.linktracker.avro.ProcessedLinkUpdate;
 import backend.academy.linktracker.bot.dto.NotificationDto;
+import backend.academy.linktracker.bot.properties.ScrapperProperties;
 import backend.academy.linktracker.bot.service.UpdateService;
 import com.pengrad.telegrambot.TelegramBot;
 import java.util.List;
@@ -20,26 +21,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.kafka.KafkaContainer;
 
 @Slf4j
-@SpringBootTest(
-        properties = {
-            "app.kafka.topic-name=test-topic",
-            "app.kafka.timeout=6000",
-            "app.kafka.retries=3",
-            "app.kafka.dlq-topic-name=test-dlq",
-            "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer",
-            "spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer",
-            "spring.kafka.consumer.value-deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer",
-            "spring.kafka.consumer.properties.schema.registry.url=mock://test-registry",
-            "spring.kafka.producer.properties.schema.registry.url=mock://test-registry",
-            "spring.kafka.properties.specific.avro.reader=true",
-            "spring.kafka.consumer.group-id=test-group"
-        })
+@SpringBootTest
+@ActiveProfiles("test")
 @Import(KafkaConfiguration.class)
 @EnableKafka
 public class KafkaTest {
@@ -48,6 +38,9 @@ public class KafkaTest {
 
     @MockitoBean
     private UpdateService updateService;
+
+    @MockitoBean
+    private ScrapperProperties scrapperProperties;
 
     @MockitoBean
     private TelegramBot bot;

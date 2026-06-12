@@ -14,15 +14,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class BrokerSender {
+    public static final String BROKER_CONFIG = "broker";
+
     private final KafkaProperties properties;
     private final KafkaTemplate<String, ProcessedLinkUpdate> kafka;
 
-    @Retry(name = "broker")
+    @Retry(name = BROKER_CONFIG)
     public void sendNotification(ProcessedLinkUpdate update) {
         log.debug("Сообщение обработано и готово к отправке {}", update);
 
         try {
-            kafka.send(properties.processedUpdatesTopic(), update).get(properties.timeOut(), TimeUnit.SECONDS);
+            kafka.send(properties.processedUpdatesTopic(), update).get(properties.timeoutSeconds(), TimeUnit.SECONDS);
         } catch (Exception exception) {
             log.error("Ошибка отправки сообщения в kafka {}", update);
             throw new KafkaException(exception.getMessage());

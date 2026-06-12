@@ -51,40 +51,36 @@ app:
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
     dlq-topic-name: ${DLQ_TOPIC_NAME:link-updates-dlq}
-    timeout: 5
+    timeout-seconds: 5
 
   scrapper-settings:
-    check-link-interval: 3000
-    check-outbox-interval: 1000
-    age-of-links: 6000
+    check-link-interval: 5s
+    check-outbox-interval: 1s
+    age-of-links: 10s
     number-of-threads: 4
     batch-size: 100
 
   cache:
-    valkey:
-      ttl: 10
-      max-size: 10000
-    rate-limiter:
-      ttl: 1
-      max-size: 10000
+    ttl: 10h
+    max-size: 10000
 
   bot:
     base-url: ${APP_TELEGRAM_BOT_BASE_URL:http://bot:8080}
-    connection-timeout: 500
-    response-timeout: 200
+    connection-timeout: 1s
+    response-timeout: 1s
 
   stackoverflow:
     key: ${STACKOVERFLOW_KEY}
     access-token: ${STACKOVERFLOW_ACCESS_KEY}
     base-url: https://api.stackexchange.com
-    connection-timeout: 1000
-    response-timeout: 2000
+    connection-timeout: 1s
+    response-timeout: 2s
 
   github:
     token: ${GITHUB_TOKEN}
     base-url: https://api.github.com
-    connection-timeout: 1000
-    response-timeout: 2000
+    connection-timeout: 1s
+    response-timeout: 2s
 
 
 resilience4j:

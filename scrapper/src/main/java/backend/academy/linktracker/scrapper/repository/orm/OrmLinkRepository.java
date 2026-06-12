@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.repository.orm;
 
+import backend.academy.linktracker.scrapper.domain.DBRecordStatus;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.mapper.LinkMapper;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
@@ -7,7 +8,9 @@ import backend.academy.linktracker.scrapper.repository.orm.entity.LinkEntity;
 import backend.academy.linktracker.scrapper.repository.orm.jparepository.LinkJpaRepository;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
@@ -39,9 +42,21 @@ public class OrmLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void updateLastCheckAndLastUpdate(List<Link> links) {
-        List<LinkEntity> linkEntities = linkMapper.toListOfLinkEntity(links);
-        repository.saveAll(linkEntities);
+    public void updateAndMarkAsIdle(List<Link> links) {
+        List<Long> ids = links.stream().map(Link::getId).toList();
+
+        // вызов для сохранения entity в context для избежания n+1
+        List<LinkEntity> entities = repository.findAllById(ids);
+
+        Map<Long, Link> mapLinks = links.stream().collect(Collectors.toMap(Link::getId, link -> link));
+
+        for (var linkEntity : entities) {
+            Link link = mapLinks.get(linkEntity.getId());
+            linkEntity.setLastUpdate(link.getLastUpdate());
+            linkEntity.setLastCheck(link.getLastCheck());
+            linkEntity.setStatus(DBRecordStatus.IDLE);
+        }
+        // автоматическое сохранение всех изменений из кеша
     }
 
     @Override
@@ -54,5 +69,12 @@ public class OrmLinkRepository implements LinkRepository {
         Optional<LinkEntity> link = repository.findByUrl(url);
 
         return link.map(linkMapper::fromLinkEntity);
+    }
+
+    @Override
+    public void markAsProcessing(List<Long> ids) {
+        if (ids.isEmpty()) return;
+
+        repository.updateStatus(ids, DBRecordStatus.PROCESSING);
     }
 }

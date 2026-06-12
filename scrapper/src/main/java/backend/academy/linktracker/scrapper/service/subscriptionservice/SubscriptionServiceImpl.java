@@ -66,13 +66,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Link link = linkService.findByUrl(request.link()).orElseThrow(() -> new LinkNotFoundException(request.link()));
 
         Subscription subscription = subscriptionRepository.removeSubscription(chatId, link.getId());
-        linkService.removeUntraceableLinks(link.getId(), link.getUrl());
+        removeUntraceableLinks(link.getId(), link.getUrl());
 
         return linkMapper.toLinkResponse(link, subscription.getTags());
     }
 
-    @Override
-    public boolean isExistsSubscriptionsToLink(long linkId) {
-        return !subscriptionRepository.findChatsIdByLinkId(linkId).isEmpty();
+    private void removeUntraceableLinks(long linkId, String link) {
+        if (subscriptionRepository.findChatsIdByLinkId(linkId).isEmpty()) {
+            linkService.deleteLink(link);
+        }
     }
 }

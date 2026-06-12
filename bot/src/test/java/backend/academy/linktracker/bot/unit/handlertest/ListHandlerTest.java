@@ -8,7 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
@@ -31,7 +31,7 @@ import org.springframework.http.HttpStatusCode;
 @ExtendWith(MockitoExtension.class)
 public class ListHandlerTest {
     @Mock
-    private ScrapperService scrapper;
+    private ScrapperLinkClient scrapper;
 
     @Mock
     private ListCommandHelper listCommandHelper;

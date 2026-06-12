@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.AddLinkRequest;
@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatusCode;
 public class AddLinkHandlerTest {
 
     @Mock
-    private ScrapperService scrapper;
+    private ScrapperLinkClient scrapper;
 
     @Mock
     private RequestArgsParser parser;

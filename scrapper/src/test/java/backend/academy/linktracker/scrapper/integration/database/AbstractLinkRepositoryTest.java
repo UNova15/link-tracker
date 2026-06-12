@@ -136,7 +136,7 @@ public abstract class AbstractLinkRepositoryTest {
     }
 
     @Test
-    protected void update_withValidLink_updateLastCheckAndLastUpdate() {
+    protected void update_withValidLink_updateAndMarkAsIdle() {
         int linkCount = 5;
         List<Link> links = new ArrayList<>();
         List<Instant> creationTimes = new ArrayList<>();
@@ -152,7 +152,7 @@ public abstract class AbstractLinkRepositoryTest {
             link.markCheckedNow();
         }
 
-        linkRepository.updateLastCheckAndLastUpdate(links);
+        linkRepository.updateAndMarkAsIdle(links);
 
         for (int i = 0; i < linkCount; i++) {
             Link link = links.get(i);

@@ -7,7 +7,7 @@ import backend.academy.linktracker.scrapper.dto.linkdto.Update;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowQuestion;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowResponse;
-import backend.academy.linktracker.scrapper.linksclient.StackOverflowService;
+import backend.academy.linktracker.scrapper.linksclient.StackOverflowClient;
 import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.UpdateHandlerUtil;
@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StackOverflowHandler extends UpdateHandler {
-    private final StackOverflowService stackOverflow;
+    private final StackOverflowClient stackOverflow;
     private final NotificationMapper mapper;
     private final LinkParser parser;
     private final UpdateHandlerUtil updateHandlerUtil;
 
     public StackOverflowHandler(
-            StackOverflowService stackOverflow,
+            StackOverflowClient stackOverflow,
             NotificationMapper mapper,
             LinkParser parser,
             UpdateHandlerUtil updateHandlerUtil) {

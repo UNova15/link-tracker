@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
@@ -18,10 +18,10 @@ public class UntrackHandler extends CommandHandler {
     private static final String ERROR_MESSAGE = "Ошибка удаления ссылки";
     private static final String MISSING_LINK_TO_RESOURCE = "Отсутствует ссылка на удаляемый ресурс";
 
-    private final ScrapperService scrapper;
+    private final ScrapperLinkClient scrapper;
     private final RequestArgsParser parser;
 
-    public UntrackHandler(@Lazy AwaitCommandState newState, ScrapperService scrapper, RequestArgsParser parser) {
+    public UntrackHandler(@Lazy AwaitCommandState newState, ScrapperLinkClient scrapper, RequestArgsParser parser) {
         super(new Command("/untrack", "Прекращение отслеживания ссылки"), newState);
         this.scrapper = scrapper;
         this.parser = parser;

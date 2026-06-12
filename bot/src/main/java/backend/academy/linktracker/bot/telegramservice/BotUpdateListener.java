@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.telegramservice;
 
-import backend.academy.linktracker.bot.client.TelegramService;
+import backend.academy.linktracker.bot.client.BotClient;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class BotUpdateListener implements UpdatesListener {
-    private final TelegramService telegram;
+    private final BotClient telegram;
     private final StateProcessor processor;
 
     @Override
@@ -28,7 +28,7 @@ public class BotUpdateListener implements UpdatesListener {
             String response = processor.process(id, message);
 
             try {
-                telegram.sendResponse(id, response);
+                telegram.sendMessage(id, response);
             } catch (Exception exception) {
                 log.error("Ошибка при отправки ответа: {} пользователь: {} ", response, id);
             }

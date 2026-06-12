@@ -11,6 +11,4 @@ public interface SubscriptionService {
     LinkResponse createSubscription(long chatId, AddLinkRequest request);
 
     LinkResponse removeSubscription(long chatId, RemoveLinkRequest request);
-
-    boolean isExistsSubscriptionsToLink(long linkId);
 }

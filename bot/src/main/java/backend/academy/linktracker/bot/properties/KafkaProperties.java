@@ -24,7 +24,7 @@ public class KafkaProperties {
     String dlqTopicName;
 
     @PositiveOrZero
-    int timeout;
+    int timeoutMs;
 
     @PositiveOrZero
     int retries;

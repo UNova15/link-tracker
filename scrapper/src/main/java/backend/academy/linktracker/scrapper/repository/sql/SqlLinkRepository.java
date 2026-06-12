@@ -1,5 +1,6 @@
 package backend.academy.linktracker.scrapper.repository.sql;
 
+import backend.academy.linktracker.scrapper.domain.DBRecordStatus;
 import backend.academy.linktracker.scrapper.domain.Link;
 import backend.academy.linktracker.scrapper.repository.LinkRepository;
 import backend.academy.linktracker.scrapper.repository.sql.dao.LinkDao;
@@ -32,7 +33,7 @@ public class SqlLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void updateLastCheckAndLastUpdate(List<Link> link) {
+    public void updateAndMarkAsIdle(List<Link> link) {
         linkDao.updateLastCheckAndLastUpdate(link);
     }
 
@@ -44,5 +45,10 @@ public class SqlLinkRepository implements LinkRepository {
     @Override
     public Optional<Link> findByUrl(String url) {
         return linkDao.findByUrl(url);
+    }
+
+    @Override
+    public void markAsProcessing(List<Long> ids) {
+        linkDao.updateStatus(ids, DBRecordStatus.PROCESSING);
     }
 }

@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
@@ -16,9 +16,9 @@ public class StartHandler extends CommandHandler {
             "Добро пожаловать! Используйте /help, чтобы посмотреть доступные команды.";
     private static final String ERROR_MESSAGE = "Ошибка сохранения пользователя. Попробуйте позже";
 
-    private final ScrapperService scrapper;
+    private final ScrapperChatClient scrapper;
 
-    public StartHandler(ScrapperService scrapper, @Lazy AwaitCommandState awaitCommand) {
+    public StartHandler(ScrapperChatClient scrapper, @Lazy AwaitCommandState awaitCommand) {
         super(new Command("/start", "Запуск бота"), awaitCommand);
         this.scrapper = scrapper;
     }

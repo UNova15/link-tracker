@@ -1,6 +1,27 @@
 app:
   telegram:
-    url: ${wiremock.server.baseUrl}/bot
+    url: http://localhost:8080/bot
     token: test-token
     update-listener-sleep: 1s
     debug: true
+
+  kafka:
+    topic-name: test-topic
+    timeout-ms: 6000
+    retries: 3
+    dlq-topic-name: test-dlq
+
+spring:
+  kafka:
+    consumer:
+      group-id: test-group
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: mock://test-registry
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: mock://test-registry
+    properties:
+      specific.avro.reader: true

@@ -6,24 +6,25 @@ import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
 import backend.academy.linktracker.scrapper.dto.github.IssueCredential;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.dto.linkdto.Update;
-import backend.academy.linktracker.scrapper.linksclient.GitHubService;
+import backend.academy.linktracker.scrapper.linksclient.GitHubClient;
 import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.util.LinkParser;
 import backend.academy.linktracker.scrapper.util.UpdateHandlerUtil;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GitHubHandler extends UpdateHandler {
-    private final GitHubService gitHub;
+    private final GitHubClient gitHub;
     private final NotificationMapper mapper;
     private final LinkParser parser;
     private final UpdateHandlerUtil requestUtil;
 
     public GitHubHandler(
-            GitHubService gitHub, LinkParser parser, UpdateHandlerUtil requestUtil, NotificationMapper mapper) {
+            GitHubClient gitHub, LinkParser parser, UpdateHandlerUtil requestUtil, NotificationMapper mapper) {
         super(LinkType.GIT_HUB);
         this.parser = parser;
         this.gitHub = gitHub;
@@ -35,8 +36,9 @@ public class GitHubHandler extends UpdateHandler {
     public Optional<ProcessingResult> process(Link link) {
         IssueCredential credentials = parser.parseGitHubLink(link.getUrl());
 
+        String sinceTime = link.getLastUpdate().truncatedTo(ChronoUnit.SECONDS).toString();
         List<GitHubResponse> response =
-                gitHub.sendURequestForUpdates(credentials.owner(), credentials.repo(), link.getLastUpdate());
+                gitHub.sendURequestForUpdates(credentials.owner(), credentials.repo(), sinceTime);
         if (response == null || response.isEmpty()) {
             return Optional.empty();
         }

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperChatClient;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
 import backend.academy.linktracker.bot.dto.ApiErrorResponse;
@@ -25,7 +25,7 @@ import org.springframework.http.HttpStatusCode;
 public class StartHandlerTest {
 
     @Mock
-    private ScrapperService client;
+    private ScrapperChatClient client;
 
     @Mock
     private AwaitCommandState awaitCommand;

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class TelegramBotConfiguration {
+    public static final String TELEGRAM_CONFIG_NAME = "telegram";
 
     @Bean
     public TelegramBot telegramBot(TelegramProperties properties) {

@@ -1,6 +1,6 @@
 package backend.academy.linktracker.bot.handler.command;
 
-import backend.academy.linktracker.bot.client.ScrapperService;
+import backend.academy.linktracker.bot.client.ScrapperLinkClient;
 import backend.academy.linktracker.bot.domain.Command;
 import backend.academy.linktracker.bot.domain.SessionData;
 import backend.academy.linktracker.bot.domain.UserMessage;
@@ -19,13 +19,13 @@ import org.springframework.stereotype.Component;
 public class ListHandler extends CommandHandler {
     private static final String ERROR_MESSAGE = "Ошибка при поиске ссылок. Повторите попытке позже";
 
-    private final ScrapperService scrapper;
+    private final ScrapperLinkClient scrapper;
     private final ListCommandHelper listCommandHelper;
     private final RequestArgsParser parser;
 
     public ListHandler(
             @Lazy AwaitCommandState state,
-            ScrapperService scrapper,
+            ScrapperLinkClient scrapper,
             RequestArgsParser parser,
             ListCommandHelper listCommandHelper) {
         super(new Command("/list", "Вывод списка всех отслеживаемых ссылок"), state);

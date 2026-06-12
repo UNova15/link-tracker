@@ -16,4 +16,4 @@ public record KafkaProperties(
         @NotBlank String processedUpdatesTopic,
         @Positive int replicas,
         @Positive int partitions,
-        @PositiveOrZero int timeOut) {}
+        @PositiveOrZero int timeoutSeconds) {}
