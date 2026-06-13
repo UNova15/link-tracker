@@ -16,13 +16,13 @@ services:
       KAFKA_CLUSTERS_0_NAME: local-cluster
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka-1:9092,kafka-2:9092,kafka-3:9092"
 
-  #  redis-insight:
-  #    image: redis/redisinsight:3.4.2
-  #    ports:
-  #      - "5540:5540"
-  #    depends_on:
-  #      valkey-cluster-init:
-  #        condition: service_completed_successfully
+  redis-insight:
+    image: redis/redisinsight:3.4.2
+    ports:
+      - "5540:5540"
+    depends_on:
+      valkey-cluster-init:
+        condition: service_completed_successfully
 
   cache-1:
     image: valkey/valkey:9.1.0-trixie
@@ -165,6 +165,7 @@ services:
       SERVER_PORT: 8080
       APP_SCRAPPER_BASE_URL: http://scrapper:8081
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      CACHE_CLUSTER_NODES: cache-1:6379,cache-2:6379,cache-3:6379
     ports:
       - "8080:8080"
     depends_on:

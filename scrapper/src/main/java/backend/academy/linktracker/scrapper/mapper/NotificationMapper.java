@@ -3,11 +3,9 @@ package backend.academy.linktracker.scrapper.mapper;
 import backend.academy.linktracker.avro.RawLinkUpdate;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.github.GitHubResponse;
-import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.dto.linkdto.Update;
 import backend.academy.linktracker.scrapper.dto.stackoverflow.StackOverflowContent;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,12 +31,5 @@ public class NotificationMapper {
                 notification.getAuthor(),
                 notification.getDescription(),
                 notification.getTgChatIds());
-    }
-
-    public List<Notification> toNotification(
-            ProcessingResult result, UUID key, long linkId, String url, List<Long> chatIds) {
-        return result.updates().stream()
-                .map(update -> Notification.createNew(key, linkId, url, update.author(), update.description(), chatIds))
-                .toList();
     }
 }

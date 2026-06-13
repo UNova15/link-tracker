@@ -5,14 +5,13 @@ import backend.academy.linktracker.scrapper.domain.LinkType;
 import backend.academy.linktracker.scrapper.domain.Notification;
 import backend.academy.linktracker.scrapper.dto.linkdto.ProcessingResult;
 import backend.academy.linktracker.scrapper.linktracker.linkchecker.UpdateHandler;
-import backend.academy.linktracker.scrapper.mapper.NotificationMapper;
 import backend.academy.linktracker.scrapper.repository.SubscriptionRepository;
+import backend.academy.linktracker.scrapper.util.NotificationFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LinkProcessor {
     private final SubscriptionRepository subscriptionRepository;
     private final Map<LinkType, UpdateHandler> linkProcessors;
-    private final NotificationMapper mapper;
+    private final NotificationFactory factory;
 
     private final ExecutorService executorService;
     private final int numberOfThreads;
@@ -68,8 +67,7 @@ public class LinkProcessor {
 
             List<Long> chatsId = subscriptionRepository.findChatsIdByLinkId(link.getId());
 
-            return result.map(
-                            res -> mapper.toNotification(res, UUID.randomUUID(), link.getId(), link.getUrl(), chatsId))
+            return result.map(res -> factory.createNotifications(res, link.getId(), link.getUrl(), chatsId))
                     .orElse(List.of());
 
         } catch (Exception exception) {

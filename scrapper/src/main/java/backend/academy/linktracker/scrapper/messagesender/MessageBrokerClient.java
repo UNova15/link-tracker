@@ -26,7 +26,7 @@ public class MessageBrokerClient {
     public void send(Notification record) {
         RawLinkUpdate event = mapper.toLinkUpdateEvent(record);
         try {
-            kafka.send(properties.topicName(), event.getUrl(), event)
+            kafka.send(properties.topicName(), event.getIdempotenceKey().toString(), event)
                     .get(properties.timeoutSeconds(), TimeUnit.SECONDS);
         } catch (Exception exception) {
             log.error("Error to send message: {} to broker ", event.getDescription());

@@ -4,12 +4,12 @@
     "namespace": "backend.academy.linktracker.avro",
     "fields": [
         {
-            "name": "idempotence_key",
+            "name": "idempotenceKey",
             "type": {
                 "type": "string",
                 "logicalType": "uuid"
             },
-            "doc": "Ключ идемпотентности для bot service"
+            "doc": "Ключ идемпотентности для ai-agent service"
         },
         {
             "name": "link_id",

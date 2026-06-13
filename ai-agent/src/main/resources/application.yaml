@@ -77,6 +77,8 @@ app:
     replicas: ${REPLICA_FACTOR:1}
     partitions: ${PARTITION_FACTOR:1}
     timeout-seconds: 5
+    store-name: dedup
+    ttl: 30s
 
 resilience4j:
   retry:
